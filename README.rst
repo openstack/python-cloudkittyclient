@@ -2,7 +2,7 @@ Python bindings to the CloudKitty API
 =====================================
 
 :version: 1.0
-:wiki: Wiki: `CloudKitty Wiki`_
+:Wiki: `CloudKitty Wiki`_
 :IRC: #cloudkitty @ freenode
 
 
@@ -13,8 +13,7 @@ python-cloudkittyclient
 =======================
 
 This is a client library for CloudKitty built on the CloudKitty API. It
-provides a Python API (the ``cloudkittyclient`` module) and a command-line
-tool (``cloudkitty``).
+provides a Python API (the ``cloudkittyclient`` module).
 
 
 Status
