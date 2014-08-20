@@ -1,0 +1,13 @@
+*.pyc
+*.egg-info
+*.log
+build
+.coverage
+.coverage.*
+.tox
+cover
+.testrepository
+.venv
+dist
+*.egg
+*.sw?
