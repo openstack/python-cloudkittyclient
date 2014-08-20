@@ -53,4 +53,7 @@ class ReportManager(base.CrudManager):
         return self.resource_class(self, body, loaded=True)
 
     def get(self, **kwargs):
+        """Get the amount to pay for the current month.
+        /v1/report/total
+        """
         return super(ReportManager, self).get(base_url='/v1', **kwargs)

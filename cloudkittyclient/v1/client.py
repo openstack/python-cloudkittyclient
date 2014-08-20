@@ -20,6 +20,7 @@ OpenStack Client interface. Handles the REST calls and responses.
 """
 
 from cloudkittyclient.openstack.common.apiclient import client
+from cloudkittyclient.v1 import report
 
 
 class Client(client.BaseClient):
@@ -28,3 +29,5 @@ class Client(client.BaseClient):
     def __init__(self, http_client, extensions=None):
         """Initialize a new client for the Cloudkitty v1 API."""
         super(Client, self).__init__(http_client, extensions)
+
+        self.report = report.ReportManager(self)
