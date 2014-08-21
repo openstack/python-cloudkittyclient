@@ -1,7 +1,12 @@
 [run]
 branch = True
 source = cloudkittyclient
-omit = cloudkittyclient/tests/*,cloudkittyclient/openstack/*,cloudkittyclient/i18n.py
+omit =
+    cloudkittyclient/tests/*,
+    cloudkittyclient/openstack/*,
+    cloudkittyclient/i18n.py,
+    cloudkittyclient/common/client.py,
+    cloudkittyclient/common/exceptions.py
 
 [report]
 ignore-errors = True
