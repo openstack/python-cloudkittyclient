@@ -28,6 +28,5 @@ Roadmap
 * Add some tests.
 * Add some doc.
 * Move from importutils to stevedore.
-* Move from test to oslotest.
 * Add a command-line tool.
 * Global code improvement.

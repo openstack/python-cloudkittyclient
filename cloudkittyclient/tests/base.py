@@ -13,8 +13,7 @@
 # under the License.
 
 import fixtures
-
-from cloudkittyclient.openstack.common import test
+from oslotest import base as test
 
 
 class TestCase(test.BaseTestCase):
