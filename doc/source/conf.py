@@ -31,7 +31,6 @@ import sys
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.intersphinx',
     'oslosphinx',
 ]
 
