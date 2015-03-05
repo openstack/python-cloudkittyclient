@@ -1,4 +1,4 @@
-# Copyright 2015 Objectif Libre
+# Copyright 2012 OpenStack Foundation
 # All Rights Reserved.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -13,4 +13,12 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from cloudkittyclient.v1.client import Client    # noqa
+import fixtures
+import testtools
+
+
+class BaseTestCase(testtools.TestCase):
+
+    def setUp(self):
+        super(BaseTestCase, self).setUp()
+        self.useFixture(fixtures.FakeLogger())

@@ -1,5 +1,4 @@
 # Copyright 2015 Objectif Libre
-# All Rights Reserved.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
 #    not use this file except in compliance with the License. You may obtain
@@ -13,4 +12,19 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from cloudkittyclient.v1.client import Client    # noqa
+from cloudkittyclient.common import base
+
+
+class Collector(base.Resource):
+
+    key = 'collector'
+
+    def __repr__(self):
+        return "<Collector %s>" % self._info
+
+
+class CollectorManager(base.Manager):
+    resource_class = Collector
+    base_url = "/v1/billing"
+    key = "collector"
+    collection_key = "collectors"

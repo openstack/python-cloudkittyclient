@@ -1,7 +1,7 @@
 Python bindings to the CloudKitty API
 =====================================
 
-:version: 1.0
+:version: 0.2
 :Wiki: `CloudKitty Wiki`_
 :IRC: #cloudkitty @ freenode
 
@@ -21,12 +21,3 @@ Status
 
 This project is **highly** work in progress.
 
-
-Roadmap
-=======
-
-* Add some tests.
-* Add some doc.
-* Move from importutils to stevedore.
-* Add a command-line tool.
-* Global code improvement.

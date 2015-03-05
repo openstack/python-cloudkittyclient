@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2014 Objectif Libre
-#
+
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
 # a copy of the License at
@@ -13,20 +12,17 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from oslo import i18n
+"""
+test_cloudkittyclient
+----------------------------------
 
-_translators = i18n.TranslatorFactory(domain='cloudkittyclient')
-i18n.enable_lazy()
+Tests for `cloudkittyclient` module.
+"""
 
-# The primary translation function using the well-known name "_"
-_ = _translators.primary
+from cloudkittyclient.tests import base
 
-# Translators for log levels.
-#
-# The abbreviated names are meant to reflect the usual use of a short
-# name like '_'. The "L" is for "log" and the other letter comes from
-# the level.
-_LI = _translators.log_info
-_LW = _translators.log_warning
-_LE = _translators.log_error
-_LC = _translators.log_critical
+
+class TestCloudkittyclient(base.TestCase):
+
+    def test_something(self):
+        pass

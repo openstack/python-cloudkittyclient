@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
+
 # Copyright 2010-2011 OpenStack Foundation
+# Copyright (c) 2013 Hewlett-Packard Development Company, L.P.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -12,15 +15,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import fixtures
-from oslotest import base as test
+from oslotest import base
 
 
-class TestCase(test.BaseTestCase):
+class TestCase(base.BaseTestCase):
+
     """Test case base class for all unit tests."""
-
-    def setUp(self):
-        """Run before each test method to initialize test environment."""
-
-        super(TestCase, self).setUp()
-        self.log_fixture = self.useFixture(fixtures.FakeLogger())

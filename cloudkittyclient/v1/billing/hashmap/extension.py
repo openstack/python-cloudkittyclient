@@ -13,4 +13,19 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from cloudkittyclient.v1.client import Client    # noqa
+from cloudkittyclient.v1.billing.hashmap import client
+from cloudkittyclient.v1.billing.hashmap import shell
+
+
+class Extension(object):
+    """Hashmap extension.
+
+    """
+
+    @staticmethod
+    def get_client(http_client):
+        return client.Client(http_client)
+
+    @staticmethod
+    def get_shell():
+        return shell
