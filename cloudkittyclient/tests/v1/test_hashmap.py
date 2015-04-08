@@ -15,12 +15,12 @@
 from cloudkittyclient.openstack.common.apiclient import client
 from cloudkittyclient.openstack.common.apiclient import fake_client
 from cloudkittyclient.tests import utils
-from cloudkittyclient.v1.billing import hashmap
+from cloudkittyclient.v1.rating import hashmap
 
 
 fixtures = {
     # services
-    '/v1/billing/module_config/hashmap/services': {
+    '/v1/rating/module_config/hashmap/services': {
         'GET': (
             {},
             {'services':
@@ -42,7 +42,7 @@ fixtures = {
         ),
     },
     # a service
-    ('/v1/billing/module_config/hashmap/services/'
+    ('/v1/rating/module_config/hashmap/services/'
      '2451c2e0-2c6b-4e75-987f-93661eef0fd5'): {
         'GET': (
             {},
@@ -57,7 +57,7 @@ fixtures = {
         ),
     },
     # a field
-    ('/v1/billing/module_config/hashmap/fields/'
+    ('/v1/rating/module_config/hashmap/fields/'
      'a53db546-bac0-472c-be4b-5bf9f6117581'): {
         'GET': (
             {},
@@ -72,7 +72,7 @@ fixtures = {
             {},
         ),
     },
-    ('/v1/billing/module_config/hashmap/fields'
+    ('/v1/rating/module_config/hashmap/fields'
      '?service_id=2451c2e0-2c6b-4e75-987f-93661eef0fd5'): {
         'GET': (
             {},
@@ -96,7 +96,7 @@ fixtures = {
         ),
     },
     # a mapping
-    ('/v1/billing/module_config/hashmap/mappings/'
+    ('/v1/rating/module_config/hashmap/mappings/'
      'bff0d209-a8e4-46f8-8c1a-f231db375dcb'): {
         'GET': (
             {},
@@ -124,7 +124,7 @@ fixtures = {
         ),
     },
     # some mappings
-    ('/v1/billing/module_config/hashmap/mappings'
+    ('/v1/rating/module_config/hashmap/mappings'
      '?service_id=2451c2e0-2c6b-4e75-987f-93661eef0fd5'): {
         'GET': (
             {},
@@ -165,7 +165,7 @@ fixtures = {
             {},
         ),
     },
-    '/v1/billing/module_config/hashmap/groups': {
+    '/v1/rating/module_config/hashmap/groups': {
         'GET': (
             {},
             {'groups':
@@ -186,7 +186,7 @@ fixtures = {
              }
         ),
     },
-    ('/v1/billing/module_config/hashmap/groups/'
+    ('/v1/rating/module_config/hashmap/groups/'
      'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5'): {
         'GET': (
             {},
@@ -200,7 +200,7 @@ fixtures = {
             {},
         ),
     },
-    ('/v1/billing/module_config/hashmap/groups/'
+    ('/v1/rating/module_config/hashmap/groups/'
      'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5?recursive=True'): {
         'DELETE': (
             {},
@@ -221,7 +221,7 @@ class ServiceManagerTest(utils.BaseTestCase):
     def test_list_services(self):
         resources = list(self.mgr.list())
         expect = [
-            'GET', '/v1/billing/module_config/hashmap/services'
+            'GET', '/v1/rating/module_config/hashmap/services'
         ]
         self.http_client.assert_called(*expect)
         self.assertEqual(len(resources), 3)
@@ -238,7 +238,7 @@ class ServiceManagerTest(utils.BaseTestCase):
             service_id='2451c2e0-2c6b-4e75-987f-93661eef0fd5'
         )
         expect = [
-            'GET', ('/v1/billing/module_config/hashmap/services/'
+            'GET', ('/v1/rating/module_config/hashmap/services/'
                     '2451c2e0-2c6b-4e75-987f-93661eef0fd5')
         ]
         self.http_client.assert_called(*expect)
@@ -261,7 +261,7 @@ class ServiceTest(utils.BaseTestCase):
     def test_get_fields(self):
         fields = self.resource.fields[:]
         expect = [
-            'GET', ('/v1/billing/module_config/hashmap/fields'
+            'GET', ('/v1/rating/module_config/hashmap/fields'
                     '?service_id=2451c2e0-2c6b-4e75-987f-93661eef0fd5'),
         ]
         self.http_client.assert_called(*expect)
@@ -270,7 +270,7 @@ class ServiceTest(utils.BaseTestCase):
     def test_get_mappings(self):
         mappings = self.resource.mappings[:]
         expect = [
-            'GET', ('/v1/billing/module_config/hashmap/mappings'
+            'GET', ('/v1/rating/module_config/hashmap/mappings'
                     '?service_id=2451c2e0-2c6b-4e75-987f-93661eef0fd5'),
         ]
         self.http_client.assert_called(*expect)
@@ -290,7 +290,7 @@ class FieldManagerTest(utils.BaseTestCase):
             field_id='a53db546-bac0-472c-be4b-5bf9f6117581'
         )
         expect = [
-            'GET', ('/v1/billing/module_config/hashmap/fields/'
+            'GET', ('/v1/rating/module_config/hashmap/fields/'
                     'a53db546-bac0-472c-be4b-5bf9f6117581')
         ]
         self.http_client.assert_called(*expect)
@@ -316,7 +316,7 @@ class MappingManagerTest(utils.BaseTestCase):
             mapping_id='bff0d209-a8e4-46f8-8c1a-f231db375dcb'
         )
         expect = [
-            'GET', ('/v1/billing/module_config/hashmap/mappings/'
+            'GET', ('/v1/rating/module_config/hashmap/mappings/'
                     'bff0d209-a8e4-46f8-8c1a-f231db375dcb')
         ]
         self.http_client.assert_called(*expect)
@@ -340,7 +340,7 @@ class MappingManagerTest(utils.BaseTestCase):
         resource.cost = 0.2
         self.mgr.update(**resource.dirty_fields)
         expect = [
-            'PUT', ('/v1/billing/module_config/hashmap/mappings/'
+            'PUT', ('/v1/rating/module_config/hashmap/mappings/'
                     'bff0d209-a8e4-46f8-8c1a-f231db375dcb'),
             {u'mapping_id': u'bff0d209-a8e4-46f8-8c1a-f231db375dcb',
              u'cost': 0.2, u'type': u'flat',
@@ -364,7 +364,7 @@ class GroupManagerTest(utils.BaseTestCase):
             group_id='aaa1c2e0-2c6b-4e75-987f-93661eef0fd5'
         )
         expect = [
-            'GET', ('/v1/billing/module_config/hashmap/groups/'
+            'GET', ('/v1/rating/module_config/hashmap/groups/'
                     'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5')
         ]
         self.http_client.assert_called(*expect)
@@ -375,7 +375,7 @@ class GroupManagerTest(utils.BaseTestCase):
     def test_delete_a_group(self):
         self.mgr.delete(group_id='aaa1c2e0-2c6b-4e75-987f-93661eef0fd5')
         expect = [
-            'DELETE', ('/v1/billing/module_config/hashmap/groups/'
+            'DELETE', ('/v1/rating/module_config/hashmap/groups/'
                        'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5')
         ]
         self.http_client.assert_called(*expect)
@@ -384,7 +384,7 @@ class GroupManagerTest(utils.BaseTestCase):
         self.mgr.delete(group_id='aaa1c2e0-2c6b-4e75-987f-93661eef0fd5',
                         recursive=True)
         expect = [
-            'DELETE', ('/v1/billing/module_config/hashmap/groups/'
+            'DELETE', ('/v1/rating/module_config/hashmap/groups/'
                        'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5?recursive=True')
         ]
         self.http_client.assert_called(*expect)
@@ -403,9 +403,9 @@ class GroupTest(utils.BaseTestCase):
             group_id='aaa1c2e0-2c6b-4e75-987f-93661eef0fd5'
         )
         self.group.delete()
-        # DELETE /v1/billing/groups/aaa1c2e0-2c6b-4e75-987f-93661eef0fd5
+        # DELETE /v1/rating/groups/aaa1c2e0-2c6b-4e75-987f-93661eef0fd5
         expect = [
-            'DELETE', ('/v1/billing/module_config/hashmap/groups/'
+            'DELETE', ('/v1/rating/module_config/hashmap/groups/'
                        'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5')
         ]
         self.http_client.assert_called(*expect)
@@ -416,9 +416,9 @@ class GroupTest(utils.BaseTestCase):
         )
         self.group.delete(recursive=True)
         # DELETE
-        # /v1/billing/groups/aaa1c2e0-2c6b-4e75-987f-93661eef0fd5?recusrive=True
+        # /v1/rating/groups/aaa1c2e0-2c6b-4e75-987f-93661eef0fd5?recusrive=True
         expect = [
-            'DELETE', ('/v1/billing/module_config/hashmap/groups/'
+            'DELETE', ('/v1/rating/module_config/hashmap/groups/'
                        'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5'
                        '?recursive=True')
         ]

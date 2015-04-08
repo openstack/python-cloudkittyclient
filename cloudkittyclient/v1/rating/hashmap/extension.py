@@ -13,19 +13,19 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from cloudkittyclient.v1.billing import hashmap
+from cloudkittyclient.v1.rating.hashmap import client
+from cloudkittyclient.v1.rating.hashmap import shell
 
 
-class Client(object):
-    """Client for the Hashmap v1 API.
+class Extension(object):
+    """Hashmap extension.
 
-    :param http_client: A http client.
     """
 
-    def __init__(self, http_client):
-        """Initialize a new client for the Hashmap v1 API."""
-        self.http_client = http_client
-        self.services = hashmap.ServiceManager(self.http_client)
-        self.fields = hashmap.FieldManager(self.http_client)
-        self.mappings = hashmap.MappingManager(self.http_client)
-        self.groups = hashmap.GroupManager(self.http_client)
+    @staticmethod
+    def get_client(http_client):
+        return client.Client(http_client)
+
+    @staticmethod
+    def get_shell():
+        return shell

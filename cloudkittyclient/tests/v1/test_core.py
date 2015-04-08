@@ -19,7 +19,7 @@ import cloudkittyclient.v1.core
 
 
 fixtures = {
-    '/v1/billing/modules': {
+    '/v1/rating/modules': {
         'GET': (
             {},
             {'modules': [
@@ -34,7 +34,7 @@ fixtures = {
             ]},
         ),
     },
-    '/v1/billing/modules/hashmap': {
+    '/v1/rating/modules/hashmap': {
         'GET': (
             {},
             {
@@ -50,7 +50,7 @@ fixtures = {
             }
         ),
     },
-    '/v1/billing/modules/noop': {
+    '/v1/rating/modules/noop': {
         'GET': (
             {},
             {
@@ -91,7 +91,7 @@ class CloudkittyModuleManagerTest(utils.BaseTestCase):
     def test_list_all(self):
         resources = list(self.mgr.list())
         expect = [
-            'GET', '/v1/billing/modules'
+            'GET', '/v1/rating/modules'
         ]
         self.http_client.assert_called(*expect)
         self.assertEqual(len(resources), 2)
@@ -101,7 +101,7 @@ class CloudkittyModuleManagerTest(utils.BaseTestCase):
     def test_get_module_status(self):
         resource = self.mgr.get(module_id='hashmap')
         expect = [
-            'GET', '/v1/billing/modules/hashmap'
+            'GET', '/v1/rating/modules/hashmap'
         ]
         self.http_client.assert_called(*expect)
         self.assertEqual(resource.module_id, 'hashmap')
@@ -119,21 +119,21 @@ class CloudkittyModuleTest(utils.BaseTestCase):
     def test_enable(self):
         self.ck_module = self.mgr.get(module_id='noop')
         self.ck_module.enable()
-        # PUT /v1/billing/modules/noop
+        # PUT /v1/rating/modules/noop
         # body : {'enabled': True}
         expect = [
-            'PUT', '/v1/billing/modules/noop', {'module_id': 'noop',
-                                                'enabled': True},
+            'PUT', '/v1/rating/modules/noop', {'module_id': 'noop',
+                                               'enabled': True},
         ]
         self.http_client.assert_called(*expect)
 
     def test_disable(self):
         self.ck_module = self.mgr.get(module_id='hashmap')
         self.ck_module.disable()
-        # PUT /v1/billing/modules/hashmap
+        # PUT /v1/rating/modules/hashmap
         # body : {'enabled': False}
         expect = [
-            'PUT', '/v1/billing/modules/hashmap', {'module_id': 'hashmap',
-                                                   'enabled': False},
+            'PUT', '/v1/rating/modules/hashmap', {'module_id': 'hashmap',
+                                                  'enabled': False},
         ]
         self.http_client.assert_called(*expect)

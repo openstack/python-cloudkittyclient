@@ -33,7 +33,7 @@ class CloudkittyModule(base.Resource):
 
 class CloudkittyModuleManager(base.CrudManager):
     resource_class = CloudkittyModule
-    base_url = "/v1/billing"
+    base_url = "/v1/rating"
     key = 'module'
     collection_key = "modules"
 
@@ -48,6 +48,6 @@ class Collector(base.Resource):
 
 class CollectorManager(base.Manager):
     resource_class = Collector
-    base_url = "/v1/billing"
+    base_url = "/v1/rating"
     key = "collector"
     collection_key = "collectors"
