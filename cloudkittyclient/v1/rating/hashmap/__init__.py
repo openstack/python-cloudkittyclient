@@ -36,7 +36,7 @@ class Service(base.Resource):
 
 class ServiceManager(base.CrudManager):
     resource_class = Service
-    base_url = '/v1/billing/module_config/hashmap'
+    base_url = '/v1/rating/module_config/hashmap'
     key = 'service'
     collection_key = 'services'
 
@@ -56,7 +56,7 @@ class Field(base.Resource):
 
 class FieldManager(base.CrudManager):
     resource_class = Field
-    base_url = '/v1/billing/module_config/hashmap'
+    base_url = '/v1/rating/module_config/hashmap'
     key = 'field'
     collection_key = 'fields'
 
@@ -84,7 +84,7 @@ class Mapping(base.Resource):
 
 class MappingManager(base.CrudManager):
     resource_class = Mapping
-    base_url = '/v1/billing/module_config/hashmap'
+    base_url = '/v1/rating/module_config/hashmap'
     key = 'mapping'
     collection_key = 'mappings'
 
@@ -101,7 +101,7 @@ class Group(base.Resource):
 
 class GroupManager(base.CrudManager):
     resource_class = Group
-    base_url = '/v1/billing/module_config/hashmap'
+    base_url = '/v1/rating/module_config/hashmap'
     key = 'group'
     collection_key = 'groups'
 
