@@ -55,6 +55,7 @@ class Client(object):
         self.http_client = client.BaseClient(self.client)
         self.modules = core.CloudkittyModuleManager(self.http_client)
         self.reports = report.ReportManager(self.http_client)
+        self.quotations = core.QuotationManager(self.http_client)
         self._expose_submodules()
 
     def _expose_submodules(self):

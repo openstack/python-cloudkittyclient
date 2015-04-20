@@ -51,3 +51,12 @@ class CollectorManager(base.Manager):
     base_url = "/v1/rating"
     key = "collector"
     collection_key = "collectors"
+
+
+class QuotationManager(base.Manager):
+    base_url = "/v1/rating/quote"
+
+    def quote(self, resources):
+        out = self.api.post(self.base_url,
+                            json={'resources': resources}).json()
+        return out
