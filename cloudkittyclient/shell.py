@@ -32,6 +32,7 @@ from cloudkittyclient.common import utils
 from cloudkittyclient import exc
 from cloudkittyclient.openstack.common import cliutils
 from cloudkittyclient.v1.report import shell as report_shell
+from cloudkittyclient.v1.storage import shell as storage_shell
 
 SUBMODULES_NAMESPACE = 'cloudkitty.client.modules'
 
@@ -119,6 +120,7 @@ class CloudkittyShell(object):
         submodule = utils.import_versioned_module(version, 'shell')
         self._find_actions(subparsers, submodule)
         self._find_actions(subparsers, report_shell)
+        self._find_actions(subparsers, storage_shell)
         extensions = extension.ExtensionManager(
             SUBMODULES_NAMESPACE,
         )
