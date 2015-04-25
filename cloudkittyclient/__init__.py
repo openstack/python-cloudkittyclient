@@ -17,4 +17,4 @@ import pbr.version
 
 
 __version__ = pbr.version.VersionInfo(
-    'cloudkittyclient').version_string()
+    'python-cloudkittyclient').version_string()
