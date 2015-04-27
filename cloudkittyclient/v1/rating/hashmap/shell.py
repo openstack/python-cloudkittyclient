@@ -30,14 +30,14 @@ def do_hashmap_service_create(cc, args={}):
         if k in arg_to_field_mapping:
             if v is not None:
                 fields[arg_to_field_mapping.get(k, k)] = v
-    out = cc.hashmap_services.create(**fields)
+    out = cc.hashmap.services.create(**fields)
     utils.print_dict(out.to_dict())
 
 
 def do_hashmap_service_list(cc, args={}):
     """List services."""
     try:
-        services = cc.hashmap_services.list()
+        services = cc.hashmap.services.list()
     except exc.HTTPNotFound:
         raise exc.CommandError('Services not found: %s' % args.counter_name)
     else:
@@ -53,7 +53,7 @@ def do_hashmap_service_list(cc, args={}):
 def do_hashmap_service_delete(cc, args={}):
     """Delete a service."""
     try:
-        cc.hashmap_services.delete(service_id=args.service_id)
+        cc.hashmap.services.delete(service_id=args.service_id)
     except exc.HTTPNotFound:
         raise exc.CommandError('Service not found: %s' % args.counter_name)
 
@@ -75,7 +75,7 @@ def do_hashmap_field_create(cc, args={}):
         if k in arg_to_field_mapping:
             if v is not None:
                 fields[arg_to_field_mapping.get(k, k)] = v
-    out = cc.hashmap_fields.create(**fields)
+    out = cc.hashmap.fields.create(**fields)
     utils.print_dict(out.to_dict())
 
 
@@ -85,7 +85,7 @@ def do_hashmap_field_create(cc, args={}):
 def do_hashmap_field_list(cc, args={}):
     """Create a field."""
     try:
-        created_field = cc.hashmap_fields.list(service_id=args.service_id)
+        created_field = cc.hashmap.fields.list(service_id=args.service_id)
     except exc.HTTPNotFound:
         raise exc.CommandError('Fields not found: %s' % args.counter_name)
     else:
@@ -101,7 +101,7 @@ def do_hashmap_field_list(cc, args={}):
 def do_hashmap_field_delete(cc, args={}):
     """Delete a field."""
     try:
-        cc.hashmap_fields.delete(field_id=args.field_id)
+        cc.hashmap.fields.delete(field_id=args.field_id)
     except exc.HTTPNotFound:
         raise exc.CommandError('Field not found: %s' % args.counter_name)
 
@@ -139,7 +139,7 @@ def do_hashmap_mapping_create(cc, args={}):
         if k in arg_to_field_mapping:
             if v is not None:
                 fields[arg_to_field_mapping.get(k, k)] = v
-    out = cc.hashmap_mappings.create(**fields)
+    out = cc.hashmap.mappings.create(**fields)
     utils.print_dict(out)
 
 
@@ -168,14 +168,14 @@ def do_hashmap_mapping_update(cc, args={}):
         'group_id': 'group_id',
     }
     try:
-        mapping = cc.hashmap_mappings.get(mapping_id=args.mapping_id)
+        mapping = cc.hashmap.mappings.get(mapping_id=args.mapping_id)
     except exc.HTTPNotFound:
         raise exc.CommandError('Modules not found: %s' % args.counter_name)
     for k, v in vars(args).items():
         if k in arg_to_field_mapping:
             if v is not None:
                 setattr(mapping, k, v)
-    cc.hashmap_mappings.update(**mapping.dirty_fields)
+    cc.hashmap.mappings.update(**mapping.dirty_fields)
 
 
 @utils.arg('-s', '--service-id',
@@ -192,7 +192,7 @@ def do_hashmap_mapping_list(cc, args={}):
     if args.service_id is None and args.field_id is None:
         raise exc.CommandError("Provide either service-id or field-id")
     try:
-        mappings = cc.hashmap_mappings.list(service_id=args.service_id,
+        mappings = cc.hashmap.mappings.list(service_id=args.service_id,
                                             field_id=args.field_id,
                                             group_id=args.group_id)
     except exc.HTTPNotFound:
@@ -214,7 +214,7 @@ def do_hashmap_mapping_list(cc, args={}):
 def do_hashmap_mapping_delete(cc, args={}):
     """Delete a mapping."""
     try:
-        cc.hashmap_mappings.delete(mapping_id=args.mapping_id)
+        cc.hashmap.mappings.delete(mapping_id=args.mapping_id)
     except exc.HTTPNotFound:
         raise exc.CommandError('Mapping not found: %s' % args.mapping_id)
 
@@ -232,13 +232,13 @@ def do_hashmap_group_create(cc, args={}):
         if k in arg_to_field_mapping:
             if v is not None:
                 fields[arg_to_field_mapping.get(k, k)] = v
-    cc.hashmap_groups.create(**fields)
+    cc.hashmap.groups.create(**fields)
 
 
 def do_hashmap_group_list(cc, args={}):
     """List groups."""
     try:
-        groups = cc.hashmap_groups.list()
+        groups = cc.hashmap.groups.list()
     except exc.HTTPNotFound:
         raise exc.CommandError('Mapping not found: %s' % args.counter_name)
     else:
@@ -259,7 +259,7 @@ def do_hashmap_group_list(cc, args={}):
 def do_hashmap_group_delete(cc, args={}):
     """Delete a group."""
     try:
-        cc.hashmap_groups.delete(group_id=args.group_id,
+        cc.hashmap.groups.delete(group_id=args.group_id,
                                  recursive=args.recursive)
     except exc.HTTPNotFound:
         raise exc.CommandError('Group not found: %s' % args.group_id)
