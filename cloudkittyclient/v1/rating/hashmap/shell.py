@@ -146,7 +146,7 @@ def do_hashmap_mapping_create(cc, args={}):
             if v is not None:
                 fields[arg_to_field_mapping.get(k, k)] = v
     out = cc.hashmap.mappings.create(**fields)
-    utils.print_dict(out)
+    utils.print_dict(out.to_dict())
 
 
 @utils.arg('-m', '--mapping-id',
@@ -238,7 +238,8 @@ def do_hashmap_group_create(cc, args={}):
         if k in arg_to_field_mapping:
             if v is not None:
                 fields[arg_to_field_mapping.get(k, k)] = v
-    cc.hashmap.groups.create(**fields)
+    group = cc.hashmap.groups.create(**fields)
+    utils.print_dict(group.to_dict())
 
 
 def do_hashmap_group_list(cc, args={}):
