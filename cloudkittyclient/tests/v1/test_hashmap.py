@@ -207,6 +207,38 @@ fixtures = {
             {},
         ),
     },
+    # a threshold
+    ('/v1/rating/module_config/hashmap/thresholds/'
+     '1f136864-be73-481f-b9be-4fbda2496f72'): {
+        'GET': (
+            {},
+            {
+                'threshold_id': '1f136864-be73-481f-b9be-4fbda2496f72',
+                'service_id': '1329d62f-bd1c-4a88-a75a-07545e41e8d7',
+                'field_id': 'c7c28d87-5103-4a05-af7f-e4d0891cb7fc',
+                'group_id': None,
+                'level': 30,
+                'cost': 5.98,
+                'map_type': 'flat',
+            },
+        ),
+        'PUT': (
+            {},
+            {
+                'threshold_id': '1f136864-be73-481f-b9be-4fbda2496f72',
+                'service_id': '1329d62f-bd1c-4a88-a75a-07545e41e8d7',
+                'field_id': 'c7c28d87-5103-4a05-af7f-e4d0891cb7fc',
+                'group_id': None,
+                'level': 30,
+                'cost': 5.99,
+                'type': 'flat',
+            },
+        ),
+        'DELETE': (
+            {},
+            {},
+        ),
+    },
 }
 
 
@@ -421,5 +453,61 @@ class GroupTest(utils.BaseTestCase):
             'DELETE', ('/v1/rating/module_config/hashmap/groups/'
                        'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5'
                        '?recursive=True')
+        ]
+        self.http_client.assert_called(*expect)
+
+
+class ThresholdManagerTest(utils.BaseTestCase):
+
+    def setUp(self):
+        super(ThresholdManagerTest, self).setUp()
+        self.http_client = fake_client.FakeHTTPClient(fixtures=fixtures)
+        self.api = client.BaseClient(self.http_client)
+        self.mgr = hashmap.ThresholdManager(self.api)
+
+    def test_get_a_threshold(self):
+        resource = self.mgr.get(
+            threshold_id='1f136864-be73-481f-b9be-4fbda2496f72'
+        )
+        expect = [
+            'GET', ('/v1/rating/module_config/hashmap/thresholds/'
+                    '1f136864-be73-481f-b9be-4fbda2496f72')
+        ]
+        self.http_client.assert_called(*expect)
+        self.assertEqual(resource.threshold_id,
+                         '1f136864-be73-481f-b9be-4fbda2496f72')
+        self.assertEqual(
+            resource.service_id,
+            '1329d62f-bd1c-4a88-a75a-07545e41e8d7'
+        )
+        self.assertEqual(
+            resource.field_id,
+            'c7c28d87-5103-4a05-af7f-e4d0891cb7fc'
+        )
+        self.assertEqual(resource.level, 30)
+        self.assertEqual(resource.cost, 5.98)
+
+    def test_update_a_threshold(self):
+        resource = self.mgr.get(
+            threshold_id='1f136864-be73-481f-b9be-4fbda2496f72'
+        )
+        resource.cost = 5.99
+        self.mgr.update(**resource.dirty_fields)
+        expect = [
+            'PUT', ('/v1/rating/module_config/hashmap/thresholds/'
+                    '1f136864-be73-481f-b9be-4fbda2496f72'),
+            {u'threshold_id': u'1f136864-be73-481f-b9be-4fbda2496f72',
+             u'cost': 5.99, u'map_type': u'flat',
+             u'service_id': u'1329d62f-bd1c-4a88-a75a-07545e41e8d7',
+             u'field_id': u'c7c28d87-5103-4a05-af7f-e4d0891cb7fc',
+             u'level': 30}
+        ]
+        self.http_client.assert_called(*expect)
+
+    def test_delete_a_threshold(self):
+        self.mgr.delete(threshold_id='1f136864-be73-481f-b9be-4fbda2496f72')
+        expect = [
+            'DELETE', ('/v1/rating/module_config/hashmap/thresholds/'
+                       '1f136864-be73-481f-b9be-4fbda2496f72')
         ]
         self.http_client.assert_called(*expect)

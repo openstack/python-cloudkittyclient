@@ -110,3 +110,23 @@ class GroupManager(base.CrudManager):
         if recursive:
             url += "?recursive=True"
         return self._delete(url)
+
+
+class Threshold(base.Resource):
+    key = 'threshold'
+
+    def __repr__(self):
+        return "<hashmap.Threshold %s>" % self._info
+
+
+class ThresholdManager(base.CrudManager):
+    resource_class = Threshold
+    base_url = '/v1/rating/module_config/hashmap'
+    key = 'threshold'
+    collection_key = 'thresholds'
+
+    def group(self, threshold_id):
+        url = ('%(base_url)s/thresholds/%(threshold_id)s/group' %
+               {'base_url': self.base_url, 'threshold_id': threshold_id})
+        out = self._get(url)
+        return out

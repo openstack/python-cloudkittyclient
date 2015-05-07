@@ -29,3 +29,4 @@ class Client(object):
         self.fields = hashmap.FieldManager(self.http_client)
         self.mappings = hashmap.MappingManager(self.http_client)
         self.groups = hashmap.GroupManager(self.http_client)
+        self.thresholds = hashmap.ThresholdManager(self.http_client)
