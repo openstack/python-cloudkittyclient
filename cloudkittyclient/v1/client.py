@@ -19,6 +19,7 @@ from cloudkittyclient import client as ckclient
 from cloudkittyclient.openstack.common.apiclient import client
 from cloudkittyclient.v1 import core
 from cloudkittyclient.v1 import report
+from cloudkittyclient.v1 import storage
 
 SUBMODULES_NAMESPACE = 'cloudkitty.client.modules'
 
@@ -56,6 +57,7 @@ class Client(object):
         self.modules = core.CloudkittyModuleManager(self.http_client)
         self.reports = report.ReportManager(self.http_client)
         self.quotations = core.QuotationManager(self.http_client)
+        self.storage = storage.StorageManager(self.http_client)
         self._expose_submodules()
 
     def _expose_submodules(self):
