@@ -22,7 +22,7 @@ import argparse
 import logging
 import sys
 
-from oslo.utils import encodeutils
+from oslo_utils import encodeutils
 import six
 from stevedore import extension
 

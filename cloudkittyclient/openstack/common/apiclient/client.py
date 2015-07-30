@@ -34,8 +34,8 @@ try:
 except ImportError:
     import json
 
-from oslo.utils import encodeutils
-from oslo.utils import importutils
+from oslo_utils import encodeutils
+from oslo_utils import importutils
 import requests
 
 from cloudkittyclient.openstack.common._i18n import _
@@ -122,6 +122,9 @@ class HTTPClient(object):
             "-X '%s'" % method,
             "'%s'" % url,
         ]
+
+        if not kwargs.get('verify', self.verify):
+            string_parts.insert(1, '--insecure')
 
         for element in kwargs['headers']:
             header = ("-H '%s: %s'" %

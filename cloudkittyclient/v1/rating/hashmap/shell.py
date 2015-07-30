@@ -15,7 +15,7 @@
 
 import functools
 
-from oslo.utils import strutils
+from oslo_utils import strutils
 
 from cloudkittyclient.common import utils
 from cloudkittyclient import exc
