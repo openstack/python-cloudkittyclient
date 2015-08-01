@@ -12,11 +12,19 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from cloudkittyclient.v1.collector import mapping
-from cloudkittyclient.v1.collector import state
+from cloudkittyclient.common import base
 
 
-class CollectorManager(object):
-    def __init__(self, http_client):
-        self.mappings = mapping.MappingManager(http_client)
-        self.states = state.StateManager(http_client)
+class State(base.Resource):
+
+    key = 'state'
+
+    def __repr__(self):
+        return "<State %s>" % self._info
+
+
+class StateManager(base.CrudManager):
+    resource_class = State
+    base_url = "/v1/collector"
+    key = "state"
+    collection_key = "states"

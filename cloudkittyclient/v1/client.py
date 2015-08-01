@@ -17,6 +17,7 @@ from stevedore import extension
 
 from cloudkittyclient import client as ckclient
 from cloudkittyclient.openstack.common.apiclient import client
+from cloudkittyclient.v1 import collector
 from cloudkittyclient.v1 import core
 from cloudkittyclient.v1 import report
 from cloudkittyclient.v1 import storage
@@ -55,6 +56,7 @@ class Client(object):
 
         self.http_client = client.BaseClient(self.client)
         self.modules = core.CloudkittyModuleManager(self.http_client)
+        self.collector = collector.CollectorManager(self.http_client)
         self.reports = report.ReportManager(self.http_client)
         self.quotations = core.QuotationManager(self.http_client)
         self.storage = storage.StorageManager(self.http_client)
