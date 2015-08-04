@@ -131,7 +131,7 @@ def do_hashmap_field_delete(cc, args={}):
            help='Group id',
            required=False)
 def do_hashmap_mapping_create(cc, args={}):
-    """Create a ampping."""
+    """Create a mapping."""
     arg_to_field_mapping = {
         'cost': 'cost',
         'value': 'value',
@@ -291,7 +291,7 @@ def do_hashmap_group_delete(cc, args={}):
            help='Group id',
            required=False)
 def do_hashmap_threshold_create(cc, args={}):
-    """Create a ampping."""
+    """Create a mapping."""
     arg_to_field_mapping = {
         'level': 'level',
         'cost': 'cost',
