@@ -9,4 +9,4 @@ omit =
     cloudkittyclient/common/exceptions.py
 
 [report]
-ignore-errors = True
+ignore_errors = True
