@@ -17,6 +17,132 @@ from cloudkittyclient.openstack.common.apiclient import fake_client
 from cloudkittyclient.tests import utils
 from cloudkittyclient.v1.rating import hashmap
 
+GROUP1 = {
+    'group_id': 'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5',
+    'name': 'object_consumption'}
+
+GROUP2 = {
+    'group_id': '36171313-9813-4456-bf40-0195b2c98d1e',
+    'name': 'compute_instance'}
+
+GROUP3 = {
+    'group_id': '1dc7d980-e80a-4449-888f-26686392f4cc',
+    'name': 'networking'}
+
+SERVICE1 = {
+    'service_id': '2451c2e0-2c6b-4e75-987f-93661eef0fd5',
+    'name': 'compute'}
+
+SERVICE2 = {
+    'service_id': '338dd381-2c25-4347-b14d-239194c6068c',
+    'name': 'volume'}
+
+SERVICE3 = {
+    'service_id': '2f5bc5be-3753-450f-9492-37a6dba2fa8a',
+    'name': 'network'}
+
+SERVICE_MAPPING1 = {
+    'mapping_id': 'ae6145c3-6b00-4954-b698-cbc36a3d6c4b',
+    'service_id': SERVICE3['service_id'],
+    'field_id': None,
+    'group_id': None,
+    'value': None,
+    'cost': 0.50,
+    'type': 'flat'}
+
+SERVICE_MAPPING1_PUT = {
+    'mapping_id': SERVICE_MAPPING1['mapping_id'],
+    'service_id': SERVICE3['service_id'],
+    'field_id': None,
+    'group_id': None,
+    'value': None,
+    'cost': 0.20,
+    'type': SERVICE_MAPPING1['type']}
+
+SERVICE_THRESHOLD1 = {
+    'threshold_id': '22e3ae52-a863-47c6-8994-6acdec200346',
+    'service_id': SERVICE3['service_id'],
+    'field_id': None,
+    'group_id': GROUP3['group_id'],
+    'level': 30,
+    'cost': 5.98,
+    'map_type': 'flat'}
+
+SERVICE_THRESHOLD1_PUT = {
+    'threshold_id': SERVICE_THRESHOLD1['threshold_id'],
+    'service_id': SERVICE3['service_id'],
+    'group_id': SERVICE_THRESHOLD1['group_id'],
+    'level': SERVICE_THRESHOLD1['level'],
+    'cost': 5.99,
+    'map_type': SERVICE_THRESHOLD1['map_type']}
+
+FIELD1 = {
+    'field_id': 'a53db546-bac0-472c-be4b-5bf9f6117581',
+    'service_id': SERVICE1['service_id'],
+    'name': 'flavor'}
+
+FIELD2 = {
+    'field_id': 'f818a5a6-da88-474c-bd33-184ed769be63',
+    'service_id': SERVICE1['service_id'],
+    'name': 'image_id'}
+
+FIELD3 = {
+    'field_id': 'b9861ba3-26d8-4c39-bb66-c607d48ccfce',
+    'service_id': SERVICE1['service_id'],
+    'name': 'vcpus'}
+
+FIELD_MAPPING1 = {
+    'mapping_id': 'bff0d209-a8e4-46f8-8c1a-f231db375dcb',
+    'service_id': None,
+    'field_id': FIELD1['field_id'],
+    'group_id': GROUP2['group_id'],
+    'value': 'm1.small',
+    'cost': 0.50,
+    'type': 'flat'}
+
+FIELD_MAPPING1_PUT = {
+    'mapping_id': FIELD_MAPPING1['mapping_id'],
+    'field_id': FIELD_MAPPING1['field_id'],
+    'group_id': FIELD_MAPPING1['group_id'],
+    'value': FIELD_MAPPING1['value'],
+    'cost': 0.20,
+    'type': FIELD_MAPPING1['type']}
+
+FIELD_MAPPING2 = {
+    'mapping_id': '1f1a05f2-1549-4623-b70a-9ab5c69fcd91',
+    'service_id': None,
+    'field_id': FIELD1['field_id'],
+    'group_id': None,
+    'value': 'm1.tiny',
+    'cost': 1.10,
+    'type': 'flat'}
+
+FIELD_MAPPING3 = {
+    'mapping_id': 'deb4efe8-77c4-40ca-b8ca-27ec4892fa5f',
+    'service_id': None,
+    'field_id': FIELD1['field_id'],
+    'group_id': None,
+    'value': 'm1.big',
+    'cost': 1.50,
+    'type': 'flat'}
+
+FIELD_THRESHOLD1 = {
+    'threshold_id': 'a33aca4b-3c12-41c5-a153-134c705fdbe2',
+    'service_id': None,
+    'field_id': FIELD3['field_id'],
+    'group_id': None,
+    'level': 2,
+    'cost': 1.2,
+    'map_type': 'flat'}
+
+FIELD_THRESHOLD1_PUT = {
+    'threshold_id': FIELD_THRESHOLD1['threshold_id'],
+    'service_id': None,
+    'field_id': FIELD3['field_id'],
+    'group_id': None,
+    'level': FIELD_THRESHOLD1['level'],
+    'cost': 1.5,
+    'map_type': FIELD_THRESHOLD1['map_type']}
 
 fixtures = {
     # services
@@ -25,31 +151,115 @@ fixtures = {
             {},
             {'services':
                 [
-                    {
-                        'service_id': '2451c2e0-2c6b-4e75-987f-93661eef0fd5',
-                        'name': 'compute'
-                    },
-                    {
-                        'service_id': '2451c2e0-2c6b-4e75-987f-93661eef0fd6',
-                        'name': 'volume'
-                    },
-                    {
-                        'service_id': '2451c2e0-2c6b-4e75-987f-93661eef0fd7',
-                        'name': 'network'
-                    },
+                    SERVICE1,
+                    SERVICE2,
+                    SERVICE3
                 ],
              }
         ),
     },
     # a service
-    ('/v1/rating/module_config/hashmap/services/'
-     '2451c2e0-2c6b-4e75-987f-93661eef0fd5'): {
+    ('/v1/rating/module_config/hashmap/services/' +
+     SERVICE1['service_id']): {
         'GET': (
             {},
-            {
-                'service_id': '2451c2e0-2c6b-4e75-987f-93661eef0fd5',
-                'name': 'compute',
-            }
+            SERVICE1
+        ),
+        'DELETE': (
+            {},
+            {},
+        ),
+    },
+    # a service
+    ('/v1/rating/module_config/hashmap/services/' +
+     SERVICE3['service_id']): {
+        'GET': (
+            {},
+            SERVICE3
+        ),
+        'DELETE': (
+            {},
+            {},
+        ),
+    },
+    # a service mapping
+    ('/v1/rating/module_config/hashmap/mappings/' +
+     SERVICE_MAPPING1['mapping_id']): {
+        'GET': (
+            {},
+            SERVICE_MAPPING1
+        ),
+        'PUT': (
+            {},
+            SERVICE_MAPPING1_PUT
+        ),
+    },
+    # some service mappings
+    ('/v1/rating/module_config/hashmap/mappings?service_id=' +
+     SERVICE3['service_id']): {
+        'GET': (
+            {},
+            {'mappings':
+                [
+                    SERVICE_MAPPING1
+                ],
+             }
+        ),
+        'PUT': (
+            {},
+            {},
+        ),
+    },
+    # a service threshold
+    ('/v1/rating/module_config/hashmap/thresholds/' +
+     SERVICE_THRESHOLD1['threshold_id']): {
+        'GET': (
+            {},
+            SERVICE_THRESHOLD1
+        ),
+        'PUT': (
+            {},
+            SERVICE_THRESHOLD1_PUT
+        ),
+        'DELETE': (
+            {},
+            {},
+        ),
+    },
+    # service thresholds
+    ('/v1/rating/module_config/hashmap/thresholds?service_id=' +
+     SERVICE3['service_id']): {
+        'GET': (
+            {},
+            {'thresholds':
+                [
+                    SERVICE_THRESHOLD1
+                ]
+             },
+        ),
+    },
+    # service thresholds in a group
+    ('/v1/rating/module_config/hashmap/thresholds?group_id=' +
+     GROUP3['group_id']): {
+        'GET': (
+            {},
+            {'thresholds':
+                [
+                    SERVICE_THRESHOLD1
+                ]
+             },
+        ),
+    },
+    # a field
+    ('/v1/rating/module_config/hashmap/fields/' +
+     FIELD1['field_id']): {
+        'GET': (
+            {},
+            FIELD1
+        ),
+        'PUT': (
+            {},
+            {},
         ),
         'DELETE': (
             {},
@@ -57,36 +267,26 @@ fixtures = {
         ),
     },
     # a field
-    ('/v1/rating/module_config/hashmap/fields/'
-     'a53db546-bac0-472c-be4b-5bf9f6117581'): {
+    ('/v1/rating/module_config/hashmap/fields/' +
+     FIELD3['field_id']): {
         'GET': (
             {},
-            {
-                'field_id': 'a53db546-bac0-472c-be4b-5bf9f6117581',
-                'service_id': '2451c2e0-2c6b-4e75-987f-93661eef0fd5',
-                'name': 'flavor',
-            },
+            FIELD3
         ),
         'PUT': (
             {},
             {},
         ),
     },
-    ('/v1/rating/module_config/hashmap/fields'
-     '?service_id=2451c2e0-2c6b-4e75-987f-93661eef0fd5'): {
+    # some fields
+    ('/v1/rating/module_config/hashmap/fields?service_id=' +
+     SERVICE1['service_id']): {
         'GET': (
             {},
             {'fields': [
-                {
-                    'field_id': 'a53db546-bac0-472c-be4b-5bf9f6117581',
-                    'service_id': '2451c2e0-2c6b-4e75-987f-93661eef0fd5',
-                    'name': 'flavor',
-                },
-                {
-                    'field_id': 'a53db546-bac0-472c-be4b-5bf9f6117582',
-                    'service_id': '2451c2e0-2c6b-4e75-987f-93661eef0fd5',
-                    'name': 'LOLOL',
-                },
+                FIELD1,
+                FIELD2,
+                FIELD3
             ]
             },
         ),
@@ -95,68 +295,32 @@ fixtures = {
             {},
         ),
     },
-    # a mapping
-    ('/v1/rating/module_config/hashmap/mappings/'
-     'bff0d209-a8e4-46f8-8c1a-f231db375dcb'): {
+    # a field mapping
+    ('/v1/rating/module_config/hashmap/mappings/' +
+     FIELD_MAPPING1['mapping_id']): {
         'GET': (
             {},
-            {
-                'mapping_id': 'bff0d209-a8e4-46f8-8c1a-f231db375dcb',
-                'service_id': '2451c2e0-2c6b-4e75-987f-93661eef0fd5',
-                'field_id': 'a53db546-bac0-472c-be4b-5bf9f6117581',
-                'group_id': None,
-                'value': 'm1.small',
-                'cost': 0.50,
-                'type': 'flat',
-            },
+            FIELD_MAPPING1
         ),
         'PUT': (
             {},
-            {
-                'mapping_id': 'bff0d209-a8e4-46f8-8c1a-f231db375dcb',
-                'service_id': '2451c2e0-2c6b-4e75-987f-93661eef0fd5',
-                'field_id': 'a53db546-bac0-472c-be4b-5bf9f6117581',
-                'group_id': None,
-                'value': 'm1.small',
-                'cost': 0.20,
-                'type': 'flat',
-            },
+            FIELD_MAPPING1_PUT
+        ),
+        'DELETE': (
+            {},
+            {},
         ),
     },
     # some mappings
-    ('/v1/rating/module_config/hashmap/mappings'
-     '?service_id=2451c2e0-2c6b-4e75-987f-93661eef0fd5'): {
+    ('/v1/rating/module_config/hashmap/mappings?field_id=' +
+     FIELD1['field_id']): {
         'GET': (
             {},
             {'mappings':
                 [
-                    {
-                        'mapping_id': 'bff0d209-a8e4-46f8-8c1a-f231db375dcb',
-                        'service_id': '2451c2e0-2c6b-4e75-987f-93661eef0fd5',
-                        'field_id': None,
-                        'group_id': None,
-                        'value': 'm1.small',
-                        'cost': 0.50,
-                        'type': 'flat',
-                    },
-                    {
-                        'mapping_id': 'bff0d209-a8e4-46f8-8c1a-f231db375dcc',
-                        'service_id': '2451c2e0-2c6b-4e75-987f-93661eef0fd5',
-                        'field_id': None,
-                        'group_id': None,
-                        'value': 'm1.tiny',
-                        'cost': 1.10,
-                        'type': 'flat',
-                    },
-                    {
-                        'mapping_id': 'bff0d209-a8e4-46f8-8c1a-f231db375dcd',
-                        'service_id': '2451c2e0-2c6b-4e75-987f-93661eef0fd5',
-                        'field_id': None,
-                        'group_id': None,
-                        'value': 'm1.big',
-                        'cost': 1.50,
-                        'type': 'flat',
-                    },
+                    FIELD_MAPPING1,
+                    FIELD_MAPPING2,
+                    FIELD_MAPPING3
                 ],
              }
         ),
@@ -165,75 +329,91 @@ fixtures = {
             {},
         ),
     },
+    # some mappings in a group
+    ('/v1/rating/module_config/hashmap/mappings?group_id=' +
+     GROUP2['group_id']): {
+        'GET': (
+            {},
+            {'mappings':
+                [
+                    FIELD_MAPPING1,
+                ],
+             }
+        ),
+        'PUT': (
+            {},
+            {},
+        ),
+    },
+    # a field threshold
+    ('/v1/rating/module_config/hashmap/thresholds/' +
+     FIELD_THRESHOLD1['threshold_id']): {
+        'GET': (
+            {},
+            FIELD_THRESHOLD1
+        ),
+        'PUT': (
+            {},
+            FIELD_THRESHOLD1_PUT
+        ),
+        'DELETE': (
+            {},
+            {},
+        ),
+    },
+    # field thresholds
+    ('/v1/rating/module_config/hashmap/thresholds?field_id=' +
+     FIELD3['field_id']): {
+        'GET': (
+            {},
+            {'thresholds':
+                [
+                    FIELD_THRESHOLD1
+                ]
+             },
+        ),
+    },
+    # some groups
     '/v1/rating/module_config/hashmap/groups': {
         'GET': (
             {},
             {'groups':
                 [
-                    {
-                        'group_id': 'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5',
-                        'name': 'object_consumption'
-                    },
-                    {
-                        'group_id': 'aaa1c2e0-2c6b-4e75-987f-93661eef0fd6',
-                        'name': 'compute_instance'
-                    },
-                    {
-                        'group_id': 'aaa1c2e0-2c6b-4e75-987f-93661eef0fd7',
-                        'name': 'netowrking'
-                    },
+                    GROUP1,
+                    GROUP2,
+                    GROUP3
                 ],
              }
         ),
     },
-    ('/v1/rating/module_config/hashmap/groups/'
-     'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5'): {
+    # a group
+    ('/v1/rating/module_config/hashmap/groups/' +
+     GROUP2['group_id']): {
         'GET': (
             {},
-            {
-                'group_id': 'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5',
-                'name': 'object_consumption'
-            },
+            GROUP2
         ),
         'DELETE': (
             {},
             {},
         ),
     },
-    ('/v1/rating/module_config/hashmap/groups/'
-     'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5?recursive=True'): {
+    # another group
+    ('/v1/rating/module_config/hashmap/groups/' +
+     GROUP3['group_id']): {
+        'GET': (
+            {},
+            GROUP3
+        ),
         'DELETE': (
             {},
             {},
         ),
     },
-    # a threshold
-    ('/v1/rating/module_config/hashmap/thresholds/'
-     '1f136864-be73-481f-b9be-4fbda2496f72'): {
-        'GET': (
-            {},
-            {
-                'threshold_id': '1f136864-be73-481f-b9be-4fbda2496f72',
-                'service_id': '1329d62f-bd1c-4a88-a75a-07545e41e8d7',
-                'field_id': 'c7c28d87-5103-4a05-af7f-e4d0891cb7fc',
-                'group_id': None,
-                'level': 30,
-                'cost': 5.98,
-                'map_type': 'flat',
-            },
-        ),
-        'PUT': (
-            {},
-            {
-                'threshold_id': '1f136864-be73-481f-b9be-4fbda2496f72',
-                'service_id': '1329d62f-bd1c-4a88-a75a-07545e41e8d7',
-                'field_id': 'c7c28d87-5103-4a05-af7f-e4d0891cb7fc',
-                'group_id': None,
-                'level': 30,
-                'cost': 5.99,
-                'type': 'flat',
-            },
-        ),
+    # recursive delete group
+    ('/v1/rating/module_config/hashmap/groups/' +
+     GROUP2['group_id'] +
+     '?recursive=True'): {
         'DELETE': (
             {},
             {},
@@ -253,30 +433,34 @@ class ServiceManagerTest(utils.BaseTestCase):
     def test_list_services(self):
         resources = list(self.mgr.list())
         expect = [
-            'GET', '/v1/rating/module_config/hashmap/services'
-        ]
+            'GET', '/v1/rating/module_config/hashmap/services']
         self.http_client.assert_called(*expect)
         self.assertEqual(len(resources), 3)
         self.assertEqual(
             resources[0].service_id,
-            '2451c2e0-2c6b-4e75-987f-93661eef0fd5'
-        )
-        self.assertEqual(resources[0].name, 'compute')
-        self.assertEqual(resources[1].name, 'volume')
-        self.assertEqual(resources[2].name, 'network')
+            SERVICE1['service_id'])
+        self.assertEqual(resources[0].name, SERVICE1['name'])
+        self.assertEqual(resources[1].name, SERVICE2['name'])
+        self.assertEqual(resources[2].name, SERVICE3['name'])
 
     def test_get_a_service(self):
         resource = self.mgr.get(
-            service_id='2451c2e0-2c6b-4e75-987f-93661eef0fd5'
-        )
+            service_id=SERVICE1['service_id'])
         expect = [
-            'GET', ('/v1/rating/module_config/hashmap/services/'
-                    '2451c2e0-2c6b-4e75-987f-93661eef0fd5')
-        ]
+            'GET', ('/v1/rating/module_config/hashmap/services/' +
+                    SERVICE1['service_id'])]
         self.http_client.assert_called(*expect)
         self.assertEqual(resource.service_id,
-                         '2451c2e0-2c6b-4e75-987f-93661eef0fd5')
-        self.assertEqual(resource.name, 'compute')
+                         SERVICE1['service_id'])
+        self.assertEqual(resource.name,
+                         SERVICE1['name'])
+
+    def test_delete_a_service(self):
+        self.mgr.delete(service_id=SERVICE1['service_id'])
+        expect = [
+            'DELETE', ('/v1/rating/module_config/hashmap/services/' +
+                       SERVICE1['service_id'])]
+        self.http_client.assert_called(*expect)
 
 
 class ServiceTest(utils.BaseTestCase):
@@ -286,27 +470,55 @@ class ServiceTest(utils.BaseTestCase):
         self.http_client = fake_client.FakeHTTPClient(fixtures=fixtures)
         self.api = client.BaseClient(self.http_client)
         self.mgr = hashmap.ServiceManager(self.api)
-        self.resource = self.mgr.get(
-            service_id='2451c2e0-2c6b-4e75-987f-93661eef0fd5'
-        )
+        self.resource = self.mgr.get(service_id=SERVICE3['service_id'])
 
     def test_get_fields(self):
+        self.resource = self.mgr.get(
+            service_id=SERVICE1['service_id'])
         fields = self.resource.fields[:]
         expect = [
-            'GET', ('/v1/rating/module_config/hashmap/fields'
-                    '?service_id=2451c2e0-2c6b-4e75-987f-93661eef0fd5'),
-        ]
+            'GET', ('/v1/rating/module_config/hashmap/fields?service_id=' +
+                    SERVICE1['service_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(len(fields), 2)
+        self.assertEqual(len(fields), 3)
+        field = fields[0]
+        self.assertEqual(field.service_id,
+                         SERVICE1['service_id'])
+        self.assertEqual(field.field_id,
+                         FIELD1['field_id'])
+        self.assertEqual(field.name, FIELD1['name'])
 
     def test_get_mappings(self):
         mappings = self.resource.mappings[:]
         expect = [
-            'GET', ('/v1/rating/module_config/hashmap/mappings'
-                    '?service_id=2451c2e0-2c6b-4e75-987f-93661eef0fd5'),
-        ]
+            'GET', ('/v1/rating/module_config/hashmap/mappings?service_id=' +
+                    SERVICE3['service_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(len(mappings), 3)
+        self.assertEqual(len(mappings), 1)
+        mapping = mappings[0]
+        self.assertEqual(mapping.service_id,
+                         SERVICE3['service_id'])
+        self.assertEqual(mapping.mapping_id,
+                         SERVICE_MAPPING1['mapping_id'])
+        self.assertEqual(mapping.value, SERVICE_MAPPING1['value'])
+        self.assertEqual(mapping.cost, SERVICE_MAPPING1['cost'])
+        self.assertEqual(mapping.type, SERVICE_MAPPING1['type'])
+
+    def test_get_thresholds(self):
+        thresholds = self.resource.thresholds[:]
+        expect = [
+            'GET', ('/v1/rating/module_config/hashmap/thresholds?service_id=' +
+                    SERVICE3['service_id'])]
+        self.http_client.assert_called(*expect)
+        self.assertEqual(len(thresholds), 1)
+        threshold = thresholds[0]
+        self.assertEqual(threshold.service_id,
+                         SERVICE_THRESHOLD1['service_id'])
+        self.assertEqual(threshold.threshold_id,
+                         SERVICE_THRESHOLD1['threshold_id'])
+        self.assertEqual(threshold.level, SERVICE_THRESHOLD1['level'])
+        self.assertEqual(threshold.cost, SERVICE_THRESHOLD1['cost'])
+        self.assertEqual(threshold.map_type, SERVICE_THRESHOLD1['map_type'])
 
 
 class FieldManagerTest(utils.BaseTestCase):
@@ -317,22 +529,89 @@ class FieldManagerTest(utils.BaseTestCase):
         self.api = client.BaseClient(self.http_client)
         self.mgr = hashmap.FieldManager(self.api)
 
+    def test_list_fields(self):
+        resources = list(self.mgr.list(service_id=SERVICE1['service_id']))
+        expect = [
+            'GET', ('/v1/rating/module_config/hashmap/fields?service_id=' +
+                    SERVICE1['service_id'])]
+        self.http_client.assert_called(*expect)
+        self.assertEqual(len(resources), 3)
+        self.assertEqual(
+            resources[0].service_id,
+            SERVICE1['service_id'])
+        self.assertEqual(resources[0].name, FIELD1['name'])
+        self.assertEqual(resources[1].name, FIELD2['name'])
+        self.assertEqual(resources[2].name, FIELD3['name'])
+
     def test_get_a_field(self):
         resource = self.mgr.get(
-            field_id='a53db546-bac0-472c-be4b-5bf9f6117581'
-        )
+            field_id=FIELD1['field_id'])
         expect = [
-            'GET', ('/v1/rating/module_config/hashmap/fields/'
-                    'a53db546-bac0-472c-be4b-5bf9f6117581')
-        ]
+            'GET', ('/v1/rating/module_config/hashmap/fields/' +
+                    FIELD1['field_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(resource.field_id,
-                         'a53db546-bac0-472c-be4b-5bf9f6117581')
-        self.assertEqual(
-            resource.service_id,
-            '2451c2e0-2c6b-4e75-987f-93661eef0fd5'
-        )
-        self.assertEqual(resource.name, 'flavor')
+        self.assertEqual(resource.field_id, FIELD1['field_id'])
+        self.assertEqual(resource.service_id, SERVICE1['service_id'])
+        self.assertEqual(resource.name, FIELD1['name'])
+
+    def test_delete_a_field(self):
+        self.mgr.delete(field_id=FIELD1['field_id'])
+        expect = [
+            'DELETE', ('/v1/rating/module_config/hashmap/fields/' +
+                       FIELD1['field_id'])]
+        self.http_client.assert_called(*expect)
+
+
+class FieldTest(utils.BaseTestCase):
+
+    def setUp(self):
+        super(FieldTest, self).setUp()
+        self.http_client = fake_client.FakeHTTPClient(fixtures=fixtures)
+        self.api = client.BaseClient(self.http_client)
+        self.mgr = hashmap.FieldManager(self.api)
+        self.resource = self.mgr.get(field_id=FIELD1['field_id'])
+
+    def test_get_service(self):
+        service = self.resource.service
+        expect = [
+            'GET', ('/v1/rating/module_config/hashmap/services/' +
+                    SERVICE1['service_id'])]
+        self.http_client.assert_called(*expect)
+        self.assertEqual(service.service_id, SERVICE1['service_id'])
+        self.assertEqual(service.name, SERVICE1['name'])
+
+    def test_get_mappings(self):
+        mappings = self.resource.mappings[:]
+        expect = [
+            'GET', ('/v1/rating/module_config/hashmap/mappings?field_id=' +
+                    FIELD1['field_id'])]
+        self.http_client.assert_called(*expect)
+        self.assertEqual(len(mappings), 3)
+        mapping = mappings[0]
+        self.assertEqual(mapping.field_id, FIELD1['field_id'])
+        self.assertEqual(mapping.mapping_id, FIELD_MAPPING1['mapping_id'])
+        self.assertEqual(mapping.value, FIELD_MAPPING1['value'])
+        self.assertEqual(mapping.cost, FIELD_MAPPING1['cost'])
+        self.assertEqual(mapping.type, FIELD_MAPPING1['type'])
+
+    def test_get_thresholds(self):
+        resource = self.mgr.get(field_id=FIELD3['field_id'])
+        thresholds = resource.thresholds[:]
+        expect = [
+            'GET', ('/v1/rating/module_config/hashmap/thresholds?field_id=' +
+                    FIELD3['field_id'])]
+        self.http_client.assert_called(*expect)
+        self.assertEqual(len(thresholds), 1)
+        threshold = thresholds[0]
+        self.assertEqual(threshold.field_id, FIELD3['field_id'])
+        self.assertEqual(threshold.threshold_id,
+                         FIELD_THRESHOLD1['threshold_id'])
+        self.assertEqual(threshold.level,
+                         FIELD_THRESHOLD1['level'])
+        self.assertEqual(threshold.cost,
+                         FIELD_THRESHOLD1['cost'])
+        self.assertEqual(threshold.map_type,
+                         FIELD_THRESHOLD1['map_type'])
 
 
 class MappingManagerTest(utils.BaseTestCase):
@@ -344,117 +623,73 @@ class MappingManagerTest(utils.BaseTestCase):
         self.mgr = hashmap.MappingManager(self.api)
 
     def test_get_a_mapping(self):
-        resource = self.mgr.get(
-            mapping_id='bff0d209-a8e4-46f8-8c1a-f231db375dcb'
-        )
+        resource = self.mgr.get(mapping_id=FIELD_MAPPING1['mapping_id'])
         expect = [
-            'GET', ('/v1/rating/module_config/hashmap/mappings/'
-                    'bff0d209-a8e4-46f8-8c1a-f231db375dcb')
-        ]
+            'GET', ('/v1/rating/module_config/hashmap/mappings/' +
+                    FIELD_MAPPING1['mapping_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(resource.mapping_id,
-                         'bff0d209-a8e4-46f8-8c1a-f231db375dcb')
-        self.assertEqual(
-            resource.service_id,
-            '2451c2e0-2c6b-4e75-987f-93661eef0fd5'
-        )
-        self.assertEqual(
-            resource.field_id,
-            'a53db546-bac0-472c-be4b-5bf9f6117581'
-        )
-        self.assertEqual(resource.value, 'm1.small')
-        self.assertEqual(resource.cost, 0.5)
+        self.assertEqual(resource.mapping_id, FIELD_MAPPING1['mapping_id'])
+        self.assertEqual(resource.field_id, FIELD1['field_id'])
+        self.assertEqual(resource.value, FIELD_MAPPING1['value'])
+        self.assertEqual(resource.cost, FIELD_MAPPING1['cost'])
+        self.assertEqual(resource.type, FIELD_MAPPING1['type'])
 
     def test_update_a_mapping(self):
-        resource = self.mgr.get(
-            mapping_id='bff0d209-a8e4-46f8-8c1a-f231db375dcb'
-        )
+        resource = self.mgr.get(mapping_id=FIELD_MAPPING1['mapping_id'])
         resource.cost = 0.2
         self.mgr.update(**resource.dirty_fields)
         expect = [
-            'PUT', ('/v1/rating/module_config/hashmap/mappings/'
-                    'bff0d209-a8e4-46f8-8c1a-f231db375dcb'),
-            {u'mapping_id': u'bff0d209-a8e4-46f8-8c1a-f231db375dcb',
-             u'cost': 0.2, u'type': u'flat',
-             u'service_id': u'2451c2e0-2c6b-4e75-987f-93661eef0fd5',
-             u'field_id': u'a53db546-bac0-472c-be4b-5bf9f6117581',
-             u'value': u'm1.small'}
-        ]
+            'PUT', ('/v1/rating/module_config/hashmap/mappings/' +
+                    FIELD_MAPPING1['mapping_id']),
+            FIELD_MAPPING1_PUT]
+        self.http_client.assert_called(*expect)
+
+    def test_delete_a_mapping(self):
+        self.mgr.delete(mapping_id=FIELD_MAPPING1['mapping_id'])
+        expect = [
+            'DELETE', ('/v1/rating/module_config/hashmap/mappings/' +
+                       FIELD_MAPPING1['mapping_id'])]
         self.http_client.assert_called(*expect)
 
 
-class GroupManagerTest(utils.BaseTestCase):
+class MappingTest(utils.BaseTestCase):
 
     def setUp(self):
-        super(GroupManagerTest, self).setUp()
+        super(MappingTest, self).setUp()
         self.http_client = fake_client.FakeHTTPClient(fixtures=fixtures)
         self.api = client.BaseClient(self.http_client)
-        self.mgr = hashmap.GroupManager(self.api)
+        self.mgr = hashmap.MappingManager(self.api)
+        self.resource = self.mgr.get(mapping_id=FIELD_MAPPING1['mapping_id'])
 
-    def test_get_a_group(self):
-        resource = self.mgr.get(
-            group_id='aaa1c2e0-2c6b-4e75-987f-93661eef0fd5'
-        )
+    def test_get_service_mapping_parent(self):
+        resource = self.mgr.get(mapping_id=SERVICE_MAPPING1['mapping_id'])
+        service = resource.service
         expect = [
-            'GET', ('/v1/rating/module_config/hashmap/groups/'
-                    'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5')
-        ]
+            'GET', ('/v1/rating/module_config/hashmap/services/' +
+                    SERVICE3['service_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(resource.group_id,
-                         'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5')
-        self.assertEqual(resource.name, 'object_consumption')
+        self.assertEqual(service.service_id, SERVICE3['service_id'])
+        field = resource.field
+        self.assertIsNone(field)
 
-    def test_delete_a_group(self):
-        self.mgr.delete(group_id='aaa1c2e0-2c6b-4e75-987f-93661eef0fd5')
+    def test_get_field_mapping_parent(self):
+        service = self.resource.service
+        self.assertIsNone(service)
+        field = self.resource.field
         expect = [
-            'DELETE', ('/v1/rating/module_config/hashmap/groups/'
-                       'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5')
-        ]
+            'GET', ('/v1/rating/module_config/hashmap/fields/' +
+                    FIELD1['field_id'])]
         self.http_client.assert_called(*expect)
+        self.assertEqual(field.field_id, FIELD1['field_id'])
 
-    def test_delete_a_group_recursively(self):
-        self.mgr.delete(group_id='aaa1c2e0-2c6b-4e75-987f-93661eef0fd5',
-                        recursive=True)
+    def test_get_group(self):
+        group = self.resource.group
         expect = [
-            'DELETE', ('/v1/rating/module_config/hashmap/groups/'
-                       'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5?recursive=True')
-        ]
+            'GET', ('/v1/rating/module_config/hashmap/groups/' +
+                    GROUP2['group_id'])]
         self.http_client.assert_called(*expect)
-
-
-class GroupTest(utils.BaseTestCase):
-
-    def setUp(self):
-        super(GroupTest, self).setUp()
-        self.http_client = fake_client.FakeHTTPClient(fixtures=fixtures)
-        self.api = client.BaseClient(self.http_client)
-        self.mgr = hashmap.GroupManager(self.api)
-
-    def test_delete(self):
-        self.group = self.mgr.get(
-            group_id='aaa1c2e0-2c6b-4e75-987f-93661eef0fd5'
-        )
-        self.group.delete()
-        # DELETE /v1/rating/groups/aaa1c2e0-2c6b-4e75-987f-93661eef0fd5
-        expect = [
-            'DELETE', ('/v1/rating/module_config/hashmap/groups/'
-                       'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5')
-        ]
-        self.http_client.assert_called(*expect)
-
-    def test_delete_recursive(self):
-        self.group = self.mgr.get(
-            group_id='aaa1c2e0-2c6b-4e75-987f-93661eef0fd5'
-        )
-        self.group.delete(recursive=True)
-        # DELETE
-        # /v1/rating/groups/aaa1c2e0-2c6b-4e75-987f-93661eef0fd5?recusrive=True
-        expect = [
-            'DELETE', ('/v1/rating/module_config/hashmap/groups/'
-                       'aaa1c2e0-2c6b-4e75-987f-93661eef0fd5'
-                       '?recursive=True')
-        ]
-        self.http_client.assert_called(*expect)
+        self.assertEqual(group.group_id, GROUP2['group_id'])
+        self.assertEqual(group.name, GROUP2['name'])
 
 
 class ThresholdManagerTest(utils.BaseTestCase):
@@ -467,47 +702,183 @@ class ThresholdManagerTest(utils.BaseTestCase):
 
     def test_get_a_threshold(self):
         resource = self.mgr.get(
-            threshold_id='1f136864-be73-481f-b9be-4fbda2496f72'
-        )
+            threshold_id=SERVICE_THRESHOLD1['threshold_id'])
         expect = [
-            'GET', ('/v1/rating/module_config/hashmap/thresholds/'
-                    '1f136864-be73-481f-b9be-4fbda2496f72')
-        ]
+            'GET', ('/v1/rating/module_config/hashmap/thresholds/' +
+                    SERVICE_THRESHOLD1['threshold_id'])]
         self.http_client.assert_called(*expect)
         self.assertEqual(resource.threshold_id,
-                         '1f136864-be73-481f-b9be-4fbda2496f72')
-        self.assertEqual(
-            resource.service_id,
-            '1329d62f-bd1c-4a88-a75a-07545e41e8d7'
-        )
-        self.assertEqual(
-            resource.field_id,
-            'c7c28d87-5103-4a05-af7f-e4d0891cb7fc'
-        )
-        self.assertEqual(resource.level, 30)
-        self.assertEqual(resource.cost, 5.98)
+                         SERVICE_THRESHOLD1['threshold_id'])
+        self.assertEqual(resource.service_id,
+                         SERVICE_THRESHOLD1['service_id'])
+        self.assertEqual(resource.level,
+                         SERVICE_THRESHOLD1['level'])
+        self.assertEqual(resource.cost,
+                         SERVICE_THRESHOLD1['cost'])
+        self.assertEqual(resource.map_type,
+                         SERVICE_THRESHOLD1['map_type'])
 
     def test_update_a_threshold(self):
         resource = self.mgr.get(
-            threshold_id='1f136864-be73-481f-b9be-4fbda2496f72'
-        )
+            threshold_id=SERVICE_THRESHOLD1['threshold_id'])
         resource.cost = 5.99
         self.mgr.update(**resource.dirty_fields)
         expect = [
-            'PUT', ('/v1/rating/module_config/hashmap/thresholds/'
-                    '1f136864-be73-481f-b9be-4fbda2496f72'),
-            {u'threshold_id': u'1f136864-be73-481f-b9be-4fbda2496f72',
-             u'cost': 5.99, u'map_type': u'flat',
-             u'service_id': u'1329d62f-bd1c-4a88-a75a-07545e41e8d7',
-             u'field_id': u'c7c28d87-5103-4a05-af7f-e4d0891cb7fc',
-             u'level': 30}
-        ]
+            'PUT', ('/v1/rating/module_config/hashmap/thresholds/' +
+                    SERVICE_THRESHOLD1['threshold_id']),
+            SERVICE_THRESHOLD1_PUT]
         self.http_client.assert_called(*expect)
 
     def test_delete_a_threshold(self):
-        self.mgr.delete(threshold_id='1f136864-be73-481f-b9be-4fbda2496f72')
+        self.mgr.delete(threshold_id=SERVICE_THRESHOLD1['threshold_id'])
         expect = [
-            'DELETE', ('/v1/rating/module_config/hashmap/thresholds/'
-                       '1f136864-be73-481f-b9be-4fbda2496f72')
-        ]
+            'DELETE', ('/v1/rating/module_config/hashmap/thresholds/' +
+                       SERVICE_THRESHOLD1['threshold_id'])]
         self.http_client.assert_called(*expect)
+
+
+class ThresholdTest(utils.BaseTestCase):
+
+    def setUp(self):
+        super(ThresholdTest, self).setUp()
+        self.http_client = fake_client.FakeHTTPClient(fixtures=fixtures)
+        self.api = client.BaseClient(self.http_client)
+        self.mgr = hashmap.ThresholdManager(self.api)
+        self.resource = self.mgr.get(
+            threshold_id=SERVICE_THRESHOLD1['threshold_id'])
+
+    def test_get_service_threshold_parent(self):
+        service = self.resource.service
+        expect = [
+            'GET', ('/v1/rating/module_config/hashmap/services/' +
+                    SERVICE3['service_id'])]
+        self.http_client.assert_called(*expect)
+        self.assertEqual(service.service_id, SERVICE3['service_id'])
+        field = self.resource.field
+        self.assertIsNone(field)
+
+    def test_get_field_mapping_parent(self):
+        resource = self.mgr.get(
+            threshold_id=FIELD_THRESHOLD1['threshold_id'])
+        service = resource.service
+        self.assertIsNone(service)
+        field = resource.field
+        expect = [
+            'GET', ('/v1/rating/module_config/hashmap/fields/' +
+                    FIELD3['field_id'])]
+        self.http_client.assert_called(*expect)
+        self.assertEqual(field.field_id, FIELD3['field_id'])
+
+    def test_get_group(self):
+        group = self.resource.group
+        expect = [
+            'GET', ('/v1/rating/module_config/hashmap/groups/' +
+                    GROUP3['group_id'])]
+        self.http_client.assert_called(*expect)
+        self.assertEqual(group.group_id, GROUP3['group_id'])
+        self.assertEqual(group.name, GROUP3['name'])
+
+
+class GroupManagerTest(utils.BaseTestCase):
+
+    def setUp(self):
+        super(GroupManagerTest, self).setUp()
+        self.http_client = fake_client.FakeHTTPClient(fixtures=fixtures)
+        self.api = client.BaseClient(self.http_client)
+        self.mgr = hashmap.GroupManager(self.api)
+
+    def test_get_a_group(self):
+        resource = self.mgr.get(group_id=GROUP2['group_id'])
+        expect = [
+            'GET', ('/v1/rating/module_config/hashmap/groups/' +
+                    GROUP2['group_id'])]
+        self.http_client.assert_called(*expect)
+        self.assertEqual(resource.group_id, GROUP2['group_id'])
+        self.assertEqual(resource.name, GROUP2['name'])
+
+    def test_list_groups(self):
+        resources = list(self.mgr.list())
+        expect = [
+            'GET', '/v1/rating/module_config/hashmap/groups']
+        self.http_client.assert_called(*expect)
+        self.assertEqual(len(resources), 3)
+        self.assertEqual(
+            resources[0].group_id,
+            GROUP1['group_id'])
+        self.assertEqual(resources[0].name, GROUP1['name'])
+        self.assertEqual(resources[1].name, GROUP2['name'])
+        self.assertEqual(resources[2].name, GROUP3['name'])
+
+    def test_delete_a_group(self):
+        self.mgr.delete(group_id=GROUP2['group_id'])
+        expect = [
+            'DELETE', ('/v1/rating/module_config/hashmap/groups/' +
+                       GROUP2['group_id'])]
+        self.http_client.assert_called(*expect)
+
+    def test_delete_a_group_recursively(self):
+        self.mgr.delete(group_id=GROUP2['group_id'],
+                        recursive=True)
+        expect = [
+            'DELETE', ('/v1/rating/module_config/hashmap/groups/' +
+                       GROUP2['group_id'] +
+                       '?recursive=True')]
+        self.http_client.assert_called(*expect)
+
+
+class GroupTest(utils.BaseTestCase):
+
+    def setUp(self):
+        super(GroupTest, self).setUp()
+        self.http_client = fake_client.FakeHTTPClient(fixtures=fixtures)
+        self.api = client.BaseClient(self.http_client)
+        self.mgr = hashmap.GroupManager(self.api)
+        self.resource = self.mgr.get(group_id=GROUP2['group_id'])
+
+    def test_delete(self):
+        self.resource.delete()
+        expect = [
+            'DELETE', ('/v1/rating/module_config/hashmap/groups/' +
+                       GROUP2['group_id'])]
+        self.http_client.assert_called(*expect)
+
+    def test_delete_recursive(self):
+        self.resource.delete(recursive=True)
+        expect = [
+            'DELETE', ('/v1/rating/module_config/hashmap/groups/' +
+                       GROUP2['group_id'] +
+                       '?recursive=True')]
+        self.http_client.assert_called(*expect)
+
+    def test_get_mappings(self):
+        mappings = self.resource.mappings[:]
+        expect = [
+            'GET', ('/v1/rating/module_config/hashmap/mappings?group_id=' +
+                    GROUP2['group_id'])]
+        self.http_client.assert_called(*expect)
+        self.assertEqual(len(mappings), 1)
+        mapping = mappings[0]
+        self.assertEqual(mapping.field_id, FIELD1['field_id'])
+        self.assertEqual(mapping.mapping_id, FIELD_MAPPING1['mapping_id'])
+        self.assertEqual(mapping.value, FIELD_MAPPING1['value'])
+        self.assertEqual(mapping.cost, FIELD_MAPPING1['cost'])
+        self.assertEqual(mapping.type, FIELD_MAPPING1['type'])
+
+    def test_get_thresholds(self):
+        resource = self.mgr.get(group_id=GROUP3['group_id'])
+        thresholds = resource.thresholds[:]
+        expect = [
+            'GET', ('/v1/rating/module_config/hashmap/thresholds?group_id=' +
+                    GROUP3['group_id'])]
+        self.http_client.assert_called(*expect)
+        self.assertEqual(len(thresholds), 1)
+        threshold = thresholds[0]
+        self.assertEqual(threshold.service_id, SERVICE3['service_id'])
+        self.assertEqual(threshold.threshold_id,
+                         SERVICE_THRESHOLD1['threshold_id'])
+        self.assertEqual(threshold.level,
+                         SERVICE_THRESHOLD1['level'])
+        self.assertEqual(threshold.cost,
+                         SERVICE_THRESHOLD1['cost'])
+        self.assertEqual(threshold.map_type,
+                         SERVICE_THRESHOLD1['map_type'])

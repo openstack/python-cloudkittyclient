@@ -15,23 +15,76 @@
 from cloudkittyclient.common import base
 
 
-class Service(base.Resource):
-    key = 'service'
+class BaseAttributeMixin(object):
+    def _validate_attribute(self, attribute):
+        attr = getattr(self, attribute)
+        if attr:
+            kwargs = {attribute: attr}
+            return kwargs
 
-    def __repr__(self):
-        return "<hashmap.Service %s>" % self._info
+    def _get_resource(self, mgr, attribute):
+        kwargs = self._validate_attribute(attribute)
+        if kwargs:
+            return mgr(client=self.manager.client).get(**kwargs)
+
+    def _get_resources(self, mgr, attribute):
+        kwargs = self._validate_attribute(attribute)
+        if kwargs:
+            try:
+                return mgr(client=self.manager.client).findall(**kwargs)
+            except Exception:
+                pass
+        return []
+
+
+class ServiceMixin(BaseAttributeMixin):
+    @property
+    def service(self):
+        return self._get_resource(ServiceManager, 'service_id')
+
+
+class FieldMixin(BaseAttributeMixin):
+    @property
+    def field(self):
+        return self._get_resource(FieldManager, 'field_id')
+
+
+class GroupMixin(BaseAttributeMixin):
+    @property
+    def group(self):
+        return self._get_resource(GroupManager, 'group_id')
+
+
+class FieldsMixin(BaseAttributeMixin):
+    attribute = ''
 
     @property
     def fields(self):
-        return FieldManager(client=self.manager.client).findall(
-            service_id=self.service_id
-        )
+        return self._get_resources(FieldManager, self.attribute)
+
+
+class MappingsMixin(BaseAttributeMixin):
+    attribute = ''
 
     @property
     def mappings(self):
-        return MappingManager(client=self.manager.client).findall(
-            service_id=self.service_id
-        )
+        return self._get_resources(MappingManager, self.attribute)
+
+
+class ThresholdsMixin(BaseAttributeMixin):
+    attribute = ''
+
+    @property
+    def thresholds(self):
+        return self._get_resources(ThresholdManager, self.attribute)
+
+
+class Service(base.Resource, FieldsMixin, MappingsMixin, ThresholdsMixin):
+    key = 'service'
+    attribute = 'service_id'
+
+    def __repr__(self):
+        return "<hashmap.Service %s>" % self._info
 
 
 class ServiceManager(base.CrudManager):
@@ -41,17 +94,12 @@ class ServiceManager(base.CrudManager):
     collection_key = 'services'
 
 
-class Field(base.Resource):
+class Field(base.Resource, ServiceMixin, MappingsMixin, ThresholdsMixin):
     key = 'field'
+    attribute = 'field_id'
 
     def __repr__(self):
         return "<hashmap.Field %s>" % self._info
-
-    @property
-    def service(self):
-        return ServiceManager(client=self.manager.client).get(
-            service_id=self.service_id
-        )
 
 
 class FieldManager(base.CrudManager):
@@ -61,25 +109,11 @@ class FieldManager(base.CrudManager):
     collection_key = 'fields'
 
 
-class Mapping(base.Resource):
+class Mapping(base.Resource, ServiceMixin, FieldMixin, GroupMixin):
     key = 'mapping'
 
     def __repr__(self):
         return "<hashmap.Mapping %s>" % self._info
-
-    @property
-    def service(self):
-        return ServiceManager(client=self.manager.client).get(
-            service_id=self.service_id
-        )
-
-    @property
-    def field(self):
-        if self.field_id is None:
-            return None
-        return FieldManager(client=self.manager.client).get(
-            service_id=self.service_id
-        )
 
 
 class MappingManager(base.CrudManager):
@@ -89,8 +123,9 @@ class MappingManager(base.CrudManager):
     collection_key = 'mappings'
 
 
-class Group(base.Resource):
+class Group(base.Resource, MappingsMixin, ThresholdsMixin):
     key = 'group'
+    attribute = 'group_id'
 
     def __repr__(self):
         return "<hashmap.Group %s>" % self._info
@@ -112,7 +147,7 @@ class GroupManager(base.CrudManager):
         return self._delete(url)
 
 
-class Threshold(base.Resource):
+class Threshold(base.Resource, ServiceMixin, FieldMixin, GroupMixin):
     key = 'threshold'
 
     def __repr__(self):
@@ -124,9 +159,3 @@ class ThresholdManager(base.CrudManager):
     base_url = '/v1/rating/module_config/hashmap'
     key = 'threshold'
     collection_key = 'thresholds'
-
-    def group(self, threshold_id):
-        url = ('%(base_url)s/thresholds/%(threshold_id)s/group' %
-               {'base_url': self.base_url, 'threshold_id': threshold_id})
-        out = self._get(url)
-        return out
