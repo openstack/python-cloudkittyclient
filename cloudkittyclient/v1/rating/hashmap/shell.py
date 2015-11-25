@@ -89,7 +89,7 @@ def do_hashmap_field_create(cc, args={}):
            help='Service id',
            required=True)
 def do_hashmap_field_list(cc, args={}):
-    """Create a field."""
+    """List fields."""
     try:
         created_field = cc.hashmap.fields.list(service_id=args.service_id)
     except exc.HTTPNotFound:
