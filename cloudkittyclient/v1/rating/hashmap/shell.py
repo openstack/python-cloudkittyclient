@@ -112,24 +112,34 @@ def do_hashmap_field_delete(cc, args={}):
         raise exc.CommandError('Field not found: %s' % args.counter_name)
 
 
-@utils.arg('-c', '--cost',
-           help='Mapping cost',
-           required=True)
-@utils.arg('-v', '--value',
-           help='Mapping value',
-           required=False)
-@utils.arg('-t', '--type',
-           help='Mapping type (flat, rate)',
-           required=False)
+def common_hashmap_mapping_arguments(create=False):
+    def _wrapper(func):
+        @utils.arg('-c', '--cost',
+                   help='Mapping cost',
+                   required=create)
+        @utils.arg('-v', '--value',
+                   help='Mapping value',
+                   required=False)
+        @utils.arg('-t', '--type',
+                   help='Mapping type (flat, rate)',
+                   required=False)
+        @utils.arg('-g', '--group-id',
+                   help='Group id',
+                   required=False)
+        @functools.wraps(func)
+        def _wrapped(*args, **kwargs):
+            return func(*args, **kwargs)
+        return _wrapped
+    return _wrapper
+
+
 @utils.arg('-s', '--service-id',
            help='Service id',
            required=False)
 @utils.arg('-f', '--field-id',
            help='Field id',
            required=False)
-@utils.arg('-g', '--group-id',
-           help='Group id',
-           required=False)
+@common_hashmap_mapping_arguments(create=True)
 def do_hashmap_mapping_create(cc, args={}):
     """Create a mapping."""
     arg_to_field_mapping = {
@@ -152,18 +162,7 @@ def do_hashmap_mapping_create(cc, args={}):
 @utils.arg('-m', '--mapping-id',
            help='Mapping id',
            required=True)
-@utils.arg('-c', '--cost',
-           help='Mapping cost',
-           required=False)
-@utils.arg('-v', '--value',
-           help='Mapping value',
-           required=False)
-@utils.arg('-t', '--type',
-           help='Mapping type (flat, rate)',
-           required=False)
-@utils.arg('-g', '--group-id',
-           help='Group id',
-           required=False)
+@common_hashmap_mapping_arguments()
 def do_hashmap_mapping_update(cc, args={}):
     """Update a mapping."""
     arg_to_field_mapping = {
@@ -272,24 +271,34 @@ def do_hashmap_group_delete(cc, args={}):
         raise exc.CommandError('Group not found: %s' % args.group_id)
 
 
-@utils.arg('-l', '--level',
-           help='Threshold level',
-           required=True)
-@utils.arg('-c', '--cost',
-           help='Threshold cost',
-           required=True)
-@utils.arg('-m', '--map-type',
-           help='Threshold type (flat, rate)',
-           required=False)
+def common_hashmap_threshold_arguments(create=False):
+    def _wrapper(func):
+        @utils.arg('-l', '--level',
+                   help='Threshold level',
+                   required=create)
+        @utils.arg('-c', '--cost',
+                   help='Threshold cost',
+                   required=create)
+        @utils.arg('-m', '--map-type',
+                   help='Threshold type (flat, rate)',
+                   required=False)
+        @utils.arg('-g', '--group-id',
+                   help='Group id',
+                   required=False)
+        @functools.wraps(func)
+        def _wrapped(*args, **kwargs):
+            return func(*args, **kwargs)
+        return _wrapped
+    return _wrapper
+
+
 @utils.arg('-s', '--service-id',
            help='Service id',
            required=False)
 @utils.arg('-f', '--field-id',
            help='Field id',
            required=False)
-@utils.arg('-g', '--group-id',
-           help='Group id',
-           required=False)
+@common_hashmap_threshold_arguments(create=True)
 def do_hashmap_threshold_create(cc, args={}):
     """Create a mapping."""
     arg_to_field_mapping = {
@@ -312,18 +321,7 @@ def do_hashmap_threshold_create(cc, args={}):
 @utils.arg('-t', '--threshold-id',
            help='Threshold id',
            required=True)
-@utils.arg('-l', '--level',
-           help='Threshold level',
-           required=False)
-@utils.arg('-c', '--cost',
-           help='Threshold cost',
-           required=False)
-@utils.arg('-m', '--map-type',
-           help='Threshold type (flat, rate)',
-           required=False)
-@utils.arg('-g', '--group-id',
-           help='Group id',
-           required=False)
+@common_hashmap_threshold_arguments()
 def do_hashmap_threshold_update(cc, args={}):
     """Update a threshold."""
     arg_to_field_mapping = {
