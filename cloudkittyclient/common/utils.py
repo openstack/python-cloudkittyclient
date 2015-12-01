@@ -45,7 +45,9 @@ def arg(*args, **kwargs):
                 kwargs['help'] += " Defaults to %s." % kwargs['default']
             required = kwargs.get('required', False)
             if required:
-                kwargs['help'] += " Required."
+                kwargs['help'] += " required."
+            elif 'default' not in kwargs:
+                kwargs['help'] += "."
 
         # Because of the sematics of decorator composition if we just append
         # to the options list positional options will appear to be backwards.
