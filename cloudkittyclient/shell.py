@@ -54,6 +54,9 @@ def _positive_non_zero_int(argument_value):
 
 class CloudkittyShell(object):
 
+    def __init__(self):
+        self.auth_plugin = ckclient.AuthPlugin()
+
     def get_base_parser(self):
         parser = argparse.ArgumentParser(
             prog='cloudkitty',
@@ -174,7 +177,6 @@ class CloudkittyShell(object):
 
     def parse_args(self, argv):
         # Parse args once to find version
-        self.auth_plugin = ckclient.AuthPlugin()
         parser = self.get_base_parser()
         (options, args) = parser.parse_known_args(argv)
         self.auth_plugin.parse_opts(options)
