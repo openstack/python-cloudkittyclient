@@ -30,11 +30,15 @@ class ReportManager(base.Manager):
     def list_tenants(self):
         return self.client.get(self.base_url + "/tenants").json()
 
-    def get_total(self, tenant_id, begin=None, end=None):
-        url = self.base_url + "/total?tenant_id=%s" % tenant_id
-        filter = [url]
+    def get_total(self, tenant_id=None, begin=None, end=None):
+        url = self.base_url + "/total"
+        filters = list()
+        if tenant_id:
+            filters.append("tenant_id=%s" % tenant_id)
         if begin:
-            filter.append("begin=%s" % begin.isoformat())
+            filters.append("begin=%s" % begin.isoformat())
         if end:
-            filter.append("end=%s" % end.isoformat())
-        return self.client.get("&".join(filter)).json()
+            filters.append("end=%s" % end.isoformat())
+        if filters:
+            url += "?%s" % ('&'.join(filters))
+        return self.client.get(url).json()
