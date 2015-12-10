@@ -28,7 +28,7 @@ from oslo_utils import encodeutils
 from oslo_utils import uuidutils
 import six
 
-from cloudkittyclient.openstack.common._i18n import _
+from cloudkittyclient.i18n import _
 from cloudkittyclient.openstack.common.apiclient import exceptions
 
 

@@ -44,7 +44,7 @@ from oslo_utils import strutils
 import six
 from six.moves.urllib import parse
 
-from cloudkittyclient.openstack.common._i18n import _
+from cloudkittyclient.i18n import _
 from cloudkittyclient.openstack.common.apiclient import exceptions
 
 
