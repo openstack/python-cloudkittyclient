@@ -38,7 +38,7 @@ import sys
 
 import six
 
-from cloudkittyclient.openstack.common._i18n import _
+from cloudkittyclient.i18n import _
 
 
 class ClientException(Exception):

@@ -27,6 +27,7 @@ import prettytable
 import six
 
 from cloudkittyclient import exc
+from cloudkittyclient.i18n import _
 from cloudkittyclient.openstack.common import cliutils
 
 
@@ -142,8 +143,10 @@ def find_resource(manager, name_or_id):
     try:
         return manager.find(name=name_or_id)
     except exc.HTTPNotFound:
-        msg = ("No %s with a name or ID of '%s' exists." %
-               (manager.resource_class.__name__.lower(), name_or_id))
+        msg = _("No %(name)s with a name or ID of '%(id)s' exists.") % {
+            "name": manager.resource_class.__name__.lower(),
+            "id": name_or_id
+        }
         raise exc.CommandError(msg)
 
 
@@ -154,9 +157,12 @@ def args_array_to_dict(kwargs, key_to_convert):
             kwargs[key_to_convert] = dict(v.split("=", 1)
                                           for v in values_to_convert)
         except ValueError:
-            raise exc.CommandError(
-                '%s must be a list of key=value not "%s"' % (
-                    key_to_convert, values_to_convert))
+            msg = _("%(key)s must be a list of key=value "
+                    "not '%(value)s'") % {
+                "key": key_to_convert,
+                "value": values_to_convert
+            }
+            raise exc.CommandError(msg)
     return kwargs
 
 
@@ -174,9 +180,12 @@ def args_array_to_list_of_dicts(kwargs, key_to_convert):
                     dct[kv[0]] = kv[1].strip(" \"'")  # strip spaces and quotes
                 kwargs[key_to_convert].append(dct)
         except Exception:
-            raise exc.CommandError(
-                '%s must be a list of key1=value1;key2=value2;... not "%s"' % (
-                    key_to_convert, values_to_convert))
+            msg = _("%(key)s must be a list of "
+                    "key1=value1;key2=value2;... not '%(value)s'") % {
+                "key": key_to_convert,
+                "value": values_to_convert
+            }
+            raise exc.CommandError(msg)
     return kwargs
 
 

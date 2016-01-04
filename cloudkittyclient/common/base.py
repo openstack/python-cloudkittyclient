@@ -23,6 +23,7 @@ import copy
 from six.moves.urllib import parse
 
 from cloudkittyclient import exc
+from cloudkittyclient.i18n import _
 from cloudkittyclient.openstack.common.apiclient import base
 
 
@@ -138,7 +139,7 @@ class CrudManager(base.CrudManager):
                 'name': self.resource_class.__name__,
                 'args': kwargs
             }
-            raise exc.NotFound(404, msg)
+            raise exc.HTTPNotFound(msg)
         return rl
 
 
