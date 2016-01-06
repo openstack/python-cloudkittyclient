@@ -94,9 +94,9 @@ class CloudkittyModuleManagerTest(utils.BaseTestCase):
             'GET', '/v1/rating/modules'
         ]
         self.http_client.assert_called(*expect)
-        self.assertEqual(len(resources), 2)
-        self.assertEqual(resources[0].module_id, 'hashmap')
-        self.assertEqual(resources[1].module_id, 'noop')
+        self.assertEqual(2, len(resources))
+        self.assertEqual('hashmap', resources[0].module_id)
+        self.assertEqual('noop', resources[1].module_id)
 
     def test_get_module_status(self):
         resource = self.mgr.get(module_id='hashmap')
@@ -104,8 +104,8 @@ class CloudkittyModuleManagerTest(utils.BaseTestCase):
             'GET', '/v1/rating/modules/hashmap'
         ]
         self.http_client.assert_called(*expect)
-        self.assertEqual(resource.module_id, 'hashmap')
-        self.assertEqual(resource.enabled, True)
+        self.assertEqual('hashmap', resource.module_id)
+        self.assertTrue(resource.enabled)
 
 
 class CloudkittyModuleTest(utils.BaseTestCase):
