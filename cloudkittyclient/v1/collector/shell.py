@@ -22,6 +22,7 @@ from cloudkittyclient.common import utils
            required=False,
            default=None)
 def do_collector_mapping_list(cc, args):
+    """List collector mapping."""
     data = cc.collector.mappings.list(collector=args.collector)
     fields = ['service', 'collector']
     fields_labels = ['Service', 'Collector']
@@ -32,6 +33,7 @@ def do_collector_mapping_list(cc, args):
            help='Which service to get the mapping for.',
            required=True)
 def do_collector_mapping_get(cc, args):
+    """Show collector mapping detail."""
     data = cc.collector.mappings.get(mapping_id=args.service)
     utils.print_dict(data.to_dict())
 
@@ -43,6 +45,7 @@ def do_collector_mapping_get(cc, args):
            help='Map a collector to this service.',
            required=True)
 def do_collector_mapping_create(cc, args):
+    """Create collector mapping."""
     out = cc.collector.mappings.create(service=args.service,
                                        collector=args.collector)
     utils.print_dict(out.to_dict())
@@ -52,6 +55,7 @@ def do_collector_mapping_create(cc, args):
            help='Filter on this service.',
            required=True)
 def do_collector_mapping_delete(cc, args):
+    """Delete collector mapping."""
     # TODO(sheeprine): Use a less hacky way to do this
     cc.collector.mappings.delete(mapping_id=args.service)
 
@@ -60,6 +64,7 @@ def do_collector_mapping_delete(cc, args):
            help='Name of the collector.',
            required=True)
 def do_collector_state_get(cc, args):
+    """Show collector state."""
     data = cc.collector.states.get(state_id=args.name)
     utils.print_dict(data.to_dict())
 
@@ -68,6 +73,7 @@ def do_collector_state_get(cc, args):
            help='Name of the collector.',
            required=True)
 def do_collector_state_enable(cc, args):
+    """Enable collector state."""
     new_state = cc.collector.states.update(name=args.name, enabled=True)
     utils.print_dict(new_state.to_dict())
 
@@ -76,5 +82,6 @@ def do_collector_state_enable(cc, args):
            help='Name of the collector.',
            required=True)
 def do_collector_state_disable(cc, args):
+    """Disable collector state."""
     new_state = cc.collector.states.update(name=args.name, enabled=False)
     utils.print_dict(new_state.to_dict())
