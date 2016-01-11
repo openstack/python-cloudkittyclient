@@ -19,6 +19,7 @@ from cloudkittyclient.common import utils
 
 
 def do_report_tenant_list(cc, args):
+    """List tenant report."""
     tenants = cc.reports.list_tenants()
     out_table = utils.prettytable.PrettyTable()
     out_table.add_column("Tenant UUID", tenants)
@@ -36,6 +37,7 @@ def do_report_tenant_list(cc, args):
            help='End timestamp',
            required=False)
 def do_total_get(cc, args):
+    """Get total reports."""
     begin = utils.ts2dt(args.begin) if args.begin else None
     end = utils.ts2dt(args.end) if args.end else None
     total = cc.reports.get_total(tenant_id=args.total_tenant_id,

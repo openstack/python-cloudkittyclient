@@ -32,6 +32,7 @@ from cloudkittyclient.common import utils
            required=False,
            default=None)
 def do_storage_dataframe_list(cc, args):
+    """List dataframes."""
     data = cc.storage.dataframes.list(begin=args.begin, end=args.end,
                                       tenant_id=args.tenant,
                                       resource_type=args.resource_type)
