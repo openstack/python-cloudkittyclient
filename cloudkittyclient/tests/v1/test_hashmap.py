@@ -435,13 +435,13 @@ class ServiceManagerTest(utils.BaseTestCase):
         expect = [
             'GET', '/v1/rating/module_config/hashmap/services']
         self.http_client.assert_called(*expect)
-        self.assertEqual(len(resources), 3)
+        self.assertEqual(3, len(resources))
         self.assertEqual(
-            resources[0].service_id,
-            SERVICE1['service_id'])
-        self.assertEqual(resources[0].name, SERVICE1['name'])
-        self.assertEqual(resources[1].name, SERVICE2['name'])
-        self.assertEqual(resources[2].name, SERVICE3['name'])
+            SERVICE1['service_id'],
+            resources[0].service_id)
+        self.assertEqual(SERVICE1['name'], resources[0].name)
+        self.assertEqual(SERVICE2['name'], resources[1].name)
+        self.assertEqual(SERVICE3['name'], resources[2].name)
 
     def test_get_a_service(self):
         resource = self.mgr.get(
@@ -450,10 +450,10 @@ class ServiceManagerTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/services/' +
                     SERVICE1['service_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(resource.service_id,
-                         SERVICE1['service_id'])
-        self.assertEqual(resource.name,
-                         SERVICE1['name'])
+        self.assertEqual(SERVICE1['service_id'],
+                         resource.service_id)
+        self.assertEqual(SERVICE1['name'],
+                         resource.name)
 
     def test_delete_a_service(self):
         self.mgr.delete(service_id=SERVICE1['service_id'])
@@ -480,13 +480,14 @@ class ServiceTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/fields?service_id=' +
                     SERVICE1['service_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(len(fields), 3)
+        self.assertEqual(3, len(fields))
         field = fields[0]
-        self.assertEqual(field.service_id,
-                         SERVICE1['service_id'])
-        self.assertEqual(field.field_id,
-                         FIELD1['field_id'])
-        self.assertEqual(field.name, FIELD1['name'])
+        self.assertEqual(SERVICE1['service_id'],
+                         field.service_id)
+        self.assertEqual(FIELD1['field_id'],
+                         field.field_id)
+        self.assertEqual(FIELD1['name'],
+                         field.name)
 
     def test_get_mappings(self):
         mappings = self.resource.mappings[:]
@@ -494,15 +495,15 @@ class ServiceTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/mappings?service_id=' +
                     SERVICE3['service_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(len(mappings), 1)
+        self.assertEqual(1, len(mappings))
         mapping = mappings[0]
-        self.assertEqual(mapping.service_id,
-                         SERVICE3['service_id'])
-        self.assertEqual(mapping.mapping_id,
-                         SERVICE_MAPPING1['mapping_id'])
-        self.assertEqual(mapping.value, SERVICE_MAPPING1['value'])
-        self.assertEqual(mapping.cost, SERVICE_MAPPING1['cost'])
-        self.assertEqual(mapping.type, SERVICE_MAPPING1['type'])
+        self.assertEqual(SERVICE3['service_id'],
+                         mapping.service_id)
+        self.assertEqual(SERVICE_MAPPING1['mapping_id'],
+                         mapping.mapping_id)
+        self.assertEqual(SERVICE_MAPPING1['value'], mapping.value)
+        self.assertEqual(SERVICE_MAPPING1['cost'], mapping.cost)
+        self.assertEqual(SERVICE_MAPPING1['type'], mapping.type)
 
     def test_get_thresholds(self):
         thresholds = self.resource.thresholds[:]
@@ -510,15 +511,15 @@ class ServiceTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/thresholds?service_id=' +
                     SERVICE3['service_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(len(thresholds), 1)
+        self.assertEqual(1, len(thresholds))
         threshold = thresholds[0]
-        self.assertEqual(threshold.service_id,
-                         SERVICE_THRESHOLD1['service_id'])
-        self.assertEqual(threshold.threshold_id,
-                         SERVICE_THRESHOLD1['threshold_id'])
-        self.assertEqual(threshold.level, SERVICE_THRESHOLD1['level'])
-        self.assertEqual(threshold.cost, SERVICE_THRESHOLD1['cost'])
-        self.assertEqual(threshold.map_type, SERVICE_THRESHOLD1['map_type'])
+        self.assertEqual(SERVICE_THRESHOLD1['service_id'],
+                         threshold.service_id)
+        self.assertEqual(SERVICE_THRESHOLD1['threshold_id'],
+                         threshold.threshold_id)
+        self.assertEqual(SERVICE_THRESHOLD1['level'], threshold.level)
+        self.assertEqual(SERVICE_THRESHOLD1['cost'], threshold.cost)
+        self.assertEqual(SERVICE_THRESHOLD1['map_type'], threshold.map_type)
 
 
 class FieldManagerTest(utils.BaseTestCase):
@@ -535,13 +536,12 @@ class FieldManagerTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/fields?service_id=' +
                     SERVICE1['service_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(len(resources), 3)
-        self.assertEqual(
-            resources[0].service_id,
-            SERVICE1['service_id'])
-        self.assertEqual(resources[0].name, FIELD1['name'])
-        self.assertEqual(resources[1].name, FIELD2['name'])
-        self.assertEqual(resources[2].name, FIELD3['name'])
+        self.assertEqual(3, len(resources))
+        self.assertEqual(SERVICE1['service_id'],
+                         resources[0].service_id)
+        self.assertEqual(FIELD1['name'], resources[0].name)
+        self.assertEqual(FIELD2['name'], resources[1].name)
+        self.assertEqual(FIELD3['name'], resources[2].name)
 
     def test_get_a_field(self):
         resource = self.mgr.get(
@@ -550,9 +550,9 @@ class FieldManagerTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/fields/' +
                     FIELD1['field_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(resource.field_id, FIELD1['field_id'])
-        self.assertEqual(resource.service_id, SERVICE1['service_id'])
-        self.assertEqual(resource.name, FIELD1['name'])
+        self.assertEqual(FIELD1['field_id'], resource.field_id)
+        self.assertEqual(SERVICE1['service_id'], resource.service_id)
+        self.assertEqual(FIELD1['name'], resource.name)
 
     def test_delete_a_field(self):
         self.mgr.delete(field_id=FIELD1['field_id'])
@@ -577,8 +577,8 @@ class FieldTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/services/' +
                     SERVICE1['service_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(service.service_id, SERVICE1['service_id'])
-        self.assertEqual(service.name, SERVICE1['name'])
+        self.assertEqual(SERVICE1['service_id'], service.service_id)
+        self.assertEqual(SERVICE1['name'], service.name)
 
     def test_get_mappings(self):
         mappings = self.resource.mappings[:]
@@ -586,13 +586,13 @@ class FieldTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/mappings?field_id=' +
                     FIELD1['field_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(len(mappings), 3)
+        self.assertEqual(3, len(mappings))
         mapping = mappings[0]
-        self.assertEqual(mapping.field_id, FIELD1['field_id'])
-        self.assertEqual(mapping.mapping_id, FIELD_MAPPING1['mapping_id'])
-        self.assertEqual(mapping.value, FIELD_MAPPING1['value'])
-        self.assertEqual(mapping.cost, FIELD_MAPPING1['cost'])
-        self.assertEqual(mapping.type, FIELD_MAPPING1['type'])
+        self.assertEqual(FIELD1['field_id'], mapping.field_id)
+        self.assertEqual(FIELD_MAPPING1['mapping_id'], mapping.mapping_id)
+        self.assertEqual(FIELD_MAPPING1['value'], mapping.value)
+        self.assertEqual(FIELD_MAPPING1['cost'], mapping.cost)
+        self.assertEqual(FIELD_MAPPING1['type'], mapping.type)
 
     def test_get_thresholds(self):
         resource = self.mgr.get(field_id=FIELD3['field_id'])
@@ -601,17 +601,17 @@ class FieldTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/thresholds?field_id=' +
                     FIELD3['field_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(len(thresholds), 1)
+        self.assertEqual(1, len(thresholds))
         threshold = thresholds[0]
-        self.assertEqual(threshold.field_id, FIELD3['field_id'])
-        self.assertEqual(threshold.threshold_id,
-                         FIELD_THRESHOLD1['threshold_id'])
-        self.assertEqual(threshold.level,
-                         FIELD_THRESHOLD1['level'])
-        self.assertEqual(threshold.cost,
-                         FIELD_THRESHOLD1['cost'])
-        self.assertEqual(threshold.map_type,
-                         FIELD_THRESHOLD1['map_type'])
+        self.assertEqual(FIELD3['field_id'], threshold.field_id)
+        self.assertEqual(FIELD_THRESHOLD1['threshold_id'],
+                         threshold.threshold_id)
+        self.assertEqual(FIELD_THRESHOLD1['level'],
+                         threshold.level)
+        self.assertEqual(FIELD_THRESHOLD1['cost'],
+                         threshold.cost)
+        self.assertEqual(FIELD_THRESHOLD1['map_type'],
+                         threshold.map_type)
 
 
 class MappingManagerTest(utils.BaseTestCase):
@@ -628,11 +628,11 @@ class MappingManagerTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/mappings/' +
                     FIELD_MAPPING1['mapping_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(resource.mapping_id, FIELD_MAPPING1['mapping_id'])
-        self.assertEqual(resource.field_id, FIELD1['field_id'])
-        self.assertEqual(resource.value, FIELD_MAPPING1['value'])
-        self.assertEqual(resource.cost, FIELD_MAPPING1['cost'])
-        self.assertEqual(resource.type, FIELD_MAPPING1['type'])
+        self.assertEqual(FIELD_MAPPING1['mapping_id'], resource.mapping_id)
+        self.assertEqual(FIELD1['field_id'], resource.field_id)
+        self.assertEqual(FIELD_MAPPING1['value'], resource.value)
+        self.assertEqual(FIELD_MAPPING1['cost'], resource.cost)
+        self.assertEqual(FIELD_MAPPING1['type'], resource.type)
 
     def test_update_a_mapping(self):
         resource = self.mgr.get(mapping_id=FIELD_MAPPING1['mapping_id'])
@@ -668,7 +668,7 @@ class MappingTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/services/' +
                     SERVICE3['service_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(service.service_id, SERVICE3['service_id'])
+        self.assertEqual(SERVICE3['service_id'], service.service_id)
         field = resource.field
         self.assertIsNone(field)
 
@@ -680,7 +680,7 @@ class MappingTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/fields/' +
                     FIELD1['field_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(field.field_id, FIELD1['field_id'])
+        self.assertEqual(FIELD1['field_id'], field.field_id)
 
     def test_get_group(self):
         group = self.resource.group
@@ -688,8 +688,8 @@ class MappingTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/groups/' +
                     GROUP2['group_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(group.group_id, GROUP2['group_id'])
-        self.assertEqual(group.name, GROUP2['name'])
+        self.assertEqual(GROUP2['group_id'], group.group_id)
+        self.assertEqual(GROUP2['name'], group.name)
 
 
 class ThresholdManagerTest(utils.BaseTestCase):
@@ -707,16 +707,16 @@ class ThresholdManagerTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/thresholds/' +
                     SERVICE_THRESHOLD1['threshold_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(resource.threshold_id,
-                         SERVICE_THRESHOLD1['threshold_id'])
-        self.assertEqual(resource.service_id,
-                         SERVICE_THRESHOLD1['service_id'])
-        self.assertEqual(resource.level,
-                         SERVICE_THRESHOLD1['level'])
-        self.assertEqual(resource.cost,
-                         SERVICE_THRESHOLD1['cost'])
-        self.assertEqual(resource.map_type,
-                         SERVICE_THRESHOLD1['map_type'])
+        self.assertEqual(SERVICE_THRESHOLD1['threshold_id'],
+                         resource.threshold_id)
+        self.assertEqual(SERVICE_THRESHOLD1['service_id'],
+                         resource.service_id)
+        self.assertEqual(SERVICE_THRESHOLD1['level'],
+                         resource.level)
+        self.assertEqual(SERVICE_THRESHOLD1['cost'],
+                         resource.cost)
+        self.assertEqual(SERVICE_THRESHOLD1['map_type'],
+                         resource.map_type)
 
     def test_update_a_threshold(self):
         resource = self.mgr.get(
@@ -753,7 +753,7 @@ class ThresholdTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/services/' +
                     SERVICE3['service_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(service.service_id, SERVICE3['service_id'])
+        self.assertEqual(SERVICE3['service_id'], service.service_id)
         field = self.resource.field
         self.assertIsNone(field)
 
@@ -767,7 +767,7 @@ class ThresholdTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/fields/' +
                     FIELD3['field_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(field.field_id, FIELD3['field_id'])
+        self.assertEqual(FIELD3['field_id'], field.field_id)
 
     def test_get_group(self):
         group = self.resource.group
@@ -775,8 +775,8 @@ class ThresholdTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/groups/' +
                     GROUP3['group_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(group.group_id, GROUP3['group_id'])
-        self.assertEqual(group.name, GROUP3['name'])
+        self.assertEqual(GROUP3['group_id'], group.group_id)
+        self.assertEqual(GROUP3['name'], group.name)
 
 
 class GroupManagerTest(utils.BaseTestCase):
@@ -793,21 +793,21 @@ class GroupManagerTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/groups/' +
                     GROUP2['group_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(resource.group_id, GROUP2['group_id'])
-        self.assertEqual(resource.name, GROUP2['name'])
+        self.assertEqual(GROUP2['group_id'], resource.group_id)
+        self.assertEqual(GROUP2['name'], resource.name)
 
     def test_list_groups(self):
         resources = list(self.mgr.list())
         expect = [
             'GET', '/v1/rating/module_config/hashmap/groups']
         self.http_client.assert_called(*expect)
-        self.assertEqual(len(resources), 3)
+        self.assertEqual(3, len(resources))
         self.assertEqual(
             resources[0].group_id,
             GROUP1['group_id'])
-        self.assertEqual(resources[0].name, GROUP1['name'])
-        self.assertEqual(resources[1].name, GROUP2['name'])
-        self.assertEqual(resources[2].name, GROUP3['name'])
+        self.assertEqual(GROUP1['name'], resources[0].name)
+        self.assertEqual(GROUP2['name'], resources[1].name)
+        self.assertEqual(GROUP3['name'], resources[2].name)
 
     def test_delete_a_group(self):
         self.mgr.delete(group_id=GROUP2['group_id'])
@@ -856,13 +856,13 @@ class GroupTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/mappings?group_id=' +
                     GROUP2['group_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(len(mappings), 1)
+        self.assertEqual(1, len(mappings))
         mapping = mappings[0]
-        self.assertEqual(mapping.field_id, FIELD1['field_id'])
-        self.assertEqual(mapping.mapping_id, FIELD_MAPPING1['mapping_id'])
-        self.assertEqual(mapping.value, FIELD_MAPPING1['value'])
-        self.assertEqual(mapping.cost, FIELD_MAPPING1['cost'])
-        self.assertEqual(mapping.type, FIELD_MAPPING1['type'])
+        self.assertEqual(FIELD1['field_id'], mapping.field_id)
+        self.assertEqual(FIELD_MAPPING1['mapping_id'], mapping.mapping_id)
+        self.assertEqual(FIELD_MAPPING1['value'], mapping.value)
+        self.assertEqual(FIELD_MAPPING1['cost'], mapping.cost)
+        self.assertEqual(FIELD_MAPPING1['type'], mapping.type)
 
     def test_get_thresholds(self):
         resource = self.mgr.get(group_id=GROUP3['group_id'])
@@ -871,14 +871,14 @@ class GroupTest(utils.BaseTestCase):
             'GET', ('/v1/rating/module_config/hashmap/thresholds?group_id=' +
                     GROUP3['group_id'])]
         self.http_client.assert_called(*expect)
-        self.assertEqual(len(thresholds), 1)
+        self.assertEqual(1, len(thresholds))
         threshold = thresholds[0]
-        self.assertEqual(threshold.service_id, SERVICE3['service_id'])
-        self.assertEqual(threshold.threshold_id,
-                         SERVICE_THRESHOLD1['threshold_id'])
-        self.assertEqual(threshold.level,
-                         SERVICE_THRESHOLD1['level'])
-        self.assertEqual(threshold.cost,
-                         SERVICE_THRESHOLD1['cost'])
-        self.assertEqual(threshold.map_type,
-                         SERVICE_THRESHOLD1['map_type'])
+        self.assertEqual(SERVICE3['service_id'], threshold.service_id)
+        self.assertEqual(SERVICE_THRESHOLD1['threshold_id'],
+                         threshold.threshold_id)
+        self.assertEqual(SERVICE_THRESHOLD1['level'],
+                         threshold.level)
+        self.assertEqual(SERVICE_THRESHOLD1['cost'],
+                         threshold.cost)
+        self.assertEqual(SERVICE_THRESHOLD1['map_type'],
+                         threshold.map_type)
