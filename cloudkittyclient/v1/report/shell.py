@@ -36,11 +36,15 @@ def do_report_tenant_list(cc, args):
 @utils.arg('-e', '--end',
            help='End timestamp',
            required=False)
+@utils.arg('-s', '--service',
+           help='Service Type',
+           required=False)
 def do_total_get(cc, args):
     """Get total reports."""
     begin = utils.ts2dt(args.begin) if args.begin else None
     end = utils.ts2dt(args.end) if args.end else None
     total = cc.reports.get_total(tenant_id=args.total_tenant_id,
                                  begin=begin,
-                                 end=end)
+                                 end=end,
+                                 service=args.service)
     utils.print_dict({'Total': total or 0.0})
