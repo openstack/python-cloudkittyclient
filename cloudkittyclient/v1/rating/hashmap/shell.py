@@ -126,6 +126,9 @@ def common_hashmap_mapping_arguments(create=False):
         @utils.arg('-g', '--group-id',
                    help='Group id',
                    required=False)
+        @utils.arg('-p', '--project-id',
+                   help='Project/tenant id',
+                   required=False)
         @functools.wraps(func)
         def _wrapped(*args, **kwargs):
             return func(*args, **kwargs)
@@ -149,6 +152,7 @@ def do_hashmap_mapping_create(cc, args={}):
         'service_id': 'service_id',
         'field_id': 'field_id',
         'group_id': 'group_id',
+        'project_id': 'tenant_id',
     }
     fields = {}
     for k, v in vars(args).items():
@@ -171,6 +175,7 @@ def do_hashmap_mapping_update(cc, args={}):
         'value': 'value',
         'type': 'type',
         'group_id': 'group_id',
+        'project_id': 'tenant_id',
     }
     try:
         mapping = cc.hashmap.mappings.get(mapping_id=args.mapping_id)
@@ -192,6 +197,9 @@ def do_hashmap_mapping_update(cc, args={}):
 @utils.arg('-g', '--group-id',
            help='Group id',
            required=False)
+@utils.arg('-p', '--project-id',
+           help='Project/tenant id',
+           required=False)
 def do_hashmap_mapping_list(cc, args={}):
     """List mappings."""
     if args.service_id is None and args.field_id is None:
@@ -205,10 +213,10 @@ def do_hashmap_mapping_list(cc, args={}):
     else:
         field_labels = ['Mapping id', 'Value', 'Cost',
                         'Type', 'Field id',
-                        'Service id', 'Group id']
+                        'Service id', 'Group id', 'Tenant id']
         fields = ['mapping_id', 'value', 'cost',
                   'type', 'field_id',
-                  'service_id', 'group_id']
+                  'service_id', 'group_id', 'tenant_id']
         utils.print_list(mappings, fields, field_labels,
                          sortby=0)
 
@@ -285,6 +293,9 @@ def common_hashmap_threshold_arguments(create=False):
         @utils.arg('-g', '--group-id',
                    help='Group id',
                    required=False)
+        @utils.arg('-p', '--project-id',
+                   help='Project/tenant id',
+                   required=False)
         @functools.wraps(func)
         def _wrapped(*args, **kwargs):
             return func(*args, **kwargs)
@@ -308,6 +319,7 @@ def do_hashmap_threshold_create(cc, args={}):
         'service_id': 'service_id',
         'field_id': 'field_id',
         'group_id': 'group_id',
+        'project_id': 'tenant_id',
     }
     fields = {}
     for k, v in vars(args).items():
@@ -330,6 +342,7 @@ def do_hashmap_threshold_update(cc, args={}):
         'level': 'level',
         'map_type': 'map_type',
         'group_id': 'group_id',
+        'project_id': 'group_id',
     }
     try:
         threshold = cc.hashmap.thresholds.get(threshold_id=args.threshold_id)
@@ -355,6 +368,9 @@ def do_hashmap_threshold_update(cc, args={}):
            type=_bool_strict, metavar='{True,False}',
            help='If True, list only orhpaned thresholds',
            required=False)
+@utils.arg('-p', '--project-id',
+           help='Project/tenant id',
+           required=False)
 def do_hashmap_threshold_list(cc, args={}):
     """List thresholds."""
     if (args.group_id is None and
@@ -371,10 +387,10 @@ def do_hashmap_threshold_list(cc, args={}):
     else:
         field_labels = ['Threshold id', 'Level', 'Cost',
                         'Type', 'Field id',
-                        'Service id', 'Group id']
+                        'Service id', 'Group id', 'Tenant id']
         fields = ['threshold_id', 'level', 'cost',
                   'map_type', 'field_id',
-                  'service_id', 'group_id']
+                  'service_id', 'group_id', 'tenant_id']
         utils.print_list(thresholds, fields, field_labels, sortby=0)
 
 
