@@ -342,7 +342,7 @@ def do_hashmap_threshold_update(cc, args={}):
         'level': 'level',
         'map_type': 'map_type',
         'group_id': 'group_id',
-        'project_id': 'group_id',
+        'project_id': 'tenant_id',
     }
     try:
         threshold = cc.hashmap.thresholds.get(threshold_id=args.threshold_id)
