@@ -17,17 +17,17 @@
 from cloudkittyclient.common import utils
 
 
-@utils.arg('--begin',
+@utils.arg('-b', '--begin',
            help='Starting date/time (YYYY-MM-ddThh:mm:ss)',
            required=True)
-@utils.arg('--end',
+@utils.arg('-e', '--end',
            help='Ending date/time (YYYY-MM-ddThh:mm:ss)',
            required=True)
-@utils.arg('--tenant',
+@utils.arg('-t', '--tenant',
            help='Tenant ID',
            required=False,
            default=None)
-@utils.arg('--resource-type',
+@utils.arg('-r', '--resource-type',
            help='Resource type (compute, image, ...)',
            required=False,
            default=None)
