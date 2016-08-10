@@ -17,7 +17,7 @@
 from cloudkittyclient.common import utils
 
 
-@utils.arg('--collector',
+@utils.arg('-c', '--collector',
            help='Collector name to filter on.',
            required=False,
            default=None)
@@ -29,7 +29,7 @@ def do_collector_mapping_list(cc, args):
     utils.print_list(data, fields, fields_labels, sortby=0)
 
 
-@utils.arg('--service',
+@utils.arg('-s', '--service',
            help='Which service to get the mapping for.',
            required=True)
 def do_collector_mapping_get(cc, args):
@@ -38,10 +38,10 @@ def do_collector_mapping_get(cc, args):
     utils.print_dict(data.to_dict())
 
 
-@utils.arg('--collector',
+@utils.arg('-c', '--collector',
            help='Map a service to this collector.',
            required=True)
-@utils.arg('--service',
+@utils.arg('-s', '--service',
            help='Map a collector to this service.',
            required=True)
 def do_collector_mapping_create(cc, args):
@@ -51,7 +51,7 @@ def do_collector_mapping_create(cc, args):
     utils.print_dict(out.to_dict())
 
 
-@utils.arg('--service',
+@utils.arg('-s', '--service',
            help='Filter on this service.',
            required=True)
 def do_collector_mapping_delete(cc, args):
@@ -60,7 +60,7 @@ def do_collector_mapping_delete(cc, args):
     cc.collector.mappings.delete(mapping_id=args.service)
 
 
-@utils.arg('--name',
+@utils.arg('-n', '--name',
            help='Name of the collector.',
            required=True)
 def do_collector_state_get(cc, args):
@@ -69,7 +69,7 @@ def do_collector_state_get(cc, args):
     utils.print_dict(data.to_dict())
 
 
-@utils.arg('--name',
+@utils.arg('-n', '--name',
            help='Name of the collector.',
            required=True)
 def do_collector_state_enable(cc, args):
@@ -78,7 +78,7 @@ def do_collector_state_enable(cc, args):
     utils.print_dict(new_state.to_dict())
 
 
-@utils.arg('--name',
+@utils.arg('-n', '--name',
            help='Name of the collector.',
            required=True)
 def do_collector_state_disable(cc, args):
