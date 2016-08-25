@@ -255,7 +255,7 @@ class CloudkittyShell(object):
                                        "either --os-auth-url or via "
                                        "env[OS_AUTH_URL]")
 
-        client_kwargs = vars(args)
+        client_kwargs = {}
         client_kwargs.update(self.auth_plugin.opts)
         client_kwargs['auth_plugin'] = self.auth_plugin
         client = ckclient.get_client(api_version, **client_kwargs)
