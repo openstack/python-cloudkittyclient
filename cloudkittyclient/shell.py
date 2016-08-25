@@ -198,12 +198,11 @@ class CloudkittyShell(object):
 
     @staticmethod
     def no_project_and_domain_set(args):
-        if not (args.os_project_id or (args.os_project_name and
-                (args.os_user_domain_name or args.os_user_domain_id)) or
-                (args.os_tenant_id or args.os_tenant_name)):
-            return True
-        else:
-            return False
+        return not (((args.os_project_id or (args.os_project_name and
+                    (args.os_project_domain_name or
+                        args.os_project_domain_id)))
+                     and (args.os_user_domain_name or args.os_user_domain_id))
+                    or (args.os_tenant_id or args.os_tenant_name))
 
     def main(self, argv):
         parsed = self.parse_args(argv)
@@ -242,13 +241,17 @@ class CloudkittyShell(object):
                                        "env[OS_USER_DOMAIN_NAME] or "
                                        "a domain_id via either "
                                        "--os-user-domain-id or via "
-                                       "env[OS_USER_DOMAIN_ID]")
-
-            if not (self.auth_plugin.opts['tenant_id']
-                    or self.auth_plugin.opts['tenant_name']):
-                raise exc.CommandError("You must provide a tenant_id via "
-                                       "either --os-tenant-id or via "
-                                       "env[OS_TENANT_ID]")
+                                       "env[OS_USER_DOMAIN_ID]\n\n"
+                                       "As an alternative to project_id, "
+                                       "you can provide a project_name via "
+                                       "either --os-project-name or via "
+                                       "env[OS_PROJECT_NAME] and "
+                                       "a project_domain_name via either "
+                                       "--os-project-domain-name or via "
+                                       "env[OS_PROJECT_DOMAIN_NAME] or "
+                                       "a project_domain_id via either "
+                                       "--os-project-domain-id or via "
+                                       "env[OS_PROJECT_DOMAIN_ID]")
 
             if not self.auth_plugin.opts['auth_url']:
                 raise exc.CommandError("You must provide an auth url via "
