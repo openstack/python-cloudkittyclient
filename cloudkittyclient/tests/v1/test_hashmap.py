@@ -622,6 +622,21 @@ class MappingManagerTest(utils.BaseTestCase):
         self.api = client.BaseClient(self.http_client)
         self.mgr = hashmap.MappingManager(self.api)
 
+    def test_get_mappings_by_group(self):
+        mappings = self.mgr.findall(group_id=GROUP2['group_id'])
+        expect = [
+            'GET', ('/v1/rating/module_config/hashmap/mappings?group_id=' +
+                    GROUP2['group_id'])]
+        self.http_client.assert_called(*expect)
+        self.assertEqual(1, len(mappings))
+        mapping = mappings[0]
+        self.assertEqual(FIELD1['field_id'], mapping.field_id)
+        self.assertEqual(FIELD_MAPPING1['group_id'], mapping.group_id)
+        self.assertEqual(FIELD_MAPPING1['mapping_id'], mapping.mapping_id)
+        self.assertEqual(FIELD_MAPPING1['value'], mapping.value)
+        self.assertEqual(FIELD_MAPPING1['cost'], mapping.cost)
+        self.assertEqual(FIELD_MAPPING1['type'], mapping.type)
+
     def test_get_a_mapping(self):
         resource = self.mgr.get(mapping_id=FIELD_MAPPING1['mapping_id'])
         expect = [
@@ -699,6 +714,27 @@ class ThresholdManagerTest(utils.BaseTestCase):
         self.http_client = fake_client.FakeHTTPClient(fixtures=fixtures)
         self.api = client.BaseClient(self.http_client)
         self.mgr = hashmap.ThresholdManager(self.api)
+
+    def test_get_thresholds_by_group(self):
+        mappings = self.mgr.findall(group_id=GROUP3['group_id'])
+        expect = [
+            'GET', ('/v1/rating/module_config/hashmap/thresholds?group_id=' +
+                    GROUP3['group_id'])]
+        self.http_client.assert_called(*expect)
+        self.assertEqual(1, len(mappings))
+        mapping = mappings[0]
+        self.assertEqual(SERVICE_THRESHOLD1['threshold_id'],
+                         mapping.threshold_id)
+        self.assertEqual(SERVICE_THRESHOLD1['service_id'],
+                         mapping.service_id)
+        self.assertEqual(SERVICE_THRESHOLD1['group_id'],
+                         mapping.group_id)
+        self.assertEqual(SERVICE_THRESHOLD1['level'],
+                         mapping.level)
+        self.assertEqual(SERVICE_THRESHOLD1['cost'],
+                         mapping.cost)
+        self.assertEqual(SERVICE_THRESHOLD1['map_type'],
+                         mapping.map_type)
 
     def test_get_a_threshold(self):
         resource = self.mgr.get(
