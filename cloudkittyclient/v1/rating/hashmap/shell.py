@@ -202,8 +202,10 @@ def do_hashmap_mapping_update(cc, args={}):
            required=False)
 def do_hashmap_mapping_list(cc, args={}):
     """List mappings."""
-    if args.service_id is None and args.field_id is None:
-        raise exc.CommandError("Provide either service-id or field-id")
+    if (args.group_id is None and
+       args.service_id is None and args.field_id is None):
+        raise exc.CommandError("Provide either group-id, service-id or "
+                               "field-id")
     try:
         mappings = cc.hashmap.mappings.list(service_id=args.service_id,
                                             field_id=args.field_id,
