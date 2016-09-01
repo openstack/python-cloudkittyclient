@@ -287,7 +287,7 @@ def common_hashmap_threshold_arguments(create=False):
         @utils.arg('-c', '--cost',
                    help='Threshold cost',
                    required=create)
-        @utils.arg('-m', '--map-type',
+        @utils.arg('-t', '--type',
                    help='Threshold type (flat, rate)',
                    required=False)
         @utils.arg('-g', '--group-id',
@@ -315,7 +315,7 @@ def do_hashmap_threshold_create(cc, args={}):
     arg_to_field_mapping = {
         'level': 'level',
         'cost': 'cost',
-        'map_type': 'map_type',
+        'type': 'type',
         'service_id': 'service_id',
         'field_id': 'field_id',
         'group_id': 'group_id',
@@ -330,7 +330,7 @@ def do_hashmap_threshold_create(cc, args={}):
     utils.print_dict(out.to_dict())
 
 
-@utils.arg('-t', '--threshold-id',
+@utils.arg('-i', '--threshold-id',
            help='Threshold id',
            required=True)
 @common_hashmap_threshold_arguments()
@@ -340,7 +340,7 @@ def do_hashmap_threshold_update(cc, args={}):
         'threshold_id': 'threshold_id',
         'cost': 'cost',
         'level': 'level',
-        'map_type': 'map_type',
+        'type': 'type',
         'group_id': 'group_id',
         'project_id': 'tenant_id',
     }
@@ -389,12 +389,12 @@ def do_hashmap_threshold_list(cc, args={}):
                         'Type', 'Field id',
                         'Service id', 'Group id', 'Tenant id']
         fields = ['threshold_id', 'level', 'cost',
-                  'map_type', 'field_id',
+                  'type', 'field_id',
                   'service_id', 'group_id', 'tenant_id']
         utils.print_list(thresholds, fields, field_labels, sortby=0)
 
 
-@utils.arg('-t', '--threshold-id',
+@utils.arg('-i', '--threshold-id',
            help='Threshold uuid',
            required=True)
 def do_hashmap_threshold_delete(cc, args={}):
@@ -405,7 +405,7 @@ def do_hashmap_threshold_delete(cc, args={}):
         raise exc.CommandError('Threshold not found: %s' % args.threshold_id)
 
 
-@utils.arg('-t', '--threshold-id',
+@utils.arg('-i', '--threshold-id',
            help='Threshold uuid',
            required=True)
 def do_hashmap_threshold_get(cc, args={}):
@@ -417,7 +417,7 @@ def do_hashmap_threshold_get(cc, args={}):
     utils.print_dict(threshold.to_dict())
 
 
-@utils.arg('-t', '--threshold-id',
+@utils.arg('-i', '--threshold-id',
            help='Threshold uuid',
            required=True)
 def do_hashmap_threshold_group(cc, args={}):
