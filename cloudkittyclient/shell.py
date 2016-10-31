@@ -28,9 +28,9 @@ from stevedore import extension
 
 import cloudkittyclient
 from cloudkittyclient import client as ckclient
+from cloudkittyclient.common import cliutils
 from cloudkittyclient.common import utils
 from cloudkittyclient import exc
-from cloudkittyclient.openstack.common import cliutils
 from cloudkittyclient.v1.collector import shell as collector_shell
 from cloudkittyclient.v1.report import shell as report_shell
 from cloudkittyclient.v1.storage import shell as storage_shell

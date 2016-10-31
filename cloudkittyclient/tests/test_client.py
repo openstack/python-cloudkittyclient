@@ -132,7 +132,7 @@ class ClientTest(utils.BaseTestCase):
             'user_agent': None,
             'debug': None,
         }
-        cls = 'cloudkittyclient.openstack.common.apiclient.client.HTTPClient'
+        cls = 'cloudkittyclient.apiclient.client.HTTPClient'
         with mock.patch(cls) as mocked:
             self.create_client(env)
             mocked.assert_called_with(**expected)

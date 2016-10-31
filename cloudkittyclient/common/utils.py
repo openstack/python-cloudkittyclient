@@ -26,9 +26,9 @@ from oslo_utils import importutils
 import prettytable
 import six
 
+from cloudkittyclient.common import cliutils
 from cloudkittyclient import exc
 from cloudkittyclient.i18n import _
-from cloudkittyclient.openstack.common import cliutils
 
 
 def import_versioned_module(version, submodule=None):

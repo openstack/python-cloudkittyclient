@@ -12,8 +12,8 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-from cloudkittyclient.openstack.common.apiclient import client
-from cloudkittyclient.openstack.common.apiclient import fake_client
+from cloudkittyclient.apiclient import client
+from cloudkittyclient.apiclient import fake_client
 from cloudkittyclient.tests import utils
 import cloudkittyclient.v1.core
 

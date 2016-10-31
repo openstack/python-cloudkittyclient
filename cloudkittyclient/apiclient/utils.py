@@ -28,8 +28,8 @@ from oslo_utils import encodeutils
 from oslo_utils import uuidutils
 import six
 
+from cloudkittyclient.apiclient import exceptions
 from cloudkittyclient.i18n import _
-from cloudkittyclient.openstack.common.apiclient import exceptions
 
 
 def find_resource(manager, name_or_id, **find_args):
@@ -84,17 +84,13 @@ def find_resource(manager, name_or_id, **find_args):
             return manager.find(**kwargs)
         except exceptions.NotFound:
             msg = _("No %(name)s with a name or "
-                    "ID of '%(name_or_id)s' exists.") % \
-                {
-                    "name": manager.resource_class.__name__.lower(),
-                    "name_or_id": name_or_id
-                }
+                    "ID of '%(name_or_id)s' exists.") % {
+                        "name": manager.resource_class.__name__.lower(),
+                        "name_or_id": name_or_id}
             raise exceptions.CommandError(msg)
     except exceptions.NoUniqueMatch:
         msg = _("Multiple %(name)s matches found for "
-                "'%(name_or_id)s', use an ID to be more specific.") % \
-            {
-                "name": manager.resource_class.__name__.lower(),
-                "name_or_id": name_or_id
-            }
+                "'%(name_or_id)s', use an ID to be more specific.") % {
+                    "name": manager.resource_class.__name__.lower(),
+                    "name_or_id": name_or_id}
         raise exceptions.CommandError(msg)

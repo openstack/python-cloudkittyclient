@@ -22,11 +22,11 @@ from keystoneclient import session
 from oslo_utils import strutils
 import six.moves.urllib.parse as urlparse
 
+from cloudkittyclient.apiclient import auth
+from cloudkittyclient.apiclient import client
+from cloudkittyclient.apiclient import exceptions
 from cloudkittyclient.common import utils
 from cloudkittyclient import exc
-from cloudkittyclient.openstack.common.apiclient import auth
-from cloudkittyclient.openstack.common.apiclient import client
-from cloudkittyclient.openstack.common.apiclient import exceptions
 
 
 def _discover_auth_versions(session, auth_url):

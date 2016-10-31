@@ -38,8 +38,9 @@ from oslo_utils import encodeutils
 from oslo_utils import importutils
 import requests
 
+from cloudkittyclient.apiclient import exceptions
 from cloudkittyclient.i18n import _
-from cloudkittyclient.openstack.common.apiclient import exceptions
+
 
 _logger = logging.getLogger(__name__)
 SENSITIVE_HEADERS = ('X-Auth-Token', 'X-Subject-Token',)
@@ -64,7 +65,7 @@ class HTTPClient(object):
       into terminal and send the same request with curl.
     """
 
-    user_agent = "cloudkittyclient.openstack.common.apiclient"
+    user_agent = "cloudkittyclient.apiclient"
 
     def __init__(self,
                  auth_plugin,

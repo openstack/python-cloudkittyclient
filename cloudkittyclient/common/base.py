@@ -22,9 +22,9 @@ import copy
 
 from six.moves.urllib import parse
 
+from cloudkittyclient.apiclient import base
 from cloudkittyclient import exc
 from cloudkittyclient.i18n import _
-from cloudkittyclient.openstack.common.apiclient import base
 
 
 def getid(obj):
