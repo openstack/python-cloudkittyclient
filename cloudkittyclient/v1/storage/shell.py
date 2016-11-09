@@ -19,10 +19,10 @@ from cloudkittyclient.common import utils
 
 @utils.arg('-b', '--begin',
            help='Starting date/time (YYYY-MM-ddThh:mm:ss)',
-           required=True)
+           required=False)
 @utils.arg('-e', '--end',
            help='Ending date/time (YYYY-MM-ddThh:mm:ss)',
-           required=True)
+           required=False)
 @utils.arg('-t', '--tenant',
            help='Tenant ID',
            required=False,
