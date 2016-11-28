@@ -30,6 +30,10 @@ class CloudkittyModule(base.Resource):
         self.enabled = False
         self.update()
 
+    def set_priority(self, value):
+        self.priority = value
+        self.update()
+
 
 class CloudkittyModuleManager(base.CrudManager):
     resource_class = CloudkittyModule

@@ -26,10 +26,12 @@ fixtures = {
                 {
                     'module_id': 'hashmap',
                     'enabled': True,
+                    'priority': 1,
                 },
                 {
                     'module_id': 'noop',
                     'enabled': False,
+                    'priority': 1,
                 },
             ]},
         ),
@@ -40,6 +42,7 @@ fixtures = {
             {
                 'module_id': 'hashmap',
                 'enabled': True,
+                'priority': 1,
             }
         ),
         'PUT': (
@@ -47,6 +50,7 @@ fixtures = {
             {
                 'module_id': 'hashmap',
                 'enabled': False,
+                'priority': 1,
             }
         ),
     },
@@ -56,6 +60,7 @@ fixtures = {
             {
                 'module_id': 'noop',
                 'enabled': False,
+                'priority': 1,
             }
         ),
         'PUT': (
@@ -63,6 +68,7 @@ fixtures = {
             {
                 'module_id': 'noop',
                 'enabled': True,
+                'priority': 1,
             }
         ),
     },
@@ -123,7 +129,8 @@ class CloudkittyModuleTest(utils.BaseTestCase):
         # body : {'enabled': True}
         expect = [
             'PUT', '/v1/rating/modules/noop', {'module_id': 'noop',
-                                               'enabled': True},
+                                               'enabled': True,
+                                               'priority': 1},
         ]
         self.http_client.assert_called(*expect)
 
@@ -134,6 +141,19 @@ class CloudkittyModuleTest(utils.BaseTestCase):
         # body : {'enabled': False}
         expect = [
             'PUT', '/v1/rating/modules/hashmap', {'module_id': 'hashmap',
-                                                  'enabled': False},
+                                                  'enabled': False,
+                                                  'priority': 1},
+        ]
+        self.http_client.assert_called(*expect)
+
+    def test_set_priority(self):
+        self.ck_module = self.mgr.get(module_id='hashmap')
+        self.ck_module.set_priority(100)
+        # PUT /v1/rating/modules/hashmap
+        # body : {'priority': 100}
+        expect = [
+            'PUT', '/v1/rating/modules/hashmap', {'module_id': 'hashmap',
+                                                  'enabled': True,
+                                                  'priority': 100},
         ]
         self.http_client.assert_called(*expect)

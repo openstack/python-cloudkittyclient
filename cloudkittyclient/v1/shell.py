@@ -25,8 +25,8 @@ def do_module_list(cc, args):
     except exceptions.NotFound:
         raise exc.CommandError('Modules not found')
     else:
-        field_labels = ['Module', 'Enabled']
-        fields = ['module_id', 'enabled']
+        field_labels = ['Module', 'Enabled', 'Priority']
+        fields = ['module_id', 'enabled', 'priority']
         utils.print_list(modules, fields, field_labels,
                          sortby=0)
 
@@ -42,8 +42,8 @@ def do_module_enable(cc, args):
     except exceptions.NotFound:
         raise exc.CommandError('Module not found: %s' % args.name)
     else:
-        field_labels = ['Module', 'Enabled']
-        fields = ['module_id', 'enabled']
+        field_labels = ['Module', 'Enabled', 'Priority']
+        fields = ['module_id', 'enabled', 'priority']
         modules = [cc.modules.get(module_id=args.name)]
         utils.print_list(modules, fields, field_labels,
                          sortby=0)
@@ -60,8 +60,29 @@ def do_module_disable(cc, args):
     except exceptions.NotFound:
         raise exc.CommandError('Module not found: %s' % args.name)
     else:
-        field_labels = ['Module', 'Enabled']
-        fields = ['module_id', 'enabled']
+        field_labels = ['Module', 'Enabled', 'Priority']
+        fields = ['module_id', 'enabled', 'priority']
+        modules = [cc.modules.get(module_id=args.name)]
+        utils.print_list(modules, fields, field_labels,
+                         sortby=0)
+
+
+@utils.arg('-n', '--name',
+           help='Module name',
+           required=True)
+@utils.arg('-p', '--priority',
+           help='Module priority',
+           required=True)
+def do_module_set_priority(cc, args):
+    '''Set module priority.'''
+    try:
+        module = cc.modules.get(module_id=args.name)
+        module.set_priority(args.priority)
+    except exceptions.NotFound:
+        raise exc.CommandError('Module not found: %s' % args.name)
+    else:
+        field_labels = ['Module', 'Enabled', 'Priority']
+        fields = ['module_id', 'enabled', 'priority']
         modules = [cc.modules.get(module_id=args.name)]
         utils.print_list(modules, fields, field_labels,
                          sortby=0)
