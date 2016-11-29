@@ -17,6 +17,7 @@ import functools
 
 from oslo_utils import strutils
 
+from cloudkittyclient.apiclient import exceptions
 from cloudkittyclient.common import utils
 from cloudkittyclient import exc
 
@@ -44,8 +45,8 @@ def do_hashmap_service_list(cc, args={}):
     """List services."""
     try:
         services = cc.hashmap.services.list()
-    except exc.HTTPNotFound:
-        raise exc.CommandError('Services not found: %s' % args.counter_name)
+    except exceptions.NotFound:
+        raise exc.CommandError('Services not found.')
     else:
         field_labels = ['Name', 'Service id']
         fields = ['name', 'service_id']
@@ -60,8 +61,8 @@ def do_hashmap_service_delete(cc, args={}):
     """Delete a service."""
     try:
         cc.hashmap.services.delete(service_id=args.service_id)
-    except exc.HTTPNotFound:
-        raise exc.CommandError('Service not found: %s' % args.counter_name)
+    except exceptions.NotFound:
+        raise exc.CommandError('Service not found: %s' % args.service_id)
 
 
 @utils.arg('-n', '--name',
@@ -92,8 +93,9 @@ def do_hashmap_field_list(cc, args={}):
     """List fields."""
     try:
         created_field = cc.hashmap.fields.list(service_id=args.service_id)
-    except exc.HTTPNotFound:
-        raise exc.CommandError('Fields not found: %s' % args.counter_name)
+    except exceptions.NotFound:
+        raise exc.CommandError('Fields not found in service: %s'
+                               % args.service_id)
     else:
         field_labels = ['Name', 'Field id']
         fields = ['name', 'field_id']
@@ -108,8 +110,8 @@ def do_hashmap_field_delete(cc, args={}):
     """Delete a field."""
     try:
         cc.hashmap.fields.delete(field_id=args.field_id)
-    except exc.HTTPNotFound:
-        raise exc.CommandError('Field not found: %s' % args.counter_name)
+    except exceptions.NotFound:
+        raise exc.CommandError('Field not found: %s' % args.field_id)
 
 
 def common_hashmap_mapping_arguments(create=False):
@@ -179,8 +181,8 @@ def do_hashmap_mapping_update(cc, args={}):
     }
     try:
         mapping = cc.hashmap.mappings.get(mapping_id=args.mapping_id)
-    except exc.HTTPNotFound:
-        raise exc.CommandError('Modules not found: %s' % args.counter_name)
+    except exceptions.NotFound:
+        raise exc.CommandError('Mapping not found: %s' % args.mapping_id)
     for k, v in vars(args).items():
         if k in arg_to_field_mapping:
             if v is not None:
@@ -210,8 +212,9 @@ def do_hashmap_mapping_list(cc, args={}):
         mappings = cc.hashmap.mappings.list(service_id=args.service_id,
                                             field_id=args.field_id,
                                             group_id=args.group_id)
-    except exc.HTTPNotFound:
-        raise exc.CommandError('Mapping not found: %s' % args.counter_name)
+    except exceptions.NotFound:
+        raise exc.CommandError('Mappings not found for field: %s'
+                               % args.field_id)
     else:
         field_labels = ['Mapping id', 'Value', 'Cost',
                         'Type', 'Field id',
@@ -230,7 +233,7 @@ def do_hashmap_mapping_delete(cc, args={}):
     """Delete a mapping."""
     try:
         cc.hashmap.mappings.delete(mapping_id=args.mapping_id)
-    except exc.HTTPNotFound:
+    except exceptions.NotFound:
         raise exc.CommandError('Mapping not found: %s' % args.mapping_id)
 
 
@@ -255,8 +258,8 @@ def do_hashmap_group_list(cc, args={}):
     """List groups."""
     try:
         groups = cc.hashmap.groups.list()
-    except exc.HTTPNotFound:
-        raise exc.CommandError('Mapping not found: %s' % args.counter_name)
+    except exceptions.NotFound:
+        raise exc.CommandError('Groups not found.')
     else:
         field_labels = ['Name',
                         'Group id']
@@ -277,7 +280,7 @@ def do_hashmap_group_delete(cc, args={}):
     try:
         cc.hashmap.groups.delete(group_id=args.group_id,
                                  recursive=args.recursive)
-    except exc.HTTPNotFound:
+    except exceptions.NotFound:
         raise exc.CommandError('Group not found: %s' % args.group_id)
 
 
@@ -348,8 +351,8 @@ def do_hashmap_threshold_update(cc, args={}):
     }
     try:
         threshold = cc.hashmap.thresholds.get(threshold_id=args.threshold_id)
-    except exc.HTTPNotFound:
-        raise exc.CommandError('Modules not found: %s' % args.counter_name)
+    except exceptions.NotFound:
+        raise exc.CommandError('Threshold not found: %s' % args.threshold_id)
     for k, v in vars(args).items():
         if k in arg_to_field_mapping:
             if v is not None:
@@ -384,8 +387,8 @@ def do_hashmap_threshold_list(cc, args={}):
                                                 field_id=args.field_id,
                                                 group_id=args.group_id,
                                                 no_group=args.no_group)
-    except exc.HTTPNotFound:
-        raise exc.CommandError('Threshold not found: %s' % args.counter_name)
+    except exceptions.NotFound:
+        raise exc.CommandError('Thresholds not found')
     else:
         field_labels = ['Threshold id', 'Level', 'Cost',
                         'Type', 'Field id',
@@ -403,7 +406,7 @@ def do_hashmap_threshold_delete(cc, args={}):
     """Delete a threshold."""
     try:
         cc.hashmap.thresholds.delete(threshold_id=args.threshold_id)
-    except exc.HTTPNotFound:
+    except exceptions.NotFound:
         raise exc.CommandError('Threshold not found: %s' % args.threshold_id)
 
 
@@ -414,7 +417,7 @@ def do_hashmap_threshold_get(cc, args={}):
     """Get a threshold."""
     try:
         threshold = cc.hashmap.thresholds.get(threshold_id=args.threshold_id)
-    except exc.HTTPNotFound:
+    except exceptions.NotFound:
         raise exc.CommandError('Threshold not found: %s' % args.threshold_id)
     utils.print_dict(threshold.to_dict())
 
@@ -426,6 +429,6 @@ def do_hashmap_threshold_group(cc, args={}):
     """Get a threshold group."""
     try:
         threshold = cc.hashmap.thresholds.group(threshold_id=args.threshold_id)
-    except exc.HTTPNotFound:
+    except exceptions.NotFound:
         raise exc.CommandError('Threshold not found: %s' % args.threshold_id)
     utils.print_dict(threshold.to_dict())

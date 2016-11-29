@@ -13,6 +13,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from cloudkittyclient.apiclient import exceptions
 from cloudkittyclient.common import utils
 from cloudkittyclient import exc
 
@@ -21,8 +22,8 @@ def do_module_list(cc, args):
     '''List the samples for this meters.'''
     try:
         modules = cc.modules.list()
-    except exc.HTTPNotFound:
-        raise exc.CommandError('Modules not found: %s' % args.counter_name)
+    except exceptions.NotFound:
+        raise exc.CommandError('Modules not found')
     else:
         field_labels = ['Module', 'Enabled']
         fields = ['module_id', 'enabled']
@@ -38,8 +39,8 @@ def do_module_enable(cc, args):
     try:
         module = cc.modules.get(module_id=args.name)
         module.enable()
-    except exc.HTTPNotFound:
-        raise exc.CommandError('Modules not found: %s' % args.counter_name)
+    except exceptions.NotFound:
+        raise exc.CommandError('Module not found: %s' % args.name)
     else:
         field_labels = ['Module', 'Enabled']
         fields = ['module_id', 'enabled']
@@ -56,8 +57,8 @@ def do_module_disable(cc, args):
     try:
         module = cc.modules.get(module_id=args.name)
         module.disable()
-    except exc.HTTPNotFound:
-        raise exc.CommandError('Modules not found: %s' % args.counter_name)
+    except exceptions.NotFound:
+        raise exc.CommandError('Module not found: %s' % args.name)
     else:
         field_labels = ['Module', 'Enabled']
         fields = ['module_id', 'enabled']

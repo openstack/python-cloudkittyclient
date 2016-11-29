@@ -17,6 +17,7 @@ import functools
 from oslo_utils import strutils
 import six
 
+from cloudkittyclient.apiclient import exceptions
 from cloudkittyclient.common import utils
 from cloudkittyclient import exc
 
@@ -64,7 +65,7 @@ def do_pyscripts_script_get(cc, args={}):
     """Get script."""
     try:
         script = cc.pyscripts.scripts.get(script_id=args.script_id)
-    except exc.HTTPNotFound:
+    except exceptions.NotFound:
         raise exc.CommandError('Script not found: %s' % args.script_id)
     utils.print_dict(script.to_dict())
 
@@ -76,7 +77,7 @@ def do_pyscripts_script_get_data(cc, args={}):
     """Get script data."""
     try:
         script = cc.pyscripts.scripts.get(script_id=args.script_id)
-    except exc.HTTPNotFound:
+    except exceptions.NotFound:
         raise exc.CommandError('Script not found: %s' % args.script_id)
     six.print_(script.data)
 
@@ -88,8 +89,8 @@ def do_pyscripts_script_delete(cc, args={}):
     """Delete a script."""
     try:
         cc.pyscripts.scripts.delete(script_id=args.script_id)
-    except exc.HTTPNotFound:
-        raise exc.CommandError('Script not found: %s' % args.counter_name)
+    except exceptions.NotFound:
+        raise exc.CommandError('Script not found: %s' % args.script_id)
 
 
 @utils.arg('-s', '--script-id',
@@ -107,7 +108,7 @@ def do_pyscripts_script_update(cc, args={}):
         content = fp.read()
     try:
         script = cc.pyscripts.scripts.get(script_id=args.script_id)
-    except exc.HTTPNotFound:
+    except exceptions.NotFound:
         raise exc.CommandError('Script not found: %s' % args.script_id)
     script_dict = script.to_dict()
     for field in excluded_fields:
