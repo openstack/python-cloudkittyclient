@@ -306,8 +306,10 @@ def get_client(version, **kwargs):
     cli_kwargs = {
         'username': kwargs.get('os_username'),
         'password': kwargs.get('os_password'),
-        'tenant_id': kwargs.get('os_tenant_id'),
-        'tenant_name': kwargs.get('os_tenant_name'),
+        'tenant_id': (kwargs.get('os_tenant_id')
+                      or kwargs.get('os_project_id')),
+        'tenant_name': (kwargs.get('os_tenant_name')
+                        or kwargs.get('os_project_name')),
         'auth_url': kwargs.get('os_auth_url'),
         'region_name': kwargs.get('os_region_name'),
         'service_type': kwargs.get('os_service_type'),
@@ -339,7 +341,7 @@ def get_auth_plugin(endpoint, **kwargs):
         endpoint=endpoint,
         username=kwargs.get('username'),
         password=kwargs.get('password'),
-        tenant_name=kwargs.get('tenant_name'),
+        tenant_name=kwargs.get('tenant_name') or kwargs.get('project_name'),
         user_domain_name=kwargs.get('user_domain_name'),
         user_domain_id=kwargs.get('user_domain_id'),
         project_domain_name=kwargs.get('project_domain_name'),
