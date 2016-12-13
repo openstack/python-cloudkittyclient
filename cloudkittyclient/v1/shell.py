@@ -86,3 +86,29 @@ def do_module_set_priority(cc, args):
         modules = [cc.modules.get(module_id=args.name)]
         utils.print_list(modules, fields, field_labels,
                          sortby=0)
+
+
+def do_info_config_get(cc, args):
+    '''Get cloudkitty configuration.'''
+    utils.print_dict(cc.config.get_config(), dict_property="Section")
+
+
+@utils.arg('-n', '--name',
+           help='Service name',
+           required=False)
+def do_info_service_get(cc, args):
+    '''Get service info.'''
+    if args.name:
+        try:
+            services_info = [cc.service_info.get(service_id=args.name)]
+        except exceptions.NotFound:
+            raise exc.CommandError('Service not found: %s' % args.name)
+    else:
+        try:
+            services_info = cc.service_info.list()
+        except exceptions.NotFound:
+            raise exc.CommandError('ServiceInfo not found')
+
+    field_labels = ['Service', 'Metadata', 'Unit']
+    fields = ['service_id', 'metadata', 'unit']
+    utils.print_list(services_info, fields, field_labels, sortby=0)

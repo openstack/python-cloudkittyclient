@@ -66,3 +66,26 @@ class CliModuleSetPriority(command.Command):
     def take_action(self, parsed_args):
         ckclient = self.app.client_manager.rating
         shell.do_module_set_priority(ckclient, parsed_args)
+
+
+class CliInfoGetConfig(command.Command):
+    def get_parser(self, prog_name):
+        parser = super(CliInfoGetConfig, self).get_parser(prog_name)
+        return parser
+
+    def take_action(self, parsed_args):
+        ckclient = self.app.client_manager.rating
+        shell.do_info_config_get(ckclient, parsed_args)
+
+
+class CliInfoGetService(command.Command):
+    def get_parser(self, prog_name):
+        parser = super(CliInfoGetService, self).get_parser(prog_name)
+        parser.add_argument('-n', '--name',
+                            help='Service name',
+                            required=False)
+        return parser
+
+    def take_action(self, parsed_args):
+        ckclient = self.app.client_manager.rating
+        shell.do_info_service_get(ckclient, parsed_args)
