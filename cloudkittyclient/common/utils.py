@@ -23,12 +23,20 @@ import uuid
 from oslo_serialization import jsonutils
 from oslo_utils import encodeutils
 from oslo_utils import importutils
+from oslo_utils import timeutils
 import prettytable
 import six
 
 from cloudkittyclient.common import cliutils
 from cloudkittyclient import exc
 from cloudkittyclient.i18n import _
+
+
+def iso2dt(iso_date):
+    """iso8601 format to datetime."""
+    iso_dt = timeutils.parse_isotime(iso_date)
+    trans_dt = timeutils.normalize_time(iso_dt)
+    return trans_dt
 
 
 def import_versioned_module(version, submodule=None):
