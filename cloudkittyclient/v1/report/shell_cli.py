@@ -46,3 +46,31 @@ class CliReportTenantList(command.Command):
     def take_action(self, parsed_args):
         ckclient = self.app.client_manager.rating
         shell.do_report_tenant_list(ckclient, parsed_args)
+
+
+class CliSummaryGet(command.Command):
+    def get_parser(self, prog_name):
+        parser = super(CliSummaryGet, self).get_parser(prog_name)
+        parser.add_argument('-t', '--tenant-id',
+                            help='Tenant id',
+                            required=False,
+                            dest='summary_tenant_id')
+        parser.add_argument('-b', '--begin',
+                            help='Begin timestamp',
+                            required=False)
+        parser.add_argument('-e', '--end',
+                            help='End timestamp',
+                            required=False)
+        parser.add_argument('-s', '--service',
+                            help='Service Type',
+                            required=False)
+        parser.add_argument('-g', '--groupby',
+                            help=('Fields to groupby, separated by '
+                                  'commas if multiple, now support '
+                                  'res_type,tenant_id'),
+                            required=False)
+        return parser
+
+    def take_action(self, parsed_args):
+        ckclient = self.app.client_manager.rating
+        shell.do_summary_get(ckclient, parsed_args)

@@ -48,3 +48,35 @@ def do_total_get(cc, args):
                                  end=end,
                                  service=args.service)
     utils.print_dict({'Total': total or 0.0})
+
+
+@utils.arg('-t', '--tenant-id',
+           help='Tenant id',
+           required=False,
+           dest='summary_tenant_id')
+@utils.arg('-b', '--begin',
+           help='Begin timestamp',
+           required=False)
+@utils.arg('-e', '--end',
+           help='End timestamp',
+           required=False)
+@utils.arg('-s', '--service',
+           help='Service Type',
+           required=False)
+@utils.arg('-g', '--groupby',
+           help=('Fields to groupby, separated by commas '
+                 'if multiple, now support res_type,tenant_id'),
+           required=False)
+def do_summary_get(cc, args):
+    """Get summary report."""
+    begin = utils.ts2dt(args.begin) if args.begin else None
+    end = utils.ts2dt(args.end) if args.end else None
+    summarys = cc.reportsummary.get_summary(tenant_id=args.summary_tenant_id,
+                                            begin=begin,
+                                            end=end,
+                                            service=args.service,
+                                            groupby=args.groupby)
+    field_labels = ['Tenant ID', 'Resource Type', 'Rate',
+                    'Begin Time', 'End Time']
+    fields = ['tenant_id', 'res_type', 'rate', 'begin', 'end']
+    utils.print_list(summarys, fields, field_labels, sortby=0)
