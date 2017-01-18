@@ -15,15 +15,23 @@
 from cloudkittyclient.common import base
 
 
-class ReportResult(base.Resource):
+class ReportSummary(base.Resource):
 
-    key = 'report'
+    key = 'summary'
+
+    def __init(self, tenant_id=None, res_type=None, begin=None,
+               end=None, rate=None):
+        self.tenant_id = tenant_id
+        self.res_type = res_type
+        self.begin = begin
+        self.end = end
+        self.rate = rate
 
     def __repr__(self):
-        return "<Report %s>" % self._info
+        return "<Summary %s" % self._info
 
 
-class ReportManager(base.Manager):
+class ReportManager(base.CrudManager):
 
     base_url = "/v1/report"
 
@@ -44,3 +52,25 @@ class ReportManager(base.Manager):
         if filters:
             url += "?%s" % ('&'.join(filters))
         return self.client.get(url).json()
+
+
+class ReportSummaryManager(ReportManager):
+
+    resource_class = ReportSummary
+    key = 'summary'
+    collection_key = "summary"
+
+    def get_summary(self, tenant_id=None, begin=None, end=None,
+                    service=None, groupby=None):
+        kwargs = {}
+        if tenant_id:
+            kwargs['tenant_id'] = tenant_id
+        if begin:
+            kwargs['begin'] = begin.isoformat()
+        if end:
+            kwargs['end'] = end.isoformat()
+        if service:
+            kwargs['service'] = service
+        if groupby:
+            kwargs['groupby'] = groupby
+        return super(ReportManager, self).list(**kwargs)
