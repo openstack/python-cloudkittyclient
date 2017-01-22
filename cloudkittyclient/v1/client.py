@@ -60,6 +60,8 @@ class Client(object):
         self.reportsummary = report.ReportSummaryManager(self.http_client)
         self.quotations = core.QuotationManager(self.http_client)
         self.storage = storage.StorageManager(self.http_client)
+        self.config = core.ConfigInfoManager(self.http_client)
+        self.service_info = core.ServiceInfoManager(self.http_client)
         self._expose_submodules()
 
     def _expose_submodules(self):

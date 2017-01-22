@@ -64,3 +64,26 @@ class QuotationManager(base.Manager):
         out = self.api.post(self.base_url,
                             json={'resources': resources}).json()
         return out
+
+
+class ServiceInfo(base.Resource):
+
+    key = "service"
+
+    def __repr__(self):
+        return "<Service %s>" % self._info
+
+
+class ServiceInfoManager(base.CrudManager):
+    resource_class = ServiceInfo
+    base_url = "/v1/info"
+    key = "service"
+    collection_key = "services"
+
+
+class ConfigInfoManager(base.Manager):
+    base_url = "/v1/info/config"
+
+    def get_config(self):
+        out = self.api.get(self.base_url).json()
+        return out
