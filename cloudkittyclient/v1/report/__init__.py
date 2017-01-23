@@ -38,7 +38,8 @@ class ReportManager(base.CrudManager):
     def list_tenants(self):
         return self.client.get(self.base_url + "/tenants").json()
 
-    def get_total(self, tenant_id=None, begin=None, end=None, service=None):
+    def get_total(self, tenant_id=None, begin=None, end=None,
+                  service=None, all_tenants=False):
         url = self.base_url + "/total"
         filters = list()
         if tenant_id:
@@ -49,6 +50,8 @@ class ReportManager(base.CrudManager):
             filters.append("end=%s" % end.isoformat())
         if service:
             filters.append("service=%s" % service)
+        if all_tenants:
+            filters.append("all_tenants=%s" % all_tenants)
         if filters:
             url += "?%s" % ('&'.join(filters))
         return self.client.get(url).json()
@@ -61,7 +64,7 @@ class ReportSummaryManager(ReportManager):
     collection_key = "summary"
 
     def get_summary(self, tenant_id=None, begin=None, end=None,
-                    service=None, groupby=None):
+                    service=None, groupby=None, all_tenants=False):
         kwargs = {}
         if tenant_id:
             kwargs['tenant_id'] = tenant_id
@@ -73,4 +76,6 @@ class ReportSummaryManager(ReportManager):
             kwargs['service'] = service
         if groupby:
             kwargs['groupby'] = groupby
+        if all_tenants:
+            kwargs['all_tenants'] = all_tenants
         return super(ReportManager, self).list(**kwargs)

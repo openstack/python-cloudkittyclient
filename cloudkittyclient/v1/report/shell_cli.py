@@ -35,6 +35,12 @@ class CliTotalGet(command.Command):
         parser.add_argument('-s', '--service',
                             help='Service Type',
                             required=False)
+        parser.add_argument('-a', '--all-tenants',
+                            default=False,
+                            action="store_true",
+                            dest='all_tenants',
+                            help='Allows to get total from all tenants'
+                                 ' (admin only).')
         return parser
 
     def take_action(self, parsed_args):
@@ -69,6 +75,12 @@ class CliSummaryGet(command.Command):
                                   'commas if multiple, now support '
                                   'res_type,tenant_id'),
                             required=False)
+        parser.add_argument('-a', '--all-tenants',
+                            default=False,
+                            action="store_true",
+                            dest='all_tenants',
+                            help='Allows to get summary from all tenants'
+                                 ' (admin only).')
         return parser
 
     def take_action(self, parsed_args):
