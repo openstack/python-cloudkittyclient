@@ -11,8 +11,9 @@ Contents:
    :maxdepth: 2
 
    install/index
-   user/index
    contributor/index
+   cli/index
+   user/index
 
 Indices and tables
 ==================
