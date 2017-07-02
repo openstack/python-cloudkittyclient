@@ -22,7 +22,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 extensions = [
     'sphinx.ext.autodoc',
     #'sphinx.ext.intersphinx',
-    'oslosphinx'
+    'openstackdocstheme'
 ]
 
 # autodoc generation is a bit aggressive and a nuisance when doing heavy
@@ -37,7 +37,12 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'python-cloudkittyclient'
-copyright = u'2013, OpenStack Foundation'
+copyright = u'2017, OpenStack Foundation'
+
+# openstackdocstheme options
+repository_name = 'openstack/python-cloudkittyclient'
+bug_project = 'cloudkitty'
+bug_tag = 'python-cloudkittyclient'
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
 add_function_parentheses = True
@@ -56,6 +61,10 @@ pygments_style = 'sphinx'
 # html_theme_path = ["."]
 # html_theme = '_theme'
 # html_static_path = ['static']
+html_theme = 'openstackdocs'
+
+# Must set this variable to include year, month, day, hours, and minutes.
+html_last_updated_fmt = '%Y-%m-%d %H:%M'
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = '%sdoc' % project
