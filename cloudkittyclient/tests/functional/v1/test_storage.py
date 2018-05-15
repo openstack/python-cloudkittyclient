@@ -13,11 +13,21 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
-import sys
+from cloudkittyclient.tests.functional.v1 import base
 
 
-def Client(version, *args, **kwargs):
-    module = 'cloudkittyclient.v%s.client' % version
-    __import__(module)
-    client_class = getattr(sys.modules[module], 'Client')
-    return client_class(*args, **kwargs)
+class CkStorageTest(base.BaseFunctionalTest):
+
+    def __init__(self, *args, **kwargs):
+        super(CkStorageTest, self).__init__(*args, **kwargs)
+        self.runner = self.cloudkitty
+
+    def test_dataframes_get(self):
+        self.runner('dataframes get')
+
+
+class OSCStorageTest(CkStorageTest):
+
+    def __init__(self, *args, **kwargs):
+        super(CkStorageTest, self).__init__(*args, **kwargs)
+        self.runner = self.openstack

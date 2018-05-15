@@ -13,11 +13,20 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
-import sys
+from cloudkittyclient.tests.unit.v1 import base
 
 
-def Client(version, *args, **kwargs):
-    module = 'cloudkittyclient.v%s.client' % version
-    __import__(module)
-    client_class = getattr(sys.modules[module], 'Client')
-    return client_class(*args, **kwargs)
+class TestInfo(base.BaseAPIEndpointTestCase):
+
+    def test_get_metric(self):
+        self.info.get_metric()
+        self.api_client.get.assert_called_once_with('/v1/info/metrics/')
+
+    def test_get_metric_with_arg(self):
+        self.info.get_metric(metric_name='testmetric')
+        self.api_client.get.assert_called_once_with(
+            '/v1/info/metrics/testmetric')
+
+    def test_get_config(self):
+        self.info.get_config()
+        self.api_client.get.assert_called_once_with('/v1/info/config/')

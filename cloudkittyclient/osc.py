@@ -12,7 +12,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from cloudkittyclient import client as ckclient
+from osc_lib import utils
 
 DEFAULT_API_VERSION = '1'
 API_VERSION_OPTION = 'os_rating_api_version'
@@ -25,9 +25,12 @@ API_VERSIONS = {
 def make_client(instance):
     """Returns a rating service client."""
     version = instance._api_version[API_NAME]
-    version = int(version)
-    auth_config = instance.get_configuration()['auth']
-    return ckclient.get_client(version, **auth_config)
+    ck_client = utils.get_client_class(
+        API_NAME,
+        version,
+        API_VERSIONS)
+    instance.setup_auth()
+    return ck_client(session=instance.session)
 
 
 def build_option_parser(parser):

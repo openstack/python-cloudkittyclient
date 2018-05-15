@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
-# Copyright 2018 Objectif Libre
+# Copyright 2012 OpenStack Foundation
+# All Rights Reserved.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
 #    not use this file except in compliance with the License. You may obtain
@@ -12,30 +12,26 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-#
-from keystoneauth1 import adapter
-from keystoneauth1 import session as ks_session
 
+from cloudkittyclient.tests import utils
 from cloudkittyclient.v1 import collector
 from cloudkittyclient.v1 import info
 from cloudkittyclient.v1 import rating
+from cloudkittyclient.v1.rating import hashmap
+from cloudkittyclient.v1.rating import pyscripts
 from cloudkittyclient.v1 import report
 from cloudkittyclient.v1 import storage
 
 
-class Client(object):
+class BaseAPIEndpointTestCase(utils.BaseTestCase):
 
-    def __init__(self, session=None, adapter_options={}, **kwargs):
-        adapter_options.setdefault('service_type', 'rating')
-
-        self.session = session
-        if self.session is None:
-            self.session = ks_session.Session(**kwargs)
-
-        self.api_client = adapter.Adapter(
-            session=self.session, **adapter_options)
-        self.info = info.InfoManager(self.api_client)
-        self.collector = collector.CollectorManager(self.api_client)
-        self.rating = rating.RatingManager(self.api_client)
-        self.report = report.ReportManager(self.api_client)
+    def setUp(self):
+        super(BaseAPIEndpointTestCase, self).setUp()
+        self.api_client = utils.FakeHTTPClient()
         self.storage = storage.StorageManager(self.api_client)
+        self.rating = rating.RatingManager(self.api_client)
+        self.collector = collector.CollectorManager(self.api_client)
+        self.info = info.InfoManager(self.api_client)
+        self.report = report.ReportManager(self.api_client)
+        self.pyscripts = pyscripts.PyscriptManager(self.api_client)
+        self.hashmap = hashmap.HashmapManager(self.api_client)

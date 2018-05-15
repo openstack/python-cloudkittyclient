@@ -12,9 +12,12 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-
 import fixtures
 import testtools
+
+from keystoneauth1 import adapter
+from keystoneauth1 import session
+import mock
 
 
 class BaseTestCase(testtools.TestCase):
@@ -22,3 +25,19 @@ class BaseTestCase(testtools.TestCase):
     def setUp(self):
         super(BaseTestCase, self).setUp()
         self.useFixture(fixtures.FakeLogger())
+
+
+class FakeRequest(dict):
+    """Fake requests.Request object."""
+
+    def json(self):
+        return self
+
+
+class FakeHTTPClient(adapter.Adapter):
+    """Keystone HTTP adapter with request methods being mocks"""
+
+    def __init__(self):
+        super(FakeHTTPClient, self).__init__(session=session.Session())
+        for attr in ('get', 'put', 'post', 'delete'):
+            setattr(self, attr, mock.Mock(return_value=FakeRequest()))

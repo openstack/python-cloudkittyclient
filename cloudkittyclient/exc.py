@@ -31,8 +31,16 @@ class InvalidEndpoint(BaseException):
     """The provided endpoint is invalid."""
 
 
+class ArgumentRequired(BaseException):
+    """A required argument was not provided."""
+
+
 class CommunicationError(BaseException):
     """Unable to communicate with server."""
+
+
+class InvalidArgumentError(BaseException):
+    """Exception raised when a provided argument is invalid"""
 
 
 class NotUpdatableError(BaseException):

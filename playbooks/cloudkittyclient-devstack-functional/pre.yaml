@@ -1,0 +1,5 @@
+- hosts: all
+  roles:
+    - run-devstack
+    - test-setup
+    - ensure-tox

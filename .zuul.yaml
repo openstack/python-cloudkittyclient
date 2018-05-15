@@ -1,0 +1,37 @@
+- job:
+    name: cloudkittyclient-devstack-functional
+    parent: devstack
+    description: |
+      Job for cloudkittyclient functional tests
+    pre-run: playbooks/cloudkittyclient-devstack-functional/pre.yaml
+    run: playbooks/cloudkittyclient-devstack-functional/run.yaml
+    post-run: playbooks/cloudkittyclient-devstack-functional/post.yaml
+    required-projects:
+      - name: openstack/cloudkitty
+      - name: openstack/python-cloudkittyclient
+    roles:
+      - zuul: openstack-infra/devstack
+    timeout: 5400
+    irrelevant-files:
+      - ^.*\.rst$
+      - ^doc/.*$
+      - ^releasenotes/.*$
+    vars:
+      devstack_plugins:
+        cloudkitty: https://git.openstack.org/openstack/cloudkitty
+      devstack_services:
+        ck-api: true
+        horizon: false
+      tox_install_siblings: false
+      zuul_work_dir: src/git.openstack.org/openstack/python-cloudkittyclient
+      tox_envlist: functional
+
+- project:
+    check:
+      jobs:
+        - cloudkittyclient-devstack-functional:
+            voting: true
+    gate:
+      jobs:
+        - cloudkittyclient-devstack-functional:
+            voting: true

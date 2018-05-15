@@ -1,0 +1,9 @@
+# This exact file format must be respected (- column_name: json_path)
+# The path is interpreted using jsonpath-rw-ext, see
+# https://github.com/sileht/python-jsonpath-rw-ext for syntax reference
+- 'Begin': '$.begin'
+- 'End': '$.end'
+- 'User ID': '$.desc.user_id'
+- 'Resource ID': '$.desc.resource_id'
+- 'Qty': '$.volume'
+- 'Cost': '$.rating'
