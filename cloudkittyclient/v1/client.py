@@ -25,12 +25,26 @@ from cloudkittyclient.v1 import storage
 
 class Client(object):
 
-    def __init__(self, session=None, adapter_options={}, **kwargs):
+    def __init__(self,
+                 session=None,
+                 adapter_options={},
+                 cacert=None,
+                 insecure=False,
+                 **kwargs):
         adapter_options.setdefault('service_type', 'rating')
+
+        if insecure:
+            verify_cert = False
+        else:
+            if cacert:
+                verify_cert = cacert
+            else:
+                verify_cert = True
 
         self.session = session
         if self.session is None:
-            self.session = ks_session.Session(**kwargs)
+            self.session = ks_session.Session(
+                verify=verify_cert, **kwargs)
 
         self.api_client = adapter.Adapter(
             session=self.session, **adapter_options)
