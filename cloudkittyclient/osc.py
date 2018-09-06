@@ -30,7 +30,12 @@ def make_client(instance):
         version,
         API_VERSIONS)
     instance.setup_auth()
-    return ck_client(session=instance.session)
+    adapter_options = dict(
+        interface=instance.interface,
+        region_name=instance.region_name,
+    )
+    return ck_client(session=instance.session,
+                     adapter_options=adapter_options)
 
 
 def build_option_parser(parser):
