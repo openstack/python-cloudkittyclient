@@ -49,6 +49,16 @@ Else, use it the same way as any other OpenStack client::
                    u'res_type': u'ALL',
                    u'tenant_id': u'bea6a24f77e946b0a92dca7c78b7870b'}]}
 
+.. warning::
+
+   If you want to use SSL with the client as a python library, you need to
+   provide a cert to keystone's session object. Else, two additional options
+   are available if you provide an ``auth`` object to the client: ``insecure``
+   and ``cacert``::
+
+     >>> client = ck_client.Client(
+             '1', auth=auth, insecure=False, cacert='/path/to/ca')
+
 When using the ``cloudkitty`` CLI client with keystone authentication, the
 auth plugin to use should automagically be detected. If not, you can specify
 the auth plugin to use with ``--os-auth-type/--os-auth-plugin``::
