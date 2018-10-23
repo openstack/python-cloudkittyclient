@@ -114,8 +114,11 @@ class CliTenantList(lister.Lister):
                     raise exc.InvalidArgumentError(
                         'Invalid timestamp "{}"'.format(value))
         client = utils.get_client_from_osc(self)
-        return (('Tenant ID', ),
-                (client.report.get_tenants(**vars(parsed_args)), ))
+        tenants = client.report.get_tenants(**vars(parsed_args))
+        output = []
+        for tenant in tenants:
+            output.append((tenant, ))
+        return (('Tenant ID', ), output)
 
     def get_parser(self, prog_name):
         parser = super(CliTenantList, self).get_parser(prog_name)
