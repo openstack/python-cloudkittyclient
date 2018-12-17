@@ -19,7 +19,7 @@ from cloudkittyclient import utils
 
 
 class CliInfoMetricGet(lister.Lister):
-    """Get information about current metrics."""
+    """Get information about a single metric."""
     info_columns = [
         ('metric_id', 'Metric'),
         ('unit', 'Unit'),
@@ -41,7 +41,7 @@ class CliInfoMetricGet(lister.Lister):
 
 
 class CliInfoMetricList(lister.Lister):
-    """Get information about a single metric."""
+    """Get information about current metrics."""
     info_columns = [
         ('metric_id', 'Metric'),
         ('unit', 'Unit'),
