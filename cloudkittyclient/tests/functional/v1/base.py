@@ -35,7 +35,7 @@ class BaseFunctionalTest(utils.BaseTestCase):
         if p.returncode != 0:
             raise RuntimeError('"{cmd}" returned {val}: {msg}'.format(
                 cmd=' '.join(cmd), val=p.returncode, msg=stderr))
-        return json.loads(stdout) if has_output else None
+        return json.loads(stdout.decode('ascii')) if has_output else None
 
     def openstack(self, action,
                   flags='', params='', fmt='-f json', has_output=True):

@@ -78,8 +78,10 @@ class RatingManager(base.BaseManager):
         """
         if not kwargs.get('res_data', None):
             raise exc.ArgumentRequired("'res_data' argument is required.")
-        url = self.get_url('quote')
-        return self.api_client.post(url, kwargs['res_data'])
+        url = self.get_url('quote', {})
+
+        body = {'resources': kwargs['res_data']}
+        return self.api_client.post(url, json=body).json()
 
 
 class CliModuleGet(lister.Lister):
