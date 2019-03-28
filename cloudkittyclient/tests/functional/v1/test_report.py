@@ -22,8 +22,8 @@ class CkReportTest(base.BaseFunctionalTest):
         self.runner = self.cloudkitty
 
     def test_get_summary(self):
-        resp = self.runner('summary get')[0]
-        self.assertEqual(resp['Resource Type'], 'ALL')
+        resp = self.runner('summary get')
+        self.assertEqual(len(resp), 0)
 
     def test_get_summary_with_groupby(self):
         resp = self.runner('summary get', params='-g res_type tenant_id')
