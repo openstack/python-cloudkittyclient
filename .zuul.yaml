@@ -28,6 +28,16 @@
       zuul_work_dir: src/git.openstack.org/openstack/python-cloudkittyclient
       tox_envlist: functional
 
+- job:
+    name: cloudkittyclient-devstack-functional-py3
+    parent: cloudkittyclient-devstack-functional
+    description: |
+      Job for cloudkittyclient functional tests, ran in python3.
+    vars:
+      devstack_localrc:
+        DEVSTACK_GATE_USE_PYTHON3: "True"
+        USE_PYTHON3: "True"
+
 - project:
     templates:
       - check-requirements
@@ -41,7 +51,11 @@
       jobs:
         - cloudkittyclient-devstack-functional:
             voting: true
+        - cloudkittyclient-devstack-functional-py3:
+            voting: true
     gate:
       jobs:
         - cloudkittyclient-devstack-functional:
+            voting: true
+        - cloudkittyclient-devstack-functional-py3:
             voting: true
