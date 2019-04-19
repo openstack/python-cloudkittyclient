@@ -18,12 +18,12 @@
       - ^releasenotes/.*$
     vars:
       devstack_plugins:
-        cloudkitty: https://git.openstack.org/openstack/cloudkitty
+        cloudkitty: https://opendev.org/openstack/cloudkitty
       devstack_services:
         ck-api: true
         horizon: false
       tox_install_siblings: false
-      zuul_work_dir: src/git.openstack.org/openstack/python-cloudkittyclient
+      zuul_work_dir: src/opendev.org/openstack/python-cloudkittyclient
       tox_envlist: functional
 
 - project:
