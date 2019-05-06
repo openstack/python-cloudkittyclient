@@ -13,7 +13,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
-from cloudkittyclient.v1 import base
+from cloudkittyclient.common import base
 
 
 class StorageManager(base.BaseManager):

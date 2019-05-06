@@ -13,15 +13,12 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
-from cloudkittyclient.common import client
-from cloudkittyclient.v1 import collector
-from cloudkittyclient.v1 import info
-from cloudkittyclient.v1 import rating
-from cloudkittyclient.v1 import report
-from cloudkittyclient.v1 import storage
+from cloudkittyclient.v1 import client
 
 
-class Client(client.BaseClient):
+# NOTE(peschk_l) v2 client needs to implement v1 until the v1 API has been
+# completely ported to v2
+class Client(client.Client):
 
     def __init__(self,
                  session=None,
@@ -36,9 +33,3 @@ class Client(client.BaseClient):
             insecure=insecure,
             **kwargs
         )
-
-        self.info = info.InfoManager(self.api_client)
-        self.collector = collector.CollectorManager(self.api_client)
-        self.rating = rating.RatingManager(self.api_client)
-        self.report = report.ReportManager(self.api_client)
-        self.storage = storage.StorageManager(self.api_client)

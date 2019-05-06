@@ -13,15 +13,11 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
-from cloudkittyclient.common import client
-from cloudkittyclient.v1 import collector
-from cloudkittyclient.v1 import info
-from cloudkittyclient.v1 import rating
-from cloudkittyclient.v1 import report
-from cloudkittyclient.v1 import storage
+from keystoneauth1 import adapter
+from keystoneauth1 import session as ks_session
 
 
-class Client(client.BaseClient):
+class BaseClient(object):
 
     def __init__(self,
                  session=None,
@@ -29,16 +25,20 @@ class Client(client.BaseClient):
                  cacert=None,
                  insecure=False,
                  **kwargs):
-        super(Client, self).__init__(
-            session=session,
-            adapter_options=adapter_options,
-            cacert=cacert,
-            insecure=insecure,
-            **kwargs
-        )
+        adapter_options.setdefault('service_type', 'rating')
 
-        self.info = info.InfoManager(self.api_client)
-        self.collector = collector.CollectorManager(self.api_client)
-        self.rating = rating.RatingManager(self.api_client)
-        self.report = report.ReportManager(self.api_client)
-        self.storage = storage.StorageManager(self.api_client)
+        if insecure:
+            verify_cert = False
+        else:
+            if cacert:
+                verify_cert = cacert
+            else:
+                verify_cert = True
+
+        self.session = session
+        if self.session is None:
+            self.session = ks_session.Session(
+                verify=verify_cert, **kwargs)
+
+        self.api_client = adapter.Adapter(
+            session=self.session, **adapter_options)

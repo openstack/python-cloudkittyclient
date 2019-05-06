@@ -22,6 +22,7 @@ import os_client_config
 from oslo_log import log
 
 from cloudkittyclient import client
+from cloudkittyclient.osc import DEFAULT_API_VERSION
 from cloudkittyclient import utils
 
 
@@ -105,9 +106,6 @@ class CloudKittyShell(cliff.app.App):
             description,
             version,
             argparse_kwargs={'allow_abbrev': False})
-        parser.add_argument(
-            '--ck-api-version', type=int, default=1, dest='ck_version',
-            help='Cloudkitty API version (defaults to 1)')
         if 'OS_AUTH_TYPE' not in os.environ.keys() \
            and 'OS_PASSWORD' in os.environ.keys():
             os.environ['OS_AUTH_TYPE'] = 'password'
@@ -133,9 +131,10 @@ class CloudKittyShell(cliff.app.App):
                     self.options.os_rating_endpoint_override or
                     self.options.os_endpoint_override),
             )
-            self._client = client.Client(str(self.options.ck_version),
-                                         session=session,
-                                         adapter_options=adapter_options)
+            self._client = client.Client(
+                str(self.options.os_rating_api_version or DEFAULT_API_VERSION),
+                session=session,
+                adapter_options=adapter_options)
         return self._client
 
 

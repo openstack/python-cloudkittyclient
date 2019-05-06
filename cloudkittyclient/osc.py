@@ -14,11 +14,12 @@
 
 from osc_lib import utils
 
-DEFAULT_API_VERSION = '1'
+DEFAULT_API_VERSION = '2'
 API_VERSION_OPTION = 'os_rating_api_version'
 API_NAME = "rating"
 API_VERSIONS = {
     "1": "cloudkittyclient.v1.client.Client",
+    "2": "cloudkittyclient.v2.client.Client",
 }
 
 
@@ -40,4 +41,9 @@ def make_client(instance):
 
 def build_option_parser(parser):
     """Hook to add global options."""
+    parser.add_argument(
+        '--rating-api-version', type=int, default=utils.env(
+            'OS_RATING_API_VERSION',
+            default=DEFAULT_API_VERSION)
+    )
     return parser

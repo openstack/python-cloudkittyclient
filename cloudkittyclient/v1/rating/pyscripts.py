@@ -13,8 +13,8 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
+from cloudkittyclient.common import base
 from cloudkittyclient import exc
-from cloudkittyclient.v1 import base
 
 
 class PyscriptManager(base.BaseManager):

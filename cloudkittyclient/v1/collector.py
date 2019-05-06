@@ -15,8 +15,8 @@
 #
 from oslo_log import log
 
+from cloudkittyclient.common import base
 from cloudkittyclient import exc
-from cloudkittyclient.v1 import base
 
 
 LOG = log.getLogger(__name__)

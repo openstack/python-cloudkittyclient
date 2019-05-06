@@ -15,9 +15,9 @@
 #
 from cliff import lister
 
+from cloudkittyclient.common import base
 from cloudkittyclient import exc
 from cloudkittyclient import utils
-from cloudkittyclient.v1 import base
 from cloudkittyclient.v1.rating import hashmap
 from cloudkittyclient.v1.rating import pyscripts
 

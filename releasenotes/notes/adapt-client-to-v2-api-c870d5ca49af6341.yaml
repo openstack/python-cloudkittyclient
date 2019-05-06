@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The client has been adapted to allow adding support for v2 API
+    endpoints. The v2 client class implements all v1 endpoints, but v1
+    endpoints ported to v2 will be overriden. The API version to use can be
+    specified through the ``--os-rating-api-version`` option or the
+    ``OS_RATING_API_VERSION``.
