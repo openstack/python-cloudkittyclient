@@ -14,6 +14,7 @@
 #    under the License.
 #
 from cloudkittyclient.v1 import client
+from cloudkittyclient.v2 import scope
 
 
 # NOTE(peschk_l) v2 client needs to implement v1 until the v1 API has been
@@ -33,3 +34,5 @@ class Client(client.Client):
             insecure=insecure,
             **kwargs
         )
+
+        self.scope = scope.ScopeManager(self.api_client)

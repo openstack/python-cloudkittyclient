@@ -15,7 +15,7 @@
 #
 import jsonpath_rw_ext as jp
 
-from cloudkittyclient.tests.functional.v1 import base
+from cloudkittyclient.tests.functional import base
 
 
 class CkInfoTest(base.BaseFunctionalTest):

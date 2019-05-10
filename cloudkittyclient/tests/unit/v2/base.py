@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright 2018 Objectif Libre
+# Copyright 2019 objectif Libre
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
 #    not use this file except in compliance with the License. You may obtain
@@ -12,22 +11,14 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-#
-from cloudkittyclient.tests.functional import base
+
+from cloudkittyclient.tests import utils
+from cloudkittyclient.v2 import scope
 
 
-class CkStorageTest(base.BaseFunctionalTest):
+class BaseAPIEndpointTestCase(utils.BaseTestCase):
 
-    def __init__(self, *args, **kwargs):
-        super(CkStorageTest, self).__init__(*args, **kwargs)
-        self.runner = self.cloudkitty
-
-    def test_dataframes_get(self):
-        self.runner('dataframes get')
-
-
-class OSCStorageTest(CkStorageTest):
-
-    def __init__(self, *args, **kwargs):
-        super(CkStorageTest, self).__init__(*args, **kwargs)
-        self.runner = self.openstack
+    def setUp(self):
+        super(BaseAPIEndpointTestCase, self).setUp()
+        self.api_client = utils.FakeHTTPClient()
+        self.scope = scope.ScopeManager(self.api_client)
