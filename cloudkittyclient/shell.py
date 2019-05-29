@@ -78,13 +78,25 @@ class CloudKittyShell(cliff.app.App):
         'pyscripts-script-update',
     ]
 
+    def _get_api_version(self, args):
+        # FIXME(peschk_l): This is a hacky way to figure out the client version
+        # to load. If anybody has a better idea, please fix this.
+        self.deferred_help = True
+        parser = self.build_option_parser('CloudKitty CLI client',
+                                          utils.get_version())
+        del self.deferred_help
+        parsed_args = parser.parse_known_args(args)
+        return str(parsed_args[0].os_rating_api_version or DEFAULT_API_VERSION)
+
     def __init__(self, args):
         self._args = args
         self.cloud_config = os_client_config.OpenStackConfig()
         super(CloudKittyShell, self).__init__(
             description='CloudKitty CLI client',
             version=utils.get_version(),
-            command_manager=CommandManager('cloudkittyclient'),
+            command_manager=CommandManager('cloudkittyclient.v{}'.format(
+                self._get_api_version(args[:]),
+            )),
             deferred_help=True,
         )
         self._client = None

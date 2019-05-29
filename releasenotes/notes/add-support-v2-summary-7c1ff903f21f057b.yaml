@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Support for the ``/v2/summary`` endpoint has been added to the client. The
+    ``summary get`` CLI command as well as the ``client.summary`` object in
+    the python library have been overriden in case the v2 API is used.

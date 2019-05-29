@@ -14,7 +14,7 @@
 
 from osc_lib import utils
 
-DEFAULT_API_VERSION = '2'
+DEFAULT_API_VERSION = '1'
 API_VERSION_OPTION = 'os_rating_api_version'
 API_NAME = "rating"
 API_VERSIONS = {

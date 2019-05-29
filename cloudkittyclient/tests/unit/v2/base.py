@@ -14,6 +14,7 @@
 
 from cloudkittyclient.tests import utils
 from cloudkittyclient.v2 import scope
+from cloudkittyclient.v2 import summary
 
 
 class BaseAPIEndpointTestCase(utils.BaseTestCase):
@@ -22,3 +23,4 @@ class BaseAPIEndpointTestCase(utils.BaseTestCase):
         super(BaseAPIEndpointTestCase, self).setUp()
         self.api_client = utils.FakeHTTPClient()
         self.scope = scope.ScopeManager(self.api_client)
+        self.summary = summary.SummaryManager(self.api_client)

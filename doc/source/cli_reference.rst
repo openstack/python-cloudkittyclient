@@ -2,6 +2,18 @@
 CLI Reference
 =============
 
-.. autoprogram-cliff:: cloudkittyclient
+V1 Client
+=========
+
+.. autoprogram-cliff:: cloudkittyclient.v1
    :application: cloudkitty
-   :ignored: --format, --column, --max-width, --fit-width, --print-empty, --format-config-file, --noindent, --quote, --sort-column
+
+
+V2 Client
+=========
+
+.. autoprogram-cliff:: cloudkittyclient.v2
+   :command: scope state get
+
+.. autoprogram-cliff:: cloudkittyclient.v2
+   :command: summary get

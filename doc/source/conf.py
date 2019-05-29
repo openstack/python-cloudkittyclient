@@ -25,6 +25,11 @@ extensions = [
     'openstackdocstheme',
 ]
 
+autoprogram_cliff_ignored = [
+    "--format", "--column", "--max-width", "--fit-width", "--print-empty",
+    "--format-config-file", "--noindent", "--quote", "--sort-column",
+]
+
 # autodoc generation is a bit aggressive and a nuisance when doing heavy
 # text edit cycles.
 # execute "export SPHINX_DEBUG=1" in your terminal to disable

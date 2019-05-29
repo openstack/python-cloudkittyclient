@@ -2,6 +2,61 @@
 Usage
 =====
 
+CLI
+===
+
+Authentication
+--------------
+
+The CloudKitty client can either be used through the standalone CLI executable
+(``cloudkitty``) or through the OpenStack Client module (``openstack rating``).
+
+When using CloudKitty in standalone mode (ie without Keystone authentication),
+the API endpoint and the auth method must be specified:
+
+.. code-block:: shell
+
+   cloudkitty --os-endpoint http://cloudkitty-api:8889 --os-auth-type cloudkitty-noauth module list
+
+These options can also be specified as environment variables:
+
+.. code-block:: shell
+
+   export OS_ENDPOINT=http://cloudkitty-api:8889
+   export OS_AUTH_TYPE=cloudkitty-noauth
+   cloudkitty module list
+
+The exact same options apply when using the OpenStack Client plugin:
+
+.. code-block:: shell
+
+   # EITHER
+   openstack rating --os-endpoint http://cloudkitty-api:8889 --os-auth-type cloudkitty-noauth module list
+
+   # OR
+   export OS_ENDPOINT=http://cloudkitty-api:8889
+   export OS_AUTH_TYPE=cloudkitty-noauth
+   openstack rating module list
+
+Version
+-------
+
+Two versions of the client exist: v1 and v2. The v2 version adds support for
+v2 API endpoints. The default API version is 1. You can specify which API
+version you want to use via a CLI option:
+
+.. code-block:: shell
+
+   # EITHER
+   cloudkitty --os-rating-api-version 2 summary get
+
+   # OR
+   export OS_RATING_API_VERSION=2
+   cloudkitty summary get
+
+Again, the option can also be provided to the OSC plugin, both via the CLI
+flag or the environment variable.
+
 Python library
 ==============
 
@@ -58,6 +113,13 @@ Else, use it the same way as any other OpenStack client::
 
      >>> client = ck_client.Client(
              '1', auth=auth, insecure=False, cacert='/path/to/ca')
+
+
+If you want to use the v2 API, you have to specify it at client instanciation
+
+.. code-block:: python
+
+   c = ck_client.Client('2', session=session)
 
 When using the ``cloudkitty`` CLI client with keystone authentication, the
 auth plugin to use should automagically be detected. If not, you can specify
