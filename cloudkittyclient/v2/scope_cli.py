@@ -12,7 +12,9 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
+from cliff import command
 from cliff import lister
+from oslo_utils import timeutils
 
 from cloudkittyclient import utils
 
@@ -53,3 +55,44 @@ class CliScopeStateGet(lister.Lister):
         )
         values = utils.list_to_cols(resp['results'], self.info_columns)
         return [col[1] for col in self.info_columns], values
+
+
+class CliScopeStateReset(command.Command):
+    """Reset the state of several scopes."""
+    info_columns = [
+        ('scope_id', 'Scope ID'),
+        ('scope_key', 'Scope Key'),
+        ('collector', 'Collector'),
+        ('fetcher', 'Fetcher'),
+    ]
+
+    def get_parser(self, prog_name):
+        parser = super(CliScopeStateReset, self).get_parser(prog_name)
+
+        for col in self.info_columns:
+            parser.add_argument(
+                '--' + col[0].replace('_', '-'), type=str,
+                action='append', help='Optional filter on ' + col[1])
+
+        parser.add_argument(
+            '-a', '--all-scopes',
+            action='store_true',
+            help="Target all scopes at once")
+
+        parser.add_argument(
+            'state',
+            type=timeutils.parse_isotime,
+            help="State iso8601 datetime to which the state should be set. "
+            "Example: 2019-06-01T00:00:00Z.")
+
+        return parser
+
+    def take_action(self, parsed_args):
+        utils.get_client_from_osc(self).scope.reset_scope_state(
+            collector=parsed_args.collector,
+            fetcher=parsed_args.fetcher,
+            scope_id=parsed_args.scope_id,
+            scope_key=parsed_args.scope_key,
+            all_scopes=parsed_args.all_scopes,
+            state=parsed_args.state,
+        )

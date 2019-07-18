@@ -13,6 +13,7 @@
 #    under the License.
 #
 from cloudkittyclient.common import base
+from cloudkittyclient import exc
 
 
 class ScopeManager(base.BaseManager):
@@ -48,3 +49,54 @@ class ScopeManager(base.BaseManager):
             'offset', 'limit', 'collector', 'fetcher', 'scope_id', 'scope_key']
         url = self.get_url(None, kwargs, authorized_args=authorized_args)
         return self.api_client.get(url).json()
+
+    def reset_scope_state(self, **kwargs):
+        """Returns nothing.
+
+        Some optional filters can be provided.
+        The all_scopes and the scope_id options are mutually exclusive and one
+        must be provided.
+
+        :param state: datetime object from which the state will be reset
+        :type state: datetime.datetime
+        :param all_scopes: Whether all scopes must be reset
+        :type all_scopes: bool
+        :param collector: Optional collector to filter on.
+        :type collector: str or list of str
+        :param fetcher: Optional fetcher to filter on.
+        :type fetcher: str or list of str
+        :param scope_id: Optional scope_id to filter on.
+        :type scope_id: str or list of str
+        :param scope_key: Optional scope_key to filter on.
+        :type scope_key: str or list of str
+        """
+
+        if not kwargs.get('state'):
+            raise exc.ArgumentRequired("'state' argument is required")
+
+        if not kwargs.get('all_scopes') and not kwargs.get('scope_id'):
+            raise exc.ArgumentRequired(
+                "You must specify either 'scope_id' or 'all_scopes'")
+
+        if kwargs.get('all_scopes') and kwargs.get('scope_id'):
+            raise exc.InvalidArgumentError(
+                "You can't specify both 'scope_id' and 'all_scopes'")
+
+        for key in ('collector', 'fetcher', 'scope_id', 'scope_key'):
+            if key in kwargs.keys():
+                if isinstance(kwargs[key], list):
+                    kwargs[key] = ','.join(kwargs[key])
+
+        body = dict(
+            state=kwargs.get('state'),
+            scope_id=kwargs.get('scope_id'),
+            scope_key=kwargs.get('scope_key'),
+            collector=kwargs.get('collector'),
+            fetcher=kwargs.get('fetcher'),
+            all_scopes=kwargs.get('all_scopes'),
+        )
+        # Stripping None and False values
+        body = dict(filter(lambda elem: bool(elem[1]), body.items()))
+
+        url = self.get_url(None, kwargs)
+        return self.api_client.put(url, json=body)

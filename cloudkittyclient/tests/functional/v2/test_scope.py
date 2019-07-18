@@ -27,6 +27,12 @@ class CkScopeTest(base.BaseFunctionalTest):
         # the state of a scope through the client
         # resp = self.runner('scope state get')
 
+    def test_scope_state_reset(self):
+        return True
+        # FIXME(jferrieu): Uncomment and update this once there is a way to set
+        # the state of a scope through the client
+        # resp = self.runner('scope state reset')
+
 
 class OSCScopeTest(CkScopeTest):
 
