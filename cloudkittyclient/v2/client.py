@@ -14,6 +14,7 @@
 #    under the License.
 #
 from cloudkittyclient.v1 import client
+from cloudkittyclient.v2 import dataframes
 from cloudkittyclient.v2 import scope
 from cloudkittyclient.v2 import summary
 
@@ -36,5 +37,6 @@ class Client(client.Client):
             **kwargs
         )
 
+        self.dataframes = dataframes.DataframesManager(self.api_client)
         self.scope = scope.ScopeManager(self.api_client)
         self.summary = summary.SummaryManager(self.api_client)
