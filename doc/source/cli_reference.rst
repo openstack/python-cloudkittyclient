@@ -13,6 +13,9 @@ V2 Client
 =========
 
 .. autoprogram-cliff:: cloudkittyclient.v2
+   :command: dataframes add
+
+.. autoprogram-cliff:: cloudkittyclient.v2
    :command: scope state get
 
 .. autoprogram-cliff:: cloudkittyclient.v2

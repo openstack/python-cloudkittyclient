@@ -24,24 +24,30 @@ from cloudkittyclient.tests import utils
 class BaseFunctionalTest(utils.BaseTestCase):
 
     def _run(self, executable, action,
-             flags='', params='', fmt='-f json', has_output=True):
+             flags='', params='', fmt='-f json', stdin=None, has_output=True):
         if not has_output:
             fmt = ''
         cmd = ' '.join([executable, flags, action, params, fmt])
         cmd = shlex.split(cmd)
-        p = subprocess.Popen(cmd, env=os.environ.copy(), shell=False,
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = p.communicate()
+        p = subprocess.Popen(
+            cmd, env=os.environ.copy(), shell=False,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            stdin=subprocess.PIPE if stdin else None,
+        )
+        stdout, stderr = p.communicate(input=stdin)
         if p.returncode != 0:
             raise RuntimeError('"{cmd}" returned {val}: {msg}'.format(
                 cmd=' '.join(cmd), val=p.returncode, msg=stderr))
         return json.loads(stdout) if has_output else None
 
     def openstack(self, action,
-                  flags='', params='', fmt='-f json', has_output=True):
+                  flags='', params='', fmt='-f json',
+                  stdin=None, has_output=True):
         return self._run('openstack rating', action,
-                         flags, params, fmt, has_output)
+                         flags, params, fmt, stdin, has_output)
 
     def cloudkitty(self, action,
-                   flags='', params='', fmt='-f json', has_output=True):
-        return self._run('cloudkitty', action, flags, params, fmt, has_output)
+                   flags='', params='', fmt='-f json',
+                   stdin=None, has_output=True):
+        return self._run('cloudkitty', action, flags, params, fmt,
+                         stdin, has_output)
