@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Support for the ``GET /v2/dataframes`` endpoint has been added
+    to the client. A new ``dataframes get`` CLI command is also available.

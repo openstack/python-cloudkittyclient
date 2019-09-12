@@ -14,6 +14,8 @@
 #
 import json
 
+from collections import OrderedDict
+
 from cloudkittyclient import exc
 from cloudkittyclient.tests.unit.v2 import base
 
@@ -149,3 +151,22 @@ class TestDataframes(base.BaseAPIEndpointTestCase):
         self.assertRaises(
             exc.ArgumentRequired,
             self.dataframes.add_dataframes)
+
+    def test_get_dataframes(self):
+        self.dataframes.get_dataframes()
+        self.api_client.get.assert_called_once_with('/v2/dataframes')
+
+    def test_get_dataframes_with_pagination_args(self):
+        self.dataframes.get_dataframes(offset=10, limit=10)
+        try:
+            self.api_client.get.assert_called_once_with(
+                '/v2/dataframes?limit=10&offset=10')
+        except AssertionError:
+            self.api_client.get.assert_called_once_with(
+                '/v2/dataframes?offset=10&limit=10')
+
+    def test_get_dataframes_filters(self):
+        self.dataframes.get_dataframes(
+            filters=OrderedDict([('one', 'two'), ('three', 'four')]))
+        self.api_client.get.assert_called_once_with(
+            '/v2/dataframes?filters=one%3Atwo%2Cthree%3Afour')

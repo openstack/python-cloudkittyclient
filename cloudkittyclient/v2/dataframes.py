@@ -48,3 +48,30 @@ class DataframesManager(base.BaseManager):
             url,
             data=dataframes,
         )
+
+    def get_dataframes(self, **kwargs):
+        """Returns a paginated list of DataFrames.
+
+        This support filters and datetime framing.
+
+        :param offset: Index of the first dataframe that should be returned.
+        :type offset: int
+        :param limit: Maximal number of dataframes to return.
+        :type limit: int
+        :param filters: Optional dict of filters to select data on.
+        :type filters: dict
+        :param begin: Start of the period to gather data from
+        :type begin: datetime.datetime
+        :param end: End of the period to gather data from
+        :type end: datetime.datetime
+        """
+        kwargs['filters'] = ','.join(
+            '{}:{}'.format(k, v) for k, v in
+            (kwargs.get('filters', None) or {}).items()
+        )
+
+        authorized_args = [
+            'offset', 'limit', 'filters', 'begin', 'end']
+
+        url = self.get_url(None, kwargs, authorized_args=authorized_args)
+        return self.api_client.get(url).json()

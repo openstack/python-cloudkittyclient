@@ -162,6 +162,11 @@ class CkDataframesTest(base.BaseFunctionalTest):
                 has_output=False,
             )
 
+    def test_dataframes_get(self):
+        # TODO(jferrieu): functional tests will be added in another
+        # patch for `dataframes get`
+        pass
+
 
 class OSCDataframesTest(CkDataframesTest):
     def __init__(self, *args, **kwargs):
