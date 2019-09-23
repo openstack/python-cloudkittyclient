@@ -26,6 +26,9 @@ class BaseClient(object):
                  insecure=False,
                  **kwargs):
         adapter_options.setdefault('service_type', 'rating')
+        adapter_options.setdefault('additional_headers', {
+            'Content-Type': 'application/json',
+        })
 
         if insecure:
             verify_cert = False
