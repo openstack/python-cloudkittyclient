@@ -139,7 +139,7 @@ class CkDataframesTest(base.BaseFunctionalTest):
     def test_dataframes_add_with_no_args(self):
         self.assertRaisesRegexp(
             RuntimeError,
-            'error: too few arguments',
+            'error: the following arguments are required: datafile',
             self.runner,
             'dataframes add',
             fmt='',
