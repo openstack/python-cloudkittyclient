@@ -21,6 +21,8 @@
         cloudkitty: https://opendev.org/openstack/cloudkitty
       devstack_localrc:
         CLOUDKITTY_FETCHER: keystone
+        DEVSTACK_GATE_USE_PYTHON3: "True"
+        USE_PYTHON3: True
       devstack_services:
         ck-api: true
         horizon: false
@@ -39,34 +41,11 @@
     vars:
       tox_envlist: functional-v2
 
-- job:
-    name: cloudkittyclient-devstack-functional-base-py3
-    parent: cloudkittyclient-devstack-functional-base
-    description: |
-      Job for cloudkittyclient functional tests, ran in python3.
-    vars:
-      devstack_localrc:
-        DEVSTACK_GATE_USE_PYTHON3: "True"
-        USE_PYTHON3: "True"
-
-- job:
-    name: cloudkittyclient-devstack-functional-v1-client-py3
-    parent: cloudkittyclient-devstack-functional-base-py3
-    vars:
-      tox_envlist: functional-v1
-
-- job:
-    name: cloudkittyclient-devstack-functional-v2-client-py3
-    parent: cloudkittyclient-devstack-functional-base-py3
-    vars:
-      tox_envlist: functional-v2
-
 - project:
     templates:
       - openstack-lower-constraints-jobs
       - check-requirements
       - openstack-cover-jobs
-      - openstack-python-jobs
       - openstack-python3-ussuri-jobs
       - openstackclient-plugin-jobs
       - publish-openstack-docs-pti
@@ -76,17 +55,9 @@
             voting: true
         - cloudkittyclient-devstack-functional-v2-client:
             voting: true
-        - cloudkittyclient-devstack-functional-v1-client-py3:
-            voting: true
-        - cloudkittyclient-devstack-functional-v2-client-py3:
-            voting: true
     gate:
       jobs:
         - cloudkittyclient-devstack-functional-v1-client:
             voting: true
         - cloudkittyclient-devstack-functional-v2-client:
-            voting: true
-        - cloudkittyclient-devstack-functional-v1-client-py3:
-            voting: true
-        - cloudkittyclient-devstack-functional-v2-client-py3:
             voting: true
