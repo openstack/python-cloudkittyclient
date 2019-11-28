@@ -15,9 +15,23 @@
 #
 from string import Formatter as StringFormatter
 
+from six import add_metaclass
 from six.moves.urllib.parse import urlencode
 
+from cloudkittyclient import utils
 
+
+class HttpDecoratorMeta(type):
+
+    ignore = ('get_url', )
+
+    def __new__(cls, *args, **kwargs):
+        return utils.format_http_errors(HttpDecoratorMeta.ignore)(
+            super(HttpDecoratorMeta, cls).__new__(cls, *args, **kwargs)
+        )
+
+
+@add_metaclass(HttpDecoratorMeta)
 class BaseManager(object):
     """Base class for Endpoint Manager objects."""
 

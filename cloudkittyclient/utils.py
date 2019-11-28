@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2018 Objectif Libre
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -13,8 +12,12 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
+import inspect
+import sys
+
 import pbr.version
 
+from keystoneauth1.exceptions import http
 from oslo_utils import timeutils
 
 
@@ -56,3 +59,44 @@ def list_to_cols(list_obj, cols):
     for item in list_obj:
         values.append(dict_to_cols(item, cols))
     return values
+
+
+def http_error_formatter(func):
+    """This decorator catches Http Errors and re-formats them"""
+
+    def wrap(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except http.HttpError as e:
+            raise http.HttpError(message=e.response.text,
+                                 http_status=e.http_status)
+
+    return wrap
+
+
+def format_http_errors(ignore):
+    """Applies ``http_error_formatter`` to all methods of a class.
+
+    :param ignore: List of function names to ignore
+    :type ignore: iterable
+    """
+
+    def wrap(cls):
+        # If you want pretty errors, use python3.
+        # __qualname__ does not exist in python 2
+        if sys.version_info.major < 3:
+            return cls
+
+        def predicate(item):
+            # This avoids decorating functions of parent classes
+            return (inspect.isfunction(item)
+                    and item.__name__ not in ignore
+                    and not item.__name__.startswith('_')
+                    and cls.__name__ in item.__qualname__)
+
+        for name, func in inspect.getmembers(cls, predicate):
+            setattr(cls, name, http_error_formatter(func))
+
+        return cls
+
+    return wrap
