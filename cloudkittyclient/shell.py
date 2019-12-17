@@ -94,7 +94,7 @@ class CloudKittyShell(cliff.app.App):
         super(CloudKittyShell, self).__init__(
             description='CloudKitty CLI client',
             version=utils.get_version(),
-            command_manager=CommandManager('cloudkittyclient.v{}'.format(
+            command_manager=CommandManager('cloudkittyclient_v{}'.format(
                 self._get_api_version(args[:]),
             )),
             deferred_help=True,

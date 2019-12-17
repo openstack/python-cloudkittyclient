@@ -26,6 +26,8 @@ extensions = [
     'sphinxcontrib.rsvgconverter',
 ]
 
+autoprogram_cliff_application = 'cloudkitty'
+
 autoprogram_cliff_ignored = [
     "--format", "--column", "--max-width", "--fit-width", "--print-empty",
     "--format-config-file", "--noindent", "--quote", "--sort-column",
