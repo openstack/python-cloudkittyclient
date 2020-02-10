@@ -15,6 +15,7 @@
 #
 from cloudkittyclient.v1 import client
 from cloudkittyclient.v2 import dataframes
+from cloudkittyclient.v2.rating import modules
 from cloudkittyclient.v2 import scope
 from cloudkittyclient.v2 import summary
 
@@ -40,3 +41,4 @@ class Client(client.Client):
         self.dataframes = dataframes.DataframesManager(self.api_client)
         self.scope = scope.ScopeManager(self.api_client)
         self.summary = summary.SummaryManager(self.api_client)
+        self.rating = modules.RatingManager(self.api_client)
