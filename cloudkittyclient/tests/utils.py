@@ -12,12 +12,13 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
+from unittest import mock
+
 import fixtures
 import testtools
 
 from keystoneauth1 import adapter
 from keystoneauth1 import session
-import mock
 
 
 class BaseTestCase(testtools.TestCase):

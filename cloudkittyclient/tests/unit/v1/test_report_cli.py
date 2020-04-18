@@ -13,7 +13,7 @@
 #    under the License.
 #
 import collections
-import mock
+from unittest import mock
 
 from cloudkittyclient.tests.unit.v1 import base
 from cloudkittyclient.v1 import report_cli

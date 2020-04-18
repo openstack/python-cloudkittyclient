@@ -13,7 +13,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
-import mock
+from unittest import mock
 
 from cloudkittyclient import exc
 from cloudkittyclient.tests.unit.v1 import base
