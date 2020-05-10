@@ -13,7 +13,6 @@
 #    under the License.
 #
 import json
-import six
 
 from cloudkittyclient.common import base
 from cloudkittyclient import exc
@@ -36,7 +35,7 @@ class DataframesManager(base.BaseManager):
         if not dataframes:
             raise exc.ArgumentRequired("'dataframes' argument is required")
 
-        if not isinstance(dataframes, six.string_types):
+        if not isinstance(dataframes, str):
             try:
                 dataframes = json.dumps(dataframes)
             except TypeError:
