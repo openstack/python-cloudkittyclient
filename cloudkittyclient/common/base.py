@@ -12,11 +12,9 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-#
-from string import Formatter as StringFormatter
 
-from six import add_metaclass
-from six.moves.urllib.parse import urlencode
+from string import Formatter as StringFormatter
+from urllib.parse import urlencode
 
 from cloudkittyclient import utils
 
@@ -31,8 +29,7 @@ class HttpDecoratorMeta(type):
         )
 
 
-@add_metaclass(HttpDecoratorMeta)
-class BaseManager(object):
+class BaseManager(object, metaclass=HttpDecoratorMeta):
     """Base class for Endpoint Manager objects."""
 
     url = ''
