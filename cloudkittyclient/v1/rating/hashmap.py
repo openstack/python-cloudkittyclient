@@ -373,7 +373,7 @@ class HashmapManager(base.BaseManager):
         :type level: str
         """
         for arg in ['cost', 'level']:
-            if not kwargs.get(arg):
+            if kwargs.get(arg) is None:
                 raise exc.ArgumentRequired(
                     "'{}' argument is required".format(arg))
         if not kwargs.get('service_id') and not kwargs.get('field_id'):
