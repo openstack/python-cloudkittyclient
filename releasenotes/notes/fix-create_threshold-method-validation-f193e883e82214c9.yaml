@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    Fix `create_threshold` method when using cost as 0.
+    When using 0 as the cost, the `create_threshold` method
+    throws an exception. That happens because 0 (zero) is evaluated
+    to False. Therefore, we need to change the validation method to
+    check if the values are None.
