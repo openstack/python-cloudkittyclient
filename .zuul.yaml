@@ -49,6 +49,7 @@
       - openstack-python3-wallaby-jobs
       - openstackclient-plugin-jobs
       - publish-openstack-docs-pti
+      - release-notes-jobs-python3
     check:
       jobs:
         - cloudkittyclient-devstack-functional-v1-client:
