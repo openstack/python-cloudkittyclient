@@ -12,9 +12,18 @@ Contents:
 
    install
    usage
-   contributor
    cli_reference
    api_reference/index
+
+For Contributors
+================
+
+* If you are a new contributor to python-cloudkittyclient please refer: :doc:`contributor/contributing`
+
+  .. toctree::
+     :hidden:
+
+     contributor/contributing
 
 Indices and tables
 ==================
