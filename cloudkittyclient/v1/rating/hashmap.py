@@ -172,7 +172,7 @@ class HashmapManager(base.BaseManager):
         :param value: Value of the mapping
         :type value: str
         """
-        if not kwargs.get('cost'):
+        if kwargs.get('cost') is None:
             raise exc.ArgumentRequired("'cost' argument is required")
         if not kwargs.get('value'):
             if not kwargs.get('service_id'):

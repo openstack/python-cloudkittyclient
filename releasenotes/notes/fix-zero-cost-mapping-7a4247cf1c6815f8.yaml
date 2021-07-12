@@ -1,0 +1,4 @@
+---
+fixes:
+  - |
+    Fixes creation of hashmap mappings with a zero cost.
