@@ -12,7 +12,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
-import collections
+from collections import abc
 from unittest import mock
 
 from cloudkittyclient.tests.unit.v1 import base
@@ -57,7 +57,7 @@ class TestReportCli(base.BaseAPIEndpointTestCase):
 
         assert len(result) == 2
         assert result[0] == ('Tenant ID', )
-        assert isinstance(result[1], collections.Iterable)
+        assert isinstance(result[1], abc.Iterable)
 
         for res in result[1]:
-            assert isinstance(res, collections.Iterable)
+            assert isinstance(res, abc.Iterable)
