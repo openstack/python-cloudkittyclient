@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Cloudkitty Release Notes documentation build configuration file.
+# CloudKitty Client Release Notes documentation build configuration file.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -42,8 +42,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Cloudkitty Client Release Notes'
-copyright = u'2016, Cloudkitty developers'
+project = u'CloudKitty Client Release Notes'
+copyright = u'2016, CloudKitty developers'
 
 # Release notes are version independent.
 # The short X.Y version.
@@ -173,7 +173,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'CloudkittyReleaseNotestdoc'
+htmlhelp_basename = 'CloudKittyClientReleaseNotestdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -193,8 +193,9 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'PythonCloudkitty.tex', u'Cloudkitty Release Notes Documentation',
-   u'Cloudkitty developers', 'manual'),
+  ('index', 'PythonCloudKittyClient.tex',
+   u'CloudKitty Client Release Notes Documentation',
+   u'CloudKitty developers', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -224,8 +225,8 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'cloudkittyclient',
-     u'Cloudkitty Client Release Notes Documentation',
-     [u'Cloudkitty developers'], 1)
+     u'CloudKitty Client Release Notes Documentation',
+     [u'CloudKitty developers'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -239,8 +240,8 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'cloudkittyclient',
-   u'Cloudkitty Client Release Notes Documentation',
-   u'Cloudkitty Client developers', 'Cloudkittyclient',
+   u'CloudKitty Client Release Notes Documentation',
+   u'CloudKitty Client developers', 'CloudKittyClient',
    'One line description of project.', 'Miscellaneous'),
 ]
 

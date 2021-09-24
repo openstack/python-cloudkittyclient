@@ -1,4 +1,4 @@
-Welcome to Cloudkitty Client Release Notes documentation!
+Welcome to CloudKitty Client Release Notes documentation!
 =========================================================
 
 Contents

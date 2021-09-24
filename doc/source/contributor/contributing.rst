@@ -22,7 +22,7 @@ Please refer the `python-cloudkittyclient Core Team
 
 New Feature Planning
 ~~~~~~~~~~~~~~~~~~~~
-Cloudkitty features are tracked on `Storyboard <https://storyboard.openstack.org/#!/project/895>`_.
+CloudKitty features are tracked on `Storyboard <https://storyboard.openstack.org/#!/project/895>`_.
 
 Task Tracking
 ~~~~~~~~~~~~~
