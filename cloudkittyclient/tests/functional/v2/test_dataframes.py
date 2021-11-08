@@ -137,7 +137,7 @@ class CkDataframesTest(base.BaseFunctionalTest):
         super(CkDataframesTest, self).tearDown()
 
     def test_dataframes_add_with_no_args(self):
-        self.assertRaisesRegexp(
+        self.assertRaisesRegex(
             RuntimeError,
             'error: the following arguments are required: datafile',
             self.runner,
