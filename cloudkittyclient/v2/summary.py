@@ -36,6 +36,8 @@ class SummaryManager(base.BaseManager):
         :type begin: datetime.datetime
         :param end: End of the period to gather data from
         :type end: datetime.datetime
+        :param response_format: Either 'table' or 'object' defaults to 'table'
+        :type response_format: str
         """
         if 'groupby' in kwargs.keys() and isinstance(kwargs['groupby'], list):
             kwargs['groupby'] = ','.join(kwargs['groupby'])
@@ -46,7 +48,8 @@ class SummaryManager(base.BaseManager):
         )
 
         authorized_args = [
-            'offset', 'limit', 'filters', 'groupby', 'begin', 'end']
+            'offset', 'limit', 'filters', 'groupby', 'begin', 'end',
+            'response_format']
 
         url = self.get_url(None, kwargs, authorized_args=authorized_args)
         return self.api_client.get(url).json()
