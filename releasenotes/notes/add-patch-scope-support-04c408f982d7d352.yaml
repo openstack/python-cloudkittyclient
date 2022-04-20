@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Introduce the patch scope API in the CLI. The command "rating scope
+    patch" is added to the OpenStack CLI with this patch, and the command
+    "scope patch" is added to the CloudKitty python client.

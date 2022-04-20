@@ -96,3 +96,36 @@ class CliScopeStateReset(command.Command):
             all_scopes=parsed_args.all_scopes,
             state=parsed_args.state,
         )
+
+
+class CliPatchScope(command.Command):
+    """Update scope attributes."""
+
+    info_columns = [
+        ('scope_key', 'Scope Key'),
+        ('collector', 'Collector'),
+        ('fetcher', 'Fetcher'),
+        ('active', 'Active'),
+    ]
+
+    def get_parser(self, prog_name):
+        parser = super(CliPatchScope, self).get_parser(prog_name)
+
+        for col in self.info_columns:
+            parser.add_argument(
+                '--' + col[0].replace('_', '-'), type=str,
+                help='Optional filter on ' + col[1])
+
+        parser.add_argument(
+            '-id', '--scope-id', required=True, type=str,
+            help="The scope ID to be updated")
+
+        return parser
+
+    def take_action(self, parsed_args):
+        return utils.get_client_from_osc(self).scope.update_scope(
+            collector=parsed_args.collector,
+            fetcher=parsed_args.fetcher,
+            scope_id=parsed_args.scope_id,
+            scope_key=parsed_args.scope_key,
+            active=parsed_args.active)
