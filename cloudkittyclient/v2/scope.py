@@ -15,6 +15,8 @@
 from cloudkittyclient.common import base
 from cloudkittyclient import exc
 
+from distutils.util import strtobool
+
 
 class ScopeManager(base.BaseManager):
     """Class used to handle /v2/scope endpoint"""
@@ -100,3 +102,41 @@ class ScopeManager(base.BaseManager):
 
         url = self.get_url(None, kwargs)
         return self.api_client.put(url, json=body)
+
+    def update_scope(self, **kwargs):
+        """Update storage scope
+
+        The `scope_id field` is mandatory, and all other are optional. Only the
+        attributes sent will be updated. The attributes that are not sent will
+        not be changed in the backend.
+
+        :param collector: collector to be used by the scope.
+        :type collector: str
+        :param fetcher: fetcher to be used by the scope.
+        :type fetcher: str
+        :param scope_id: Mandatory scope_id to update.
+        :type scope_id: str
+        :param scope_key: scope_key to be used by the scope.
+        :type scope_key: str
+        :param active: Indicates if the scope is active or not
+        :type active: str
+        """
+
+        if not kwargs.get('scope_id'):
+            raise exc.ArgumentRequired("'scope_id' argument is required")
+
+        body = dict(
+            scope_id=kwargs.get('scope_id'),
+            scope_key=kwargs.get('scope_key'),
+            collector=kwargs.get('collector'),
+            fetcher=kwargs.get('fetcher')
+        )
+
+        if kwargs.get('active'):
+            body['active'] = strtobool(kwargs.get('active'))
+
+        # Stripping None
+        body = dict(filter(lambda elem: elem[1] is not None, body.items()))
+
+        url = self.get_url(None, kwargs)
+        return self.api_client.patch(url, json=body).json()
