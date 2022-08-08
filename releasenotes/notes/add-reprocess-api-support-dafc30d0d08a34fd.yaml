@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Introduce reprocessing task API in the CLI. The following new commands
+    are added to the OpenStack CLI "rating tasks reprocessing get" and
+    "rating tasks reprocessing create". For CloudKitty CLI, we added the
+    following new commands "tasks reprocessing get" and "tasks reprocessing
+    create". Both command sets work in a similar fashion, but one is
+    targetting the OpenStack CLI integration, whereas the other is
+    targetting CloudKitty client only.

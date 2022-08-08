@@ -16,6 +16,7 @@
 from cloudkittyclient.v1 import client
 from cloudkittyclient.v2 import dataframes
 from cloudkittyclient.v2.rating import modules
+from cloudkittyclient.v2 import reprocessing
 from cloudkittyclient.v2 import scope
 from cloudkittyclient.v2 import summary
 
@@ -42,3 +43,4 @@ class Client(client.Client):
         self.scope = scope.ScopeManager(self.api_client)
         self.summary = summary.SummaryManager(self.api_client)
         self.rating = modules.RatingManager(self.api_client)
+        self.reprocessing = reprocessing.ReprocessingManager(self.api_client)
