@@ -44,8 +44,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'python-cloudkittyclient'
-copyright = u'2017, OpenStack Foundation'
+project = 'python-cloudkittyclient'
+copyright = '2017, OpenStack Foundation'
 
 # openstackdocstheme options
 repository_name = 'openstack/python-cloudkittyclient'
@@ -99,8 +99,8 @@ latex_elements = {
 latex_documents = [
     ('index',
      'doc-%s.tex' % project,
-     u'%s Documentation' % project,
-     u'OpenStack Foundation', 'howto', True),
+     '%s Documentation' % project,
+     'OpenStack Foundation', 'howto', True),
 ]
 
 # Example configuration for intersphinx: refer to the Python standard library.

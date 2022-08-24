@@ -42,8 +42,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'CloudKitty Client Release Notes'
-copyright = u'2016, CloudKitty developers'
+project = 'CloudKitty Client Release Notes'
+copyright = '2016, CloudKitty developers'
 
 # Release notes are version independent.
 # The short X.Y version.
@@ -194,8 +194,8 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
   ('index', 'PythonCloudKittyClient.tex',
-   u'CloudKitty Client Release Notes Documentation',
-   u'CloudKitty developers', 'manual'),
+   'CloudKitty Client Release Notes Documentation',
+   'CloudKitty developers', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -225,8 +225,8 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'cloudkittyclient',
-     u'CloudKitty Client Release Notes Documentation',
-     [u'CloudKitty developers'], 1)
+     'CloudKitty Client Release Notes Documentation',
+     ['CloudKitty developers'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -240,8 +240,8 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'cloudkittyclient',
-   u'CloudKitty Client Release Notes Documentation',
-   u'CloudKitty Client developers', 'CloudKittyClient',
+   'CloudKitty Client Release Notes Documentation',
+   'CloudKitty Client developers', 'CloudKittyClient',
    'One line description of project.', 'Miscellaneous'),
 ]
 
