@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Fixed a bug where creating a reprocessing task would fail due to sending a
+    POST request to the wrong endpoint.
