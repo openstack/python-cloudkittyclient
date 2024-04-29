@@ -19,8 +19,6 @@ class ReprocessingManager(base.BaseManager):
 
     url = '/v2/task/reprocesses'
 
-    url_to_post = '/v2/task/reprocess'
-
     def get_reprocessing_tasks(self, offset=0, limit=100, scope_ids=[],
                                order="DESC", **kwargs):
         """Returns a paginated list of reprocessing tasks.
@@ -75,4 +73,4 @@ class ReprocessingManager(base.BaseManager):
 
         body = dict(filter(lambda elem: bool(elem[1]), body.items()))
 
-        return self.api_client.post(self.url_to_post, json=body).json()
+        return self.api_client.post(self.url, json=body).json()
