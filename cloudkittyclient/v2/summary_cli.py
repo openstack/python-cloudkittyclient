@@ -35,10 +35,20 @@ class CliSummaryGet(lister.Lister):
                             help='Maximal number of elements')
         parser.add_argument('-g', '--groupby', type=str, action='append',
                             help='Attribute to group the summary by. Can be '
-                            'specified several times')
+                                 'specified several times. One can also group '
+                                 'by different time options such as: "time-d" '
+                                 'to group by day of the year, "time-w" to '
+                                 'group by week of the year, "time-m" to '
+                                 'group by month, and "time-y" to group data '
+                                 'by year.')
         parser.add_argument('--filter', type=filter_, action='append',
                             help="Optional filter, in 'key:value' format. Can "
-                            "be specified several times.")
+                                 "be specified several times. It is also "
+                                 "possible to filter data using the group by "
+                                 "values. However, one needs to group by as "
+                                 "well; for instance, if one wants to filter "
+                                 "by resource id (id), then we need to group "
+                                 "by id via the option '-g id'.")
         parser.add_argument('-b', '--begin', type=timeutils.parse_isotime,
                             help="Start of the period to query, in iso8601 "
                             "format. Example: 2019-05-01T00:00:00Z.")
