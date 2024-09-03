@@ -13,7 +13,6 @@
 #    under the License.
 #
 import inspect
-import sys
 
 import pbr.version
 
@@ -82,11 +81,6 @@ def format_http_errors(ignore):
     """
 
     def wrap(cls):
-        # If you want pretty errors, use python3.
-        # __qualname__ does not exist in python 2
-        if sys.version_info.major < 3:
-            return cls
-
         def predicate(item):
             # This avoids decorating functions of parent classes
             return (inspect.isfunction(item)
