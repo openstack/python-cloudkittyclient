@@ -12,10 +12,10 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
+from oslo_utils import strutils
+
 from cloudkittyclient.common import base
 from cloudkittyclient import exc
-
-from distutils.util import strtobool
 
 
 class ScopeManager(base.BaseManager):
@@ -133,7 +133,8 @@ class ScopeManager(base.BaseManager):
         )
 
         if kwargs.get('active'):
-            body['active'] = strtobool(kwargs.get('active'))
+            body['active'] = strutils.bool_from_string(
+                kwargs.get('active'), strict=True)
 
         # Stripping None
         body = dict(filter(lambda elem: elem[1] is not None, body.items()))
