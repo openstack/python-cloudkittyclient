@@ -21,8 +21,6 @@
         cloudkitty: https://opendev.org/openstack/cloudkitty
       devstack_localrc:
         CLOUDKITTY_FETCHER: keystone
-        DEVSTACK_GATE_USE_PYTHON3: "True"
-        USE_PYTHON3: True
       devstack_services:
         ck-api: true
         horizon: false
