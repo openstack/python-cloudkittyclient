@@ -13,6 +13,9 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
+from datetime import datetime
+from datetime import timedelta
+
 from cloudkittyclient.tests.functional import base
 
 
@@ -136,13 +139,15 @@ class CkHashmapTest(base.BaseFunctionalTest):
         self.assertEqual(len(resp), 0)
 
     def test_create_get_update_delete_mapping_service(self):
+        future_date = datetime.now() + timedelta(days=1)
+        date_iso = future_date.isoformat()
         resp = self.runner('hashmap service create', params='testservice')[0]
         service_id = resp['Service ID']
         self._services.append(service_id)
 
         # Create mapping
         resp = self.runner('hashmap mapping create',
-                           params='-s {} 12'.format(service_id))[0]
+                           params=f'-s {service_id} 12 --start {date_iso}')[0]
         mapping_id = resp['Mapping ID']
         self._mappings.append(mapping_id)
         self.assertEqual(resp['Service ID'], service_id)
@@ -173,6 +178,8 @@ class CkHashmapTest(base.BaseFunctionalTest):
             'hashmap service delete', params=service_id, has_output=False)
 
     def test_create_get_update_delete_mapping_field(self):
+        future_date = datetime.now() + timedelta(days=1)
+        date_iso = future_date.isoformat()
         resp = self.runner('hashmap service create', params='testservice')[0]
         service_id = resp['Service ID']
         self._services.append(service_id)
@@ -185,7 +192,8 @@ class CkHashmapTest(base.BaseFunctionalTest):
         # Create mapping
         resp = self.runner(
             'hashmap mapping create',
-            params='--field-id {} 12 --value testvalue'.format(field_id))[0]
+            params=f'--field-id {field_id} 12 --value '
+                   f'testvalue --start {date_iso}')[0]
         mapping_id = resp['Mapping ID']
         self._mappings.append(service_id)
         self.assertEqual(resp['Field ID'], field_id)
@@ -202,6 +210,45 @@ class CkHashmapTest(base.BaseFunctionalTest):
         resp = self.runner('hashmap mapping update',
                            params='--cost 10 {}'.format(mapping_id))[0]
         self.assertEqual(float(resp['Cost']), float(10))
+
+    def test_create_get_update_delete_mapping_field_started(self):
+        resp = self.runner('hashmap service create',
+                           params='testservice_date_started')[0]
+        service_id = resp['Service ID']
+        self._services.append(service_id)
+
+        resp = self.runner(
+            'hashmap field create',
+            params='{} testfield_date_started'.format(service_id))[0]
+        field_id = resp['Field ID']
+        self._fields.append(field_id)
+
+        # Create mapping
+        resp = self.runner(
+            'hashmap mapping create',
+            params=f'--field-id {field_id} 12 --value '
+                   f'testvalue')[0]
+        mapping_id = resp['Mapping ID']
+        self._mappings.append(service_id)
+        self.assertEqual(resp['Field ID'], field_id)
+        self.assertEqual(float(resp['Cost']), float(12))
+        self.assertEqual(resp['Value'], 'testvalue')
+
+        # Get mapping
+        resp = self.runner(
+            'hashmap mapping get', params=mapping_id)[0]
+        self.assertEqual(resp['Mapping ID'], mapping_id)
+        self.assertEqual(float(resp['Cost']), float(12))
+
+        # Should not be able to update a rule that is running (start < now)
+        try:
+            self.runner('hashmap mapping update',
+                        params='--cost 10 {}'.format(mapping_id))[0]
+        except RuntimeError as e:
+            expected_error = ("You are allowed to update only the attribute "
+                              "[end] as this rule is already running as it "
+                              "started on ")
+            self.assertIn(expected_error, str(e))
 
     def test_group_mappings_get(self):
         # Service and group

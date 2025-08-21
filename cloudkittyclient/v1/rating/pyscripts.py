@@ -50,13 +50,22 @@ class PyscriptManager(base.BaseManager):
         :type name: str
         :param data: Content of the script
         :type data: str
+        :param start: Date the script starts being valid
+        :type start: str
+        :param end: Date the script stops being valid
+        :type end: str
+        :param description: Description of the script
+        :type description: str
         """
         for arg in ('name', 'data'):
             if not kwargs.get(arg):
                 raise exc.ArgumentRequired(
                     "'Argument {} is required.'".format(arg))
         url = self.get_url('scripts', kwargs)
-        body = dict(name=kwargs['name'], data=kwargs['data'])
+        body = dict(name=kwargs['name'], data=kwargs['data'],
+                    start=kwargs.get('start'),
+                    end=kwargs.get('end'),
+                    description=kwargs.get('description'))
         return self.api_client.post(url, json=body).json()
 
     def update_script(self, **kwargs):
@@ -68,11 +77,17 @@ class PyscriptManager(base.BaseManager):
         :type name: str
         :param data: Content of the script
         :type data: str
+        :param start: Date the script starts being valid
+        :type start: str
+        :param end: Date the script stops being valid
+        :type end: str
+        :param description: Description of the script
+        :type description: str
         """
         if not kwargs.get('script_id'):
             raise exc.ArgumentRequired("Argument 'script_id' is required.")
         script = self.get_script(script_id=kwargs['script_id'])
-        for key in ('name', 'data'):
+        for key in ('name', 'data', 'start', 'end', 'description'):
             if kwargs.get(key):
                 script[key] = kwargs[key]
         script.pop('checksum', None)

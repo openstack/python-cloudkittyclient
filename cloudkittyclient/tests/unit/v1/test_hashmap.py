@@ -110,7 +110,10 @@ class TestHashmap(base.BaseAPIEndpointTestCase):
         self.assertRaises(exc.ArgumentRequired, self.hashmap.get_mapping)
 
     def test_create_mapping(self):
-        kwargs = dict(cost=2, value='value', field_id='field_id')
+        kwargs = dict(cost=2, value='value', field_id='field_id',
+                      name='name', start="2024-01-01",
+                      end="2024-01-01",
+                      description="description")
         body = dict(
             cost=kwargs.get('cost'),
             value=kwargs.get('value'),
@@ -119,6 +122,10 @@ class TestHashmap(base.BaseAPIEndpointTestCase):
             group_id=kwargs.get('group_id'),
             tenant_id=kwargs.get('tenant_id'),
             type=kwargs.get('type') or 'flat',
+            start="2024-01-01",
+            end="2024-01-01",
+            description="description",
+            name='name'
         )
         self.hashmap.create_mapping(**kwargs)
         self.api_client.post.assert_called_once_with(

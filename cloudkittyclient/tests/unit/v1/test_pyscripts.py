@@ -38,7 +38,8 @@ class TestPyscripts(base.BaseAPIEndpointTestCase):
         self.assertRaises(exc.ArgumentRequired, self.pyscripts.get_script)
 
     def test_create_script(self):
-        kwargs = dict(name='name', data='data')
+        kwargs = dict(name='name', data='data', start=None,
+                      end=None, description=None)
         self.pyscripts.create_script(**kwargs)
         self.api_client.post.assert_called_once_with(
             '/v1/rating/module_config/pyscripts/scripts/', json=kwargs)
