@@ -26,6 +26,9 @@ class BaseScriptCli(lister.Lister):
         ('script_id', 'Script ID'),
         ('checksum', 'Checksum'),
         ('data', 'Data'),
+        ('start', 'Script Start Date'),
+        ('end', 'Script End Date'),
+        ('description', 'Script Description')
     ]
 
 
@@ -82,6 +85,10 @@ class CliCreateScript(BaseScriptCli):
         parser = super(CliCreateScript, self).get_parser(prog_name)
         parser.add_argument('name', type=str, help='Script Name')
         parser.add_argument('data', type=str, help='Script Data or data file')
+        parser.add_argument('--start', type=str, help='Script Start')
+        parser.add_argument('--end', type=str, help='Script End')
+        parser.add_argument('--description', type=str,
+                            help='Script Description')
         return parser
 
 
@@ -107,6 +114,10 @@ class CliUpdateScript(BaseScriptCli):
         parser.add_argument('-n', '--name', type=str, help='Script Name')
         parser.add_argument('-d', '--data', type=str,
                             help='Script Data or data file')
+        parser.add_argument('--start', type=str, help='Script Start')
+        parser.add_argument('--end', type=str, help='Script End')
+        parser.add_argument('--description', type=str,
+                            help='Script Description')
         return parser
 
 

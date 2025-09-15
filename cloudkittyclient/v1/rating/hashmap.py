@@ -13,6 +13,8 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
+import uuid
+
 from cloudkittyclient.common import base
 from cloudkittyclient import exc
 
@@ -171,6 +173,14 @@ class HashmapManager(base.BaseManager):
         :type type: str
         :param value: Value of the mapping
         :type value: str
+        :param name: Name of the mapping
+        :type name: str
+        :param start: Date the mapping starts being valid
+        :type start: str
+        :param end: Date the mapping stops being valid
+        :type end: str
+        :param description: Description of the mapping
+        :type description: str
         """
         if kwargs.get('cost') is None:
             raise exc.ArgumentRequired("'cost' argument is required")
@@ -196,6 +206,16 @@ class HashmapManager(base.BaseManager):
             tenant_id=kwargs.get('tenant_id'),
             type=kwargs.get('type') or 'flat',
         )
+        if kwargs.get('description'):
+            body['description'] = kwargs.get('description')
+        if kwargs.get('start'):
+            body['start'] = kwargs.get('start')
+        if kwargs.get('end'):
+            body['end'] = kwargs.get('end')
+        if kwargs.get('name'):
+            body['name'] = kwargs.get('name')
+        else:
+            body['name'] = uuid.uuid4().hex[:24]
         url = self.get_url('mappings', kwargs)
         return self.api_client.post(url, json=body).json()
 

@@ -13,6 +13,9 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
+from datetime import datetime
+from datetime import timedelta
+
 from cloudkittyclient.tests.functional import base
 
 
@@ -23,9 +26,12 @@ class CkPyscriptTest(base.BaseFunctionalTest):
         self.runner = self.cloudkitty
 
     def test_create_get_update_list_delete(self):
+        future_date = datetime.now() + timedelta(days=1)
+        date_iso = future_date.isoformat()
         # Create
         resp = self.runner(
-            'pyscript create', params="testscript 'return 0'")[0]
+            'pyscript create', params=f"testscript "
+                                      f"'return 0' --start {date_iso}")[0]
         script_id = resp['Script ID']
         self.assertEqual(resp['Name'], 'testscript')
 
@@ -37,8 +43,9 @@ class CkPyscriptTest(base.BaseFunctionalTest):
         # Update
         resp = self.runner(
             'pyscript update',
-            params="-n newname -d 'return 1' {}".format(script_id))[0]
-        self.assertEqual(resp['Name'], 'newname')
+            params="-d 'return 1' {} --description "
+                   "desc".format(script_id))[0]
+        self.assertEqual(resp['Script Description'], 'desc')
         self.assertEqual(resp['Script ID'], script_id)
         self.assertEqual(resp['Data'], 'return 1')
 
@@ -46,9 +53,45 @@ class CkPyscriptTest(base.BaseFunctionalTest):
         resp = self.runner('pyscript list')
         self.assertEqual(len(resp), 1)
         resp = resp[0]
-        self.assertEqual(resp['Name'], 'newname')
+        self.assertEqual(resp['Script Description'], 'desc')
         self.assertEqual(resp['Script ID'], script_id)
         self.assertEqual(resp['Data'], 'return 1')
+
+        # Delete
+        self.runner('pyscript delete', params=script_id, has_output=False)
+
+    def test_create_get_update_list_delete_started(self):
+        # Create
+        resp = self.runner(
+            'pyscript create', params="testscript_started "
+                                      "'return 0'")[0]
+        script_id = resp['Script ID']
+        self.assertEqual(resp['Name'], 'testscript_started')
+
+        # Get
+        resp = self.runner('pyscript get', params=script_id)[0]
+        self.assertEqual(resp['Name'], 'testscript_started')
+        self.assertEqual(resp['Script ID'], script_id)
+
+        # Should not be able to update a rule that is running (start < now)
+        try:
+            self.runner(
+                'pyscript update',
+                params="-d 'return 1' {} --description "
+                       "desc".format(script_id))[0]
+        except RuntimeError as e:
+            expected_error = ("You are allowed to update only the attribute "
+                              "[end] as this rule is already running as it "
+                              "started on ")
+            self.assertIn(expected_error, str(e))
+
+        # List
+        resp = self.runner('pyscript list')
+        self.assertEqual(len(resp), 1)
+        resp = resp[0]
+        self.assertEqual(resp['Script Description'], None)
+        self.assertEqual(resp['Script ID'], script_id)
+        self.assertEqual(resp['Data'], 'return 0')
 
         # Delete
         self.runner('pyscript delete', params=script_id, has_output=False)

@@ -257,6 +257,10 @@ class CliCreateMapping(lister.Lister):
         ('service_id', 'Service ID'),
         ('group_id', 'Group ID'),
         ('tenant_id', 'Project ID'),
+        ('name', 'Mapping Name'),
+        ('start', 'Mapping Start Date'),
+        ('end', 'Mapping End Date'),
+        ('Description', 'Mapping Description')
     ]
 
     def take_action(self, parsed_args):
@@ -275,6 +279,11 @@ class CliCreateMapping(lister.Lister):
         parser.add_argument('-t', '--type', type=str, help='Mapping type')
         parser.add_argument('--value', type=str, help='Value')
         parser.add_argument('cost', type=float, help='Cost')
+        parser.add_argument('--name', type=str, help='Mapping Name')
+        parser.add_argument('--start', type=str, help='Mapping Start')
+        parser.add_argument('--end', type=str, help='Mapping End')
+        parser.add_argument('--description', type=str,
+                            help='Mapping Description')
         return parser
 
 
@@ -321,6 +330,11 @@ class CliUpdateMapping(lister.Lister):
         parser.add_argument('--value', type=str, help='Value')
         parser.add_argument('--cost', type=str, help='Cost')
         parser.add_argument('mapping_id', type=str, help='Mapping ID')
+        parser.add_argument('--name', type=str, help='Mapping Name')
+        parser.add_argument('--start', type=str, help='Mapping Start')
+        parser.add_argument('--end', type=str, help='Mapping End')
+        parser.add_argument('--description', type=str,
+                            help='Mapping Description')
         return parser
 
 
