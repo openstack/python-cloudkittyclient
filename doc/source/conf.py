@@ -48,9 +48,8 @@ project = 'python-cloudkittyclient'
 copyright = '2017, OpenStack Foundation'
 
 # openstackdocstheme options
-repository_name = 'openstack/python-cloudkittyclient'
-bug_project = 'cloudkitty'
-bug_tag = 'python-cloudkittyclient'
+openstackdocs_repo_name = 'openstack/python-cloudkittyclient'
+openstackdocs_use_storyboard = True
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
 add_function_parentheses = True
