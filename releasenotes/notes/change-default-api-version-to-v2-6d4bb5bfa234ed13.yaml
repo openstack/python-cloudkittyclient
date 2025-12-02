@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The default API version has been changed from v1 to v2. Users who want
+    to continue using the v1 API must now explicitly specify the API version
+    using the ``--os-rating-api-version 1`` CLI option or by setting the
+    ``OS_RATING_API_VERSION=1`` environment variable. If no version is
+    specified, the client will now use the v2 API by default.

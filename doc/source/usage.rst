@@ -42,17 +42,17 @@ Version
 -------
 
 Two versions of the client exist: v1 and v2. The v2 version adds support for
-v2 API endpoints. The default API version is 1. You can specify which API
+v2 API endpoints. The default API version is 2. You can specify which API
 version you want to use via a CLI option:
 
 .. code-block:: shell
 
    # EITHER
-   cloudkitty --os-rating-api-version 2 summary get
+   cloudkitty --os-rating-api-version 1 module list
 
    # OR
-   export OS_RATING_API_VERSION=2
-   cloudkitty summary get
+   export OS_RATING_API_VERSION=1
+   cloudkitty module list
 
 Again, the option can also be provided to the OSC plugin, both via the CLI
 flag or the environment variable.
@@ -68,7 +68,7 @@ to use it without keystone authentication, cloudkittyclient provides the
     >>> from cloudkittyclient import auth as ck_auth
 
     >>> auth = ck_auth.CloudKittyNoAuthPlugin(endpoint='http://127.0.0.1:8889')
-    >>> client = ck_client.Client('1', auth=auth)
+    >>> client = ck_client.Client('2', auth=auth)
     >>> client.report.get_summary()
     {u'summary': [{u'begin': u'2018-03-01T00:00:00',
                    u'end': u'2018-04-01T00:00:00',
@@ -95,7 +95,7 @@ Else, use it the same way as any other OpenStack client::
 
    >>> ck_session = session.Session(auth=auth)
 
-   >>> c = ck_client.Client('1', session=ck_session)
+   >>> c = ck_client.Client('2', session=ck_session)
 
    >>> c.report.get_summary()
    {u'summary': [{u'begin': u'2018-03-01T00:00:00',
@@ -112,25 +112,25 @@ Else, use it the same way as any other OpenStack client::
    and ``cacert``::
 
      >>> client = ck_client.Client(
-             '1', auth=auth, insecure=False, cacert='/path/to/ca')
+             '2', auth=auth, insecure=False, cacert='/path/to/ca')
 
 
-If you want to use the v2 API, you have to specify it at client instanciation
+If you want to use the v1 API, you have to specify it at client instanciation
 
 .. code-block:: python
 
-   c = ck_client.Client('2', session=session)
+   c = ck_client.Client('1', session=session)
 
 When using the ``cloudkitty`` CLI client with keystone authentication, the
 auth plugin to use should automagically be detected. If not, you can specify
 the auth plugin to use with ``--os-auth-type/--os-auth-plugin``::
 
     $ cloudkitty --debug --os-auth-type cloudkitty-noauth summary get
-    +------------+---------------+------------+---------------------+---------------------+
-    | Project ID | Resource Type | Rate       | Begin Time          | End Time            |
-    +------------+---------------+------------+---------------------+---------------------+
-    | ALL        | ALL           | 1676.95499 | 2018-03-01T00:00:00 | 2018-04-01T00:00:00 |
-    +------------+---------------+------------+---------------------+---------------------+
+    +---------------------------+---------------------------+------------+-------------------+
+    | Begin                     | End                       |        Qty |              Rate |
+    +---------------------------+---------------------------+------------+-------------------+
+    | 2025-12-01T00:00:00+01:00 | 2026-01-01T00:00:00+01:00 | 21662194.0 | 3618130.211340219 |
+    +---------------------------+---------------------------+------------+-------------------+
 
 
 CSV report generation
