@@ -18,7 +18,7 @@ from sys import argv
 
 import cliff.app
 from cliff.commandmanager import CommandManager
-import os_client_config
+from openstack import config as occ
 from oslo_log import log
 
 from cloudkittyclient import client
@@ -90,7 +90,7 @@ class CloudKittyShell(cliff.app.App):
 
     def __init__(self, args):
         self._args = args
-        self.cloud_config = os_client_config.OpenStackConfig()
+        self.cloud_config = occ.OpenStackConfig()
         super(CloudKittyShell, self).__init__(
             description='CloudKitty CLI client',
             version=utils.get_version(),
@@ -128,7 +128,7 @@ class CloudKittyShell(cliff.app.App):
     @property
     def client(self):
         if self._client is None:
-            self.cloud = self.cloud_config.get_one_cloud(
+            self.cloud = self.cloud_config.get_one(
                 argparse=self.options)
             session = self.cloud.get_session()
             adapter_options = dict(
