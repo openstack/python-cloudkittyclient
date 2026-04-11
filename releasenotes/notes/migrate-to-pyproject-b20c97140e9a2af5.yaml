@@ -1,0 +1,11 @@
+---
+other:
+  - |
+    To follow the pip deprecations, the setup configuration is migrated from the
+    old ``setup.cfg`` file to the new ``pyproject.toml`` one. You can see the
+    following notes:
+
+    * `pip 23.1 release notes <https://pip.pypa.io/en/stable/news/#v23-1>`_
+    * `pip 24.2 release notes <https://pip.pypa.io/en/stable/news/#v24-2>`_
+    * `pip 25.1 release notes <https://pip.pypa.io/en/stable/news/#v25-1>`_
+    * `pep-517 and pip 23 <https://lists.openstack.org/archives/list/openstack-discuss@lists.openstack.org/thread/HVFN5RBSHRTM3B2UUKPAWKH6H6AT6CYR/>`_.
