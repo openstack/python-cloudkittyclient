@@ -15,8 +15,11 @@
     timeout: 5400
     irrelevant-files:
       - ^.*\.rst$
+      - ^\.gitignore$
+      - ^\.gitreview$
       - ^doc/.*$
       - ^releasenotes/.*$
+      - ^cloudkittyclient/tests/unit/.*$
     vars:
       devstack_plugins:
         ceilometer: https://opendev.org/openstack/ceilometer
