@@ -12,5 +12,5 @@ This is a client for CloudKitty_. It provides a Python api (the
 The client is available on PyPi_.
 
 .. _OpenStack Client: https://docs.openstack.org/python-openstackclient/latest/
-.. _CloudKitty: https://github.com/openstack/cloudkitty
+.. _CloudKitty: https://opendev.org/openstack/cloudkitty
 .. _PyPi:  https://pypi.org/project/python-cloudkittyclient/
