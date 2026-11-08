@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # CloudKitty Client Release Notes documentation build configuration file.
 #
