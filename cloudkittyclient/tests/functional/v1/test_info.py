@@ -12,7 +12,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
-import jsonpath_rw_ext as jp
+import jsonpath_ng.ext as jp
 
 from cloudkittyclient.tests.functional import base
 
@@ -31,8 +31,8 @@ class CkInfoTest(base.BaseFunctionalTest):
 
     def test_info_metric_list(self):
         resp = self.runner('info metric list')
-        res = jp.match1('$.[*].Metric', resp)
-        self.assertIsNotNone(res)
+        res = jp.parse('$.[*].Metric').find(resp)
+        self.assertNotEqual([], res)
 
     def test_info_service_get_image_size(self):
         resp = self.runner('info metric get', params='image.size')[0]

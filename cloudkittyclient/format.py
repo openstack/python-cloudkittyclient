@@ -15,7 +15,7 @@
 import csv
 
 from cliff.formatters import base
-import jsonpath_rw_ext as jp
+import jsonpath_ng.ext as jp
 from oslo_log import log
 import yaml
 
